@@ -1,15 +1,15 @@
-import {View, Text, TextInput, ActivityIndicator} from 'react-native';
-import React, {useState, useEffect} from 'react';
-import {getResponse, searchResultsURL} from '../api';
+import { View, Text, TextInput, ActivityIndicator } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { getResponse, searchResultsURL } from '../api';
 import useAppContext from '../contexts/useAppContext';
 import CardSmall from '../components/CardSmall';
-import {ScrollView} from 'react-native-gesture-handler';
+import { ScrollView } from 'react-native-gesture-handler';
 import axios from 'axios';
 import useThemeProvider from '../contexts/useThemeProvider';
 
 const Search = () => {
-  const {searchData, setSearchData} = useAppContext();
-  const {themeBasedStyles} = useThemeProvider();
+  const { searchData, setSearchData } = useAppContext();
+  const { themeBasedStyles } = useThemeProvider();
   const [searchStr, setSearchStr] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -37,8 +37,8 @@ const Search = () => {
   }, [searchStr]);
 
   return (
-    <ScrollView style={{flex: 1}}>
-      <View style={{flex: 1, paddingHorizontal: 20}}>
+    <ScrollView style={{ flex: 1 }}>
+      <View style={{ flex: 1, paddingHorizontal: 15 }}>
         <View
           style={{
             justifyContent: 'center',
@@ -47,7 +47,7 @@ const Search = () => {
             marginTop: 15,
             borderWidth: 1,
             borderColor: themeBasedStyles.secondaryText,
-            borderRadius: 8
+            borderRadius: 8,
           }}>
           <ActivityIndicator
             size="small"
@@ -55,7 +55,7 @@ const Search = () => {
             style={{
               position: 'absolute',
               right: 10,
-              opacity: loading ? 1 : 0,
+              display: loading ? 'flex' : 'none',
             }}
           />
           <TextInput
@@ -69,11 +69,11 @@ const Search = () => {
             placeholder="Search"
           />
         </View>
-        <View style={{marginTop: 10}}>
+        <View style={{ marginTop: 10 }}>
           {searchStr !== '' && (
-            <Text style={{color: themeBasedStyles.secondaryText}}>
+            <Text style={{ color: themeBasedStyles.secondaryText }}>
               Search results for:{' '}
-              <Text style={{color: themeBasedStyles.primaryText}}>
+              <Text style={{ color: themeBasedStyles.primaryText }}>
                 {searchStr}
               </Text>
             </Text>

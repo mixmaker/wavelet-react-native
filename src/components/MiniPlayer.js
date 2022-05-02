@@ -1,5 +1,5 @@
-import {View, Text, Image, TouchableWithoutFeedback} from 'react-native';
-import React, {useEffect} from 'react';
+import { View, Text, Image, TouchableWithoutFeedback } from 'react-native';
+import React, { useEffect } from 'react';
 import TrackPlayer, {
   Capability,
   Event,
@@ -7,17 +7,17 @@ import TrackPlayer, {
   useTrackPlayerEvents,
 } from 'react-native-track-player';
 import LinearGradient from 'react-native-linear-gradient';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import useAppContext from '../contexts/useAppContext';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {BlurView} from '@react-native-community/blur';
+import { BlurView } from '@react-native-community/blur';
 import useThemeProvider from '../contexts/useThemeProvider';
 
 const MiniPlayer = () => {
   const navigate2player = useNavigation();
-  const {isPlaying, currentSong} = useAppContext();
-  const {themeBasedStyles, constants} = useThemeProvider();
+  const { isPlaying, currentSong } = useAppContext();
+  const { themeBasedStyles, constants } = useThemeProvider();
 
   // const getCurrentSong = () => {
   //   try {
@@ -31,12 +31,13 @@ const MiniPlayer = () => {
     // <BlurView tint='dark' overlayColor=''>
     <TouchableWithoutFeedback
       onPress={() => navigate2player.navigate('Player')}>
-      <View style={{paddingHorizontal: 5}}>
+      <View style={{ paddingHorizontal: 5 }}>
         {currentSong && (
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <View
               style={{
                 width: '80%',
+                overflow: 'hidden',
                 height: 60,
                 flexDirection: 'row',
                 // justifyContent: 'space-around',
@@ -81,7 +82,7 @@ const MiniPlayer = () => {
                 justifyContent: 'space-around',
               }}>
               <TouchableWithoutFeedback
-                style={{marginRight: 10}}
+                style={{ marginRight: 10 }}
                 onPress={() => {
                   isPlaying ? TrackPlayer.pause() : TrackPlayer.play();
                 }}>
@@ -92,7 +93,7 @@ const MiniPlayer = () => {
                 />
               </TouchableWithoutFeedback>
               <TouchableWithoutFeedback
-                style={{marginLeft: 10}}
+                style={{ marginLeft: 10 }}
                 onPress={() => TrackPlayer.skipToNext()}>
                 <Ionicons
                   name="play-skip-forward"

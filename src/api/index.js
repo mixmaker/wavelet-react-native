@@ -1,9 +1,10 @@
 import axios from 'axios';
 
 export const getResponse = async (url, cancelTokenSource) => {
-  const {data} = await axios.get(
-    `https://wavelet-backend.vercel.app/api?q=${encodeURIComponent(url)}`,
-    {cancelToken: cancelTokenSource.token},
+  const { data } = await axios.get(
+    url,
+    // `https://wavelet-backend.vercel.app/api?q=${encodeURIComponent(url)}`,
+    { cancelToken: cancelTokenSource.token },
   );
   return data;
 };
@@ -15,9 +16,11 @@ export const makeMediaurl = url => {
 };
 
 export {
+  fetchSongDataFromId,
   searchResultsURL,
   songDetailsfromIdURL,
   albumURL,
   topSearchesURL,
   homeDataURL,
+  trackHelper,
 } from './base';

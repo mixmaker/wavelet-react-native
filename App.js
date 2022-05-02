@@ -1,11 +1,10 @@
-import {SafeAreaView, StatusBar, Appearance} from 'react-native';
-import React, {useEffect} from 'react';
+import { StatusBar, Appearance } from 'react-native';
+import React, { useEffect, useRef } from 'react';
 import {
   NavigationContainer,
   DarkTheme,
   DefaultTheme,
 } from '@react-navigation/native';
-import Home from './src/screens/Home';
 import AppNavigation from './src/navigation/AppNavigation';
 import TrackPlayer, {
   Event,
@@ -14,21 +13,29 @@ import TrackPlayer, {
 } from 'react-native-track-player';
 import useAppContext from './src/contexts/useAppContext';
 // import changeNavigationBarColor from 'react-native-navigation-bar-color';
-import {SafeAreaProvider} from 'react-native-safe-area-context';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import axios from 'axios';
+import { fetchSongDataFromId } from './src/api';
+import ImageColors from 'react-native-image-colors';
+import RNBootSplash from 'react-native-bootsplash';
+import { LogBox } from 'react-native';
 
+LogBox.ignoreLogs([
+  "[react-native-gesture-handler] Seems like you're using an old API with gesture components, check out new Gestures system!",
+]);
 const App = () => {
   const {
     playlist,
     setupPlayer,
     isDarkMode,
     setIsDarkMode,
-    fetchSongDataFromId,
     currentSongId,
     setCurrentSong,
     setPlaylist,
     setIsPlaying,
+    setColorPalette,
   } = useAppContext();
+  const navigationRef = useRef(null);
   // const navBarColor = async () => {
   //   try {
   //     const response = await changeNavigationBarColor('#fff');
@@ -37,7 +44,7 @@ const App = () => {
   //     console.log(e); // {success: false}
   //   }
   // };
-  Appearance.addChangeListener(({colorScheme}) => {
+  Appearance.addChangeListener(({ colorScheme }) => {
     colorScheme === 'dark' ? setIsDarkMode(true) : setIsDarkMode(false);
   });
 
@@ -57,17 +64,28 @@ const App = () => {
       }
     }
   });
-
+  const cancelTokenSource = axios.CancelToken.source();
   const playSongHandler = async () => {
-    const newTrack = await fetchSongDataFromId();
+    navigationRef.current?.navigate('Player');
+    const newTrack = await fetchSongDataFromId(
+      currentSongId,
+      cancelTokenSource,
+    );
     setPlaylist([newTrack]);
     setCurrentSong(newTrack);
+    getColorPalette(newTrack.artwork);
     TrackPlayer.play();
+  };
+
+  const getColorPalette = async url => {
+    const result = await ImageColors.getColors(url);
+    setColorPalette(result);
   };
 
   useEffect(() => {
     // navBarColor();
     setupPlayer();
+    StatusBar.setTranslucent(true);
   }, []);
 
   useEffect(() => {
@@ -82,10 +100,13 @@ const App = () => {
 
   return (
     <SafeAreaProvider>
-      <NavigationContainer theme={isDarkMode ? DarkTheme : DefaultTheme}>
+      <NavigationContainer
+        ref={navigationRef}
+        theme={isDarkMode ? DarkTheme : DefaultTheme}
+        onReady={() => RNBootSplash.hide({ fade: true })}>
         <StatusBar
           barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-          backgroundColor={isDarkMode ? '#111' : '#fff'}
+          backgroundColor="transparent"
         />
         <AppNavigation />
       </NavigationContainer>
