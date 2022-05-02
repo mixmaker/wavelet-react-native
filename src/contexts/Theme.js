@@ -21,7 +21,7 @@ const Theme = ({children}) => {
     ? {
         primarybg: '#000',
         secondarybg: '#1c1c1c',
-        primaryText: '#fff',
+        primaryText: '#f0f0f0',
         secondaryText: '#8b8b8b',
         icon: '#e0e0e0',
       }
@@ -29,7 +29,7 @@ const Theme = ({children}) => {
         primarybg: '#fff',
         secondarybg: '#f2f2f2',
         primaryText: '#000',
-        secondaryText: '#858585',
+        secondaryText: '#696969',
         icon: '#000',
       };
       

@@ -84,10 +84,20 @@ const MiniPlayer = () => {
               <TouchableWithoutFeedback
                 style={{ marginRight: 10 }}
                 onPress={() => {
-                  isPlaying ? TrackPlayer.pause() : TrackPlayer.play();
+                  if (isPlaying === 'playing' || isPlaying === 'buffering') {
+                    TrackPlayer.pause();
+                  }
+                  if (isPlaying === 'paused') {
+                    TrackPlayer.play();
+                  }
                 }}>
                 <FontAwesome5
-                  name={isPlaying ? 'pause' : 'play'}
+                  name={
+                    isPlaying === 'playing' || isPlaying === 'buffering'
+                      ? 'pause'
+                      : 'play'
+                  }
+                  // name={isPlaying ? 'pause' : 'play'}
                   size={18}
                   color={themeBasedStyles.icon}
                 />

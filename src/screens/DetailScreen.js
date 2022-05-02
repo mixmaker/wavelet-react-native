@@ -4,6 +4,7 @@ import {
   ImageBackground,
   ActivityIndicator,
   ScrollView,
+  Pressable,
   StatusBar,
 } from 'react-native';
 import React, { useEffect } from 'react';
@@ -21,7 +22,7 @@ import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 
 const DetailScreen = ({ route, navigation }) => {
   const { albumId, type, sharedId } = route.params;
-  const { albumData, setAlbumData, isDarkMode } = useAppContext();
+  const { albumData, setAlbumData, isDarkMode, setPlaylist } = useAppContext();
   const { themeBasedStyles, constants } = useThemeProvider();
 
   const cancelTokenSource = axios.CancelToken.source();
@@ -93,7 +94,7 @@ const DetailScreen = ({ route, navigation }) => {
             paddingHorizontal: 15,
           }}>
           {!albumData?.list &&
-            [1, 2, 3, 4, 5, 6].map(item => (
+            [1, 2, 3, 4, 5, 6, 7, 8].map(item => (
               <SkeletonPlaceholder
                 key={item}
                 backgroundColor={isDarkMode ? '#444' : '#E1E9EE'}
@@ -127,6 +128,19 @@ const DetailScreen = ({ route, navigation }) => {
                 </SkeletonPlaceholder.Item>
               </SkeletonPlaceholder>
             ))}
+          <Pressable
+            style={{
+              position: 'absolute',
+              right: 30,
+              top: -50,
+              backgroundColor: themeBasedStyles.secondarybg,
+              padding: 10,
+              borderRadius: 30,
+            }}
+            // onPress={() => setPlaylist(albumData.list)} //! app crash
+            >
+            <Ionicons name="play" size={28} />
+          </Pressable>
           {albumData?.list?.map(item => (
             <CardSmall song={item} key={item.id} />
           ))}

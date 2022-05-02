@@ -1,4 +1,4 @@
-import { View, Text, ActivityIndicator, ScrollView } from 'react-native';
+import { View, Text, StatusBar, ScrollView } from 'react-native';
 import React, { useEffect } from 'react';
 import { homeDataURL } from '../api/base';
 import { getResponse } from '../api';
@@ -19,8 +19,9 @@ const ListSkeletonStack = ({ isDarkMode }) => {
         width={120}
         marginBottom={7}
         borderRadius={4}
+        marginLeft={15}
       />
-      <SkeletonPlaceholder.Item flexDirection="row">
+      <SkeletonPlaceholder.Item flexDirection="row" marginLeft={15}>
         {[1, 2, 3].map(item => (
           <SkeletonPlaceholder.Item alignItems="center" margin={7} key={item}>
             <SkeletonPlaceholder.Item
@@ -44,6 +45,7 @@ const ListSkeletonStack = ({ isDarkMode }) => {
 
 const Home = ({ navigation }) => {
   const { homeData, setHomeData, isDarkMode } = useAppContext();
+  const { themeBasedStyles } = useThemeProvider();
   const cancelTokenSource = axios.CancelToken.source();
 
   const fetchHomeData = async uri => {
@@ -61,13 +63,41 @@ const Home = ({ navigation }) => {
 
   return (
     <ScrollView style={{ flexGrow: 1 }}>
-      <View style={{ padding: 20 }}>
-        {!homeData &&
-          [1, 2, 3].map(item => (
-            <View style={{ marginBottom: 45 }} key={item}>
-              <ListSkeletonStack isDarkMode={isDarkMode} />
-            </View>
-          ))}
+      <View style={{ marginTop: StatusBar.currentHeight + 10 }}>
+        {homeData?.greeting && (
+          <Text
+            style={{
+              fontSize: 32,
+              marginBottom: 20,
+              marginLeft: 10,
+              marginTop: 15,
+              color: themeBasedStyles.secondaryText,
+            }}>
+            {homeData.greeting + '!'}
+          </Text>
+        )}
+        {!homeData && (
+          <>
+            <SkeletonPlaceholder
+              backgroundColor={isDarkMode ? '#444' : '#E1E9EE'}
+              highlightColor={isDarkMode ? '#5a5a5a' : '#F2F8FC'}
+              speed={1200}>
+              <SkeletonPlaceholder.Item
+                height={32}
+                width={200}
+                marginTop={25}
+                marginBottom={30}
+                borderRadius={4}
+                marginLeft={10}
+              />
+            </SkeletonPlaceholder>
+            {[1, 2, 3].map(item => (
+              <View style={{ marginBottom: 45 }} key={item}>
+                <ListSkeletonStack isDarkMode={isDarkMode} />
+              </View>
+            ))}
+          </>
+        )}
         {homeData && (
           <View>
             <ListStack
@@ -134,7 +164,12 @@ const ListStack = ({ title, data, navigation }) => {
     <View style={{ marginBottom: 15 }}>
       {data && (
         <>
-          <Text style={{ fontSize: 20, color: themeBasedStyles.primaryText }}>
+          <Text
+            style={{
+              fontSize: 19,
+              color: themeBasedStyles.primaryText,
+              marginLeft: 15,
+            }}>
             {title}
           </Text>
           <ListHorizontal navigation={navigation} itemArray={data} />

@@ -1,4 +1,10 @@
-import { View, Text, TextInput, ActivityIndicator } from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  ActivityIndicator,
+  StatusBar,
+} from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { getResponse, searchResultsURL } from '../api';
 import useAppContext from '../contexts/useAppContext';
@@ -31,20 +37,24 @@ const Search = () => {
       setLoading(true);
       fetchSearchResults();
     }
+    if (searchStr === '') {
+      setLoading(false);
+      setSearchData(undefined);
+    }
     return () => {
       cancelTokenSource.cancel();
     };
   }, [searchStr]);
 
   return (
-    <ScrollView style={{ flex: 1 }}>
+    <ScrollView style={{ flex: 1, marginTop: StatusBar.currentHeight + 10 }}>
       <View style={{ flex: 1, paddingHorizontal: 15 }}>
         <View
           style={{
             justifyContent: 'center',
             // backgroundColor: '#00000078',
             marginBottom: 15,
-            marginTop: 15,
+            marginTop: 25,
             borderWidth: 1,
             borderColor: themeBasedStyles.secondaryText,
             borderRadius: 8,
@@ -76,6 +86,16 @@ const Search = () => {
               <Text style={{ color: themeBasedStyles.primaryText }}>
                 {searchStr}
               </Text>
+            </Text>
+          )}
+          {searchStr === '' && (
+            <Text
+              style={{
+                fontSize: 15,
+                color: themeBasedStyles.secondaryText,
+                textAlign: 'center',
+              }}>
+              Search for something cool!
             </Text>
           )}
           {searchData && (

@@ -10,6 +10,7 @@ const ListHorizontal = ({ itemArray, navigation }) => {
   return (
     <FlatList
       horizontal
+      contentContainerStyle={{ marginLeft: 15 }}
       data={itemArray}
       showsHorizontalScrollIndicator={false}
       keyExtractor={item => `${item.title}${item.id}`}

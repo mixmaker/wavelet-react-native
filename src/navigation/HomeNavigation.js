@@ -148,11 +148,13 @@ const HomeNavigation = () => {
       <HomeTab.Screen
         name="Home"
         component={Home}
-        options={{
-          // gestureEnabled: true,
-        }}
+        options={{ headerShown: false }}
       />
-      <HomeTab.Screen name="Search" component={Search} />
+      <HomeTab.Screen
+        name="Search"
+        component={Search}
+        options={{ headerShown: false }}
+      />
       <HomeTab.Screen name="Library" component={Library} />
     </HomeTab.Navigator>
   );

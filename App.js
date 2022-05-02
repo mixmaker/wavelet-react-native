@@ -50,17 +50,19 @@ const App = () => {
 
   useTrackPlayerEvents([Event.PlaybackState], async event => {
     if (event.type === Event.PlaybackState) {
-      if (event.state === State.Playing || event.state === State.Buffering) {
-        setIsPlaying(true);
+      if (event.state === State.Playing) {
+        setIsPlaying('playing');
+      }
+      if (event.state === State.Buffering || event.state === State.Connecting) {
+        setIsPlaying('buffering');
       }
       if (
         event.state === State.Paused ||
-        event.state === State.Connecting ||
         event.state === State.Ready ||
         event.state === State.None ||
         event.state === State.Stopped
       ) {
-        setIsPlaying(false);
+        setIsPlaying('paused');
       }
     }
   });
@@ -105,7 +107,7 @@ const App = () => {
         theme={isDarkMode ? DarkTheme : DefaultTheme}
         onReady={() => RNBootSplash.hide({ fade: true })}>
         <StatusBar
-          barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+          barStyle={isDarkMode ? 'light-content' : 'dark-content'} // !for some strange reason this didn't work on my physical device running api32
           backgroundColor="transparent"
         />
         <AppNavigation />

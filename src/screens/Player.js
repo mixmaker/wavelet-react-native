@@ -6,6 +6,7 @@ import {
   TouchableWithoutFeedback,
   StatusBar,
   Platform,
+  ActivityIndicator,
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import useAppContext from '../contexts/useAppContext';
@@ -66,7 +67,7 @@ const Player = ({ route, navigation }) => {
       )}
       <View
         style={{
-          marginTop: StatusBar.currentHeight,
+          marginTop: StatusBar.currentHeight + 20,
           marginBottom: 30,
           marginHorizontal: 20,
         }}>
@@ -92,7 +93,7 @@ const Player = ({ route, navigation }) => {
               shadowOpacity: 0.25,
               shadowRadius: 3.84,
               elevation: 8,
-              marginTop: 10,
+              marginTop: 5,
               height: constants.fullWidth - 50,
               backgroundColor: themeBasedStyles.secondarybg,
             }}>
@@ -162,7 +163,12 @@ const Player = ({ route, navigation }) => {
 
           <TouchableWithoutFeedback
             onPress={() => {
-              isPlaying ? TrackPlayer.pause() : TrackPlayer.play();
+              if (isPlaying === 'playing' || isPlaying === 'buffering') {
+                TrackPlayer.pause();
+              }
+              if (isPlaying === 'paused') {
+                TrackPlayer.play();
+              }
             }}>
             <View
               style={{
@@ -176,8 +182,19 @@ const Player = ({ route, navigation }) => {
                 justifyContent: 'center',
                 // paddingRight: isPlaying? 0 : 0.5
               }}>
+              {isPlaying === 'buffering' && (
+                <ActivityIndicator
+                  size="large"
+                  color={themeBasedStyles.primaryText}
+                  style={{ position: 'absolute', transform: [{ scale: 1.6 }] }}
+                />
+              )}
               <FontAwesome5
-                name={isPlaying ? 'pause' : 'play'}
+                name={
+                  isPlaying === 'playing' || isPlaying === 'buffering'
+                    ? 'pause'
+                    : 'play'
+                }
                 size={24}
                 color={themeBasedStyles.icon}
               />

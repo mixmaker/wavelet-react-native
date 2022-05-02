@@ -12,7 +12,7 @@ const GlobalState = ({ children }) => {
   const [albumData, setAlbumData] = useState();
   const [currentSong, setCurrentSong] = useState();
   const [currentSongId, setCurrentSongId] = useState();
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [isPlaying, setIsPlaying] = useState('paused');
   const [playlist, setPlaylist] = useState([]);
   const [colorPalette, setColorPalette] = useState();
 
