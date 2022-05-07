@@ -1,4 +1,4 @@
-import { getResponse } from '.';
+import { getResponse } from './';
 
 import CryptoJS from 'crypto-js';
 
@@ -14,6 +14,7 @@ const endpoints = {
   artistResults: '__call=search.getArtistResults',
   artistRadio: '__call=webradio.createArtistStation',
   radioSongs: '__call=webradio.getSong',
+  getlyrics: '__call=lyrics.getLyrics',
 };
 
 const getURL = params => {
@@ -52,6 +53,10 @@ export const homeDataURL = () => {
 
 export const topSearchesURL = () => {
   return getURL(`${endpoints.topSearches}`);
+};
+
+export const lyricsURL = id => {
+  return getURL(`${endpoints.getlyrics}&lyrics_id=${id}`);
 };
 
 export const albumURL = (type, id) => {
@@ -98,6 +103,15 @@ export const fetchSongDataFromId = async (songId, cancelTokenSource) => {
   }
 };
 
+export const fetchLyricsfromId = async (songId, cancelTokenSource) => {
+  try {
+    const lyricsuri = lyricsURL(songId);
+    const data = await getResponse(lyricsuri, cancelTokenSource);
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
 //? convert each song into a track object
 export const trackHelper = song => ({
   url: decryptByDES(song.more_info.encrypted_media_url), // Load media from the network

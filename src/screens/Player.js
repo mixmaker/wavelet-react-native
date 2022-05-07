@@ -4,6 +4,7 @@ import {
   Image,
   ScrollView,
   TouchableWithoutFeedback,
+  Pressable,
   StatusBar,
   Platform,
   ActivityIndicator,
@@ -19,9 +20,17 @@ import TrackPlayer, { useProgress } from 'react-native-track-player';
 import Scrubber from 'react-native-scrubber';
 import useThemeProvider from '../contexts/useThemeProvider';
 import LinearGradient from 'react-native-linear-gradient';
+import RenderHtml from 'react-native-render-html';
 
 const Player = ({ route, navigation }) => {
-  const { isPlaying, currentSong, isDarkMode, colorPalette } = useAppContext();
+  const {
+    isPlaying,
+    currentSong,
+    isDarkMode,
+    colorPalette,
+    lyrics,
+    decodeHtml,
+  } = useAppContext();
   const { themeBasedStyles, constants } = useThemeProvider();
   const progress = useProgress();
 
@@ -115,7 +124,7 @@ const Player = ({ route, navigation }) => {
               fontSize: 24,
               fontWeight: '700',
             }}>
-            {currentSong?.title}
+            {decodeHtml(currentSong?.title)}
           </Text>
           <Text style={{ textAlign: 'center', fontSize: 16, marginBottom: 10 }}>
             {currentSong?.artist}
@@ -161,7 +170,7 @@ const Player = ({ route, navigation }) => {
             onPress={() => TrackPlayer.skipToPrevious()}
           />
 
-          <TouchableWithoutFeedback
+          <Pressable
             onPress={() => {
               if (isPlaying === 'playing' || isPlaying === 'buffering') {
                 TrackPlayer.pause();
@@ -170,36 +179,42 @@ const Player = ({ route, navigation }) => {
                 TrackPlayer.play();
               }
             }}>
-            <View
-              style={{
-                height: 50,
-                width: 50,
-                backgroundColor: themeBasedStyles.secondarybg,
-                elevation: 5,
-                padding: 5,
-                borderRadius: 50 / 2,
-                alignItems: 'center',
-                justifyContent: 'center',
-                // paddingRight: isPlaying? 0 : 0.5
-              }}>
-              {isPlaying === 'buffering' && (
-                <ActivityIndicator
-                  size="large"
-                  color={themeBasedStyles.primaryText}
-                  style={{ position: 'absolute', transform: [{ scale: 1.6 }] }}
+            {({pressed}) => (
+              <View
+                style={{
+                  height: 50,
+                  width: 50,
+                  backgroundColor: themeBasedStyles.secondarybg,
+                  elevation: 5,
+                  padding: 5,
+                  borderRadius: 50 / 2,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  transform: [{ scale: pressed ? 0.94 : 1 }],
+                  // paddingRight: isPlaying? 0 : 0.5
+                }}>
+                {isPlaying === 'buffering' && (
+                  <ActivityIndicator
+                    size="large"
+                    color={themeBasedStyles.primaryText}
+                    style={{
+                      position: 'absolute',
+                      transform: [{ scale: 1.6 }],
+                    }}
+                  />
+                )}
+                <FontAwesome5
+                  name={
+                    isPlaying === 'playing' || isPlaying === 'buffering'
+                      ? 'pause'
+                      : 'play'
+                  }
+                  size={24}
+                  color={themeBasedStyles.icon}
                 />
-              )}
-              <FontAwesome5
-                name={
-                  isPlaying === 'playing' || isPlaying === 'buffering'
-                    ? 'pause'
-                    : 'play'
-                }
-                size={24}
-                color={themeBasedStyles.icon}
-              />
-            </View>
-          </TouchableWithoutFeedback>
+              </View>
+            )}
+          </Pressable>
           <Ionicons
             name="play-skip-forward"
             size={24}
@@ -255,12 +270,13 @@ const Player = ({ route, navigation }) => {
       </View>
       <View
         style={{
+          flex: 1,
           marginTop: 20,
           marginHorizontal: 20,
           padding: 10,
           borderRadius: 12,
           backgroundColor: '#191919',
-          minHeight: 200,
+          height: 600, //! why flex 1 isn't working, why i need a fixed height
         }}>
         <Text
           style={{
@@ -270,9 +286,18 @@ const Player = ({ route, navigation }) => {
           }}>
           Lyrics:
         </Text>
+        {lyrics && (
+          <RenderHtml
+            source={{
+              html: lyrics.lyrics
+                ? lyrics.lyrics
+                : '<p>Lyrics not available</p>',
+            }}
+            contentWidth={constants.fullWidth - 40}
+          />
+        )}
       </View>
     </ScrollView>
   );
 };
-
 export default Player;

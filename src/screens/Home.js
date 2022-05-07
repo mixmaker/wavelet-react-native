@@ -60,10 +60,12 @@ const Home = ({ navigation }) => {
     const homeUri = homeDataURL();
     fetchHomeData(homeUri);
   }, []);
+  const drawerNavigation = navigation.getParent('LeftDrawer');
 
   return (
     <ScrollView style={{ flexGrow: 1 }}>
       <View style={{ marginTop: StatusBar.currentHeight + 10 }}>
+        
         {homeData?.greeting && (
           <Text
             style={{

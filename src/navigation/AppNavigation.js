@@ -1,50 +1,44 @@
 import React from 'react';
-import {
-  CardStyleInterpolators,
-  createStackNavigator,
-} from '@react-navigation/stack';
-import HomeNavigation from './HomeNavigation';
-import DetailScreen from '../screens/DetailScreen';
-import Player from '../screens/Player';
-import useAppContext from '../contexts/useAppContext';
-import { createSharedElementStackNavigator } from 'react-navigation-shared-element';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import CustomTabBar from '../components/CustomTabBar';
+import StackNavigation from './StackNavigation';
+import Search from '../screens/Search';
+import Library from '../screens/Library';
+import About from '../screens/About';
+import Settings from '../screens/Settings';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+const Drawer = createDrawerNavigator();
 
-const AppNavigation = () => {
-  const AppStack = createStackNavigator();
+const AppDrawer = () => {
   return (
-    <AppStack.Navigator initialRouteName="HomeTab">
-      <AppStack.Screen
-        name="HomeTab"
-        component={HomeNavigation}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <AppStack.Screen
-        name="DetailScreen"
-        component={DetailScreen}
-        // sharedElements={route => {
-        //   const {sharedId} = route.params;
-        //   return sharedId;
-        // }}
-        options={{
-          headerShown: false,
-          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-          gestureEnabled: true,
-        }}
-      />
-      <AppStack.Screen
-        name="Player"
-        component={Player}
-        options={{
-          headerShown: false,
-          cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
-          gestureEnabled: true,
-          gestureDirection: 'vertical',
-        }}
-      />
-    </AppStack.Navigator>
+    <Drawer.Navigator
+      id="LeftDrawer"
+      screenOptions={{ headerShown: false, drawerType: 'slide' }}>
+      <Drawer.Screen name="HomeStack" component={TabNavigation} />
+      <Drawer.Screen name="About" component={About} />
+      <Drawer.Screen name="Settings" component={Settings} />
+    </Drawer.Navigator>
   );
 };
 
-export default AppNavigation;
+const Tab = createBottomTabNavigator();
+
+const TabNavigation = () => {
+  return (
+    <Tab.Navigator tabBar={props => <CustomTabBar {...props} />} id="BottomTab">
+      <Tab.Screen
+        name="Home"
+        component={StackNavigation}
+        options={{ headerShown: false }}
+      />
+      <Tab.Screen
+        name="Search"
+        component={Search}
+        options={{ headerShown: false }}
+      />
+      <Tab.Screen name="Library" component={Library} />
+    </Tab.Navigator>
+  );
+};
+
+export default AppDrawer;

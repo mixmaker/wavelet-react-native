@@ -12,6 +12,7 @@ const GlobalState = ({ children }) => {
   const [albumData, setAlbumData] = useState();
   const [currentSong, setCurrentSong] = useState();
   const [currentSongId, setCurrentSongId] = useState();
+  const [lyrics, setLyrics] = useState();
   const [isPlaying, setIsPlaying] = useState('paused');
   const [playlist, setPlaylist] = useState([]);
   const [colorPalette, setColorPalette] = useState();
@@ -68,6 +69,8 @@ const GlobalState = ({ children }) => {
         setupPlayer,
         colorPalette,
         setColorPalette,
+        lyrics,
+        setLyrics,
       }}>
       {children}
     </GlobalContext.Provider>

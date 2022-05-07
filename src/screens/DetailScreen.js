@@ -11,7 +11,7 @@ import React, { useEffect } from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import useAppContext from '../contexts/useAppContext';
 import CardSmall from '../components/CardSmall';
-import { fetchAlbumDetails } from '../api/base';
+import { fetchAlbumDetails, trackHelper } from '../api';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
 // import {constants} from '../components/GlobalStyles';
@@ -19,6 +19,7 @@ import axios from 'axios';
 import useThemeProvider from '../contexts/useThemeProvider';
 import { SharedElement } from 'react-native-shared-element';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
+import TrackPlayer from 'react-native-track-player';
 
 const DetailScreen = ({ route, navigation }) => {
   const { albumId, type, sharedId } = route.params;
@@ -137,8 +138,11 @@ const DetailScreen = ({ route, navigation }) => {
               padding: 10,
               borderRadius: 30,
             }}
-            // onPress={() => setPlaylist(albumData.list)} //! app crash
-            >
+            onPress={() => {
+              setPlaylist(albumData.list.map(item => trackHelper(item)));
+              TrackPlayer.play();
+            }} //! app crash
+          >
             <Ionicons name="play" size={28} />
           </Pressable>
           {albumData?.list?.map(item => (

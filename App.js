@@ -5,20 +5,19 @@ import {
   DarkTheme,
   DefaultTheme,
 } from '@react-navigation/native';
-import AppNavigation from './src/navigation/AppNavigation';
 import TrackPlayer, {
   Event,
   State,
   useTrackPlayerEvents,
 } from 'react-native-track-player';
 import useAppContext from './src/contexts/useAppContext';
-// import changeNavigationBarColor from 'react-native-navigation-bar-color';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import axios from 'axios';
-import { fetchSongDataFromId } from './src/api';
+import { fetchLyricsfromId, fetchSongDataFromId } from './src/api';
 import ImageColors from 'react-native-image-colors';
 import RNBootSplash from 'react-native-bootsplash';
 import { LogBox } from 'react-native';
+import AppDrawer from './src/navigation/AppNavigation';
 
 LogBox.ignoreLogs([
   "[react-native-gesture-handler] Seems like you're using an old API with gesture components, check out new Gestures system!",
@@ -34,16 +33,9 @@ const App = () => {
     setPlaylist,
     setIsPlaying,
     setColorPalette,
+    setLyrics,
   } = useAppContext();
   const navigationRef = useRef(null);
-  // const navBarColor = async () => {
-  //   try {
-  //     const response = await changeNavigationBarColor('#fff');
-  //     console.log(response); // {success: true}
-  //   } catch (e) {
-  //     console.log(e); // {success: false}
-  //   }
-  // };
   Appearance.addChangeListener(({ colorScheme }) => {
     colorScheme === 'dark' ? setIsDarkMode(true) : setIsDarkMode(false);
   });
@@ -75,6 +67,8 @@ const App = () => {
     );
     setPlaylist([newTrack]);
     setCurrentSong(newTrack);
+    const lyr = await fetchLyricsfromId(currentSongId, cancelTokenSource);
+    setLyrics(lyr);
     getColorPalette(newTrack.artwork);
     TrackPlayer.play();
   };
@@ -97,6 +91,9 @@ const App = () => {
   }, [currentSongId]);
 
   useEffect(() => {
+    if (playlist.length < 1) {
+      // setCurrentSong()
+    }
     TrackPlayer.add([...playlist]);
   }, [playlist]);
 
@@ -110,7 +107,7 @@ const App = () => {
           barStyle={isDarkMode ? 'light-content' : 'dark-content'} // !for some strange reason this didn't work on my physical device running api32
           backgroundColor="transparent"
         />
-        <AppNavigation />
+        <AppDrawer />
       </NavigationContainer>
     </SafeAreaProvider>
   );
