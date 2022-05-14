@@ -96,7 +96,7 @@ export const fetchSongDataFromId = async (songId, cancelTokenSource) => {
   try {
     const detailUri = songDetailsfromIdURL(songId);
     const data = await getResponse(detailUri, cancelTokenSource);
-    const newTrack = trackHelper(data.songs[0]);
+    const newTrack = trackHelper(data.songs[0], songId);
     return newTrack;
   } catch (error) {
     console.log(error);
@@ -113,7 +113,8 @@ export const fetchLyricsfromId = async (songId, cancelTokenSource) => {
   }
 };
 //? convert each song into a track object
-export const trackHelper = song => ({
+export const trackHelper = (song, id) => ({
+  id,
   url: decryptByDES(song.more_info.encrypted_media_url), // Load media from the network
   title: song.title,
   album: song.more_info.album,

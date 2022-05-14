@@ -11,10 +11,9 @@ import Animated, {
 import useThemeProvider from '../contexts/useThemeProvider';
 
 const CustomTabBar = props => {
-  const { constants, themeBasedStyles } = useThemeProvider();
-  const { navigation, state } = props;
-  // const navindex = useNavigationState(state => state);
-  // console.log(navindex);
+  const { constants, colors } = useThemeProvider();
+  const { navigation, descriptors, state } = props;
+  const focusedOptions = descriptors[state.routes[state.index].key].options;
   const PADDING = 30;
   const width = constants.fullWidth;
   const TAB_BAR_WIDTH = width - 2 * PADDING;
@@ -28,7 +27,11 @@ const CustomTabBar = props => {
   }, [state.index]);
 
   return (
-    <View style={{ backgroundColor: '#111' }}>
+    <View
+      style={[
+        { backgroundColor: colors.secondarybg },
+        focusedOptions.tabBarStyle,
+      ]}>
       <View
         style={{
           position: 'absolute',
@@ -41,7 +44,8 @@ const CustomTabBar = props => {
             {
               height: 30,
               width: TAB_WIDTH,
-              backgroundColor: 'rgba(255,255,255,0.15)',
+              // backgroundColor: 'rgba(255,255,255,0.15)',
+              backgroundColor: colors.slider,
               borderRadius: 8,
             },
             rStyle,
@@ -80,9 +84,7 @@ const CustomTabBar = props => {
                 name={route.name.toLowerCase()}
                 size={20}
                 color={
-                  state.index === i
-                    ? themeBasedStyles.primaryText
-                    : themeBasedStyles.secondaryText
+                  state.index === i ? colors.primaryText : colors.secondaryText
                 }
               />
             ) : (
@@ -90,18 +92,14 @@ const CustomTabBar = props => {
                 name="library-music"
                 size={20}
                 color={
-                  state.index === i
-                    ? themeBasedStyles.primaryText
-                    : themeBasedStyles.secondaryText
+                  state.index === i ? colors.primaryText : colors.secondaryText
                 }
               />
             )}
             <Text
               style={{
                 color:
-                  state.index === i
-                    ? themeBasedStyles.primaryText
-                    : themeBasedStyles.secondaryText,
+                  state.index === i ? colors.primaryText : colors.secondaryText,
                 marginLeft: 5,
                 // display: state.index === i ? 'flex' : 'none',
               }}>

@@ -24,7 +24,7 @@ import TrackPlayer from 'react-native-track-player';
 const DetailScreen = ({ route, navigation }) => {
   const { albumId, type, sharedId } = route.params;
   const { albumData, setAlbumData, isDarkMode, setPlaylist } = useAppContext();
-  const { themeBasedStyles, constants } = useThemeProvider();
+  const { colors, constants } = useThemeProvider();
 
   const cancelTokenSource = axios.CancelToken.source();
   const fetchAlbumData = async () => {
@@ -54,8 +54,6 @@ const DetailScreen = ({ route, navigation }) => {
     });
   };
 
-  //change navbar color
-
   useEffect(() => {
     fetchAlbumData();
     return () => {
@@ -77,7 +75,7 @@ const DetailScreen = ({ route, navigation }) => {
           colors={[
             'transparent',
             isDarkMode ? 'rgba(0,0,0,0.7)' : 'rgba(255,255,255,0.7)',
-            themeBasedStyles.primarybg,
+            colors.primarybg,
           ]}
           style={{
             position: 'absolute',
@@ -91,7 +89,7 @@ const DetailScreen = ({ route, navigation }) => {
         <View
           style={{
             marginTop: constants.fullWidth,
-            backgroundColor: themeBasedStyles.primarybg,
+            backgroundColor: colors.primarybg,
             paddingHorizontal: 15,
           }}>
           {!albumData?.list &&
@@ -134,7 +132,7 @@ const DetailScreen = ({ route, navigation }) => {
               position: 'absolute',
               right: 30,
               top: -50,
-              backgroundColor: themeBasedStyles.secondarybg,
+              backgroundColor: colors.secondarybg,
               padding: 10,
               borderRadius: 30,
             }}
@@ -178,10 +176,10 @@ const DetailScreen = ({ route, navigation }) => {
         <Ionicons
           name="arrow-back"
           size={24}
-          color={themeBasedStyles.primaryText}
+          color={colors.primaryText}
           style={{
             padding: 4,
-            backgroundColor: themeBasedStyles.primarybg,
+            backgroundColor: colors.primarybg,
             borderRadius: 16,
             elevation: 10,
           }}
@@ -194,20 +192,20 @@ const DetailScreen = ({ route, navigation }) => {
             paddingVertical: 4,
             paddingHorizontal: 8,
             borderRadius: 16,
-            backgroundColor: themeBasedStyles.primarybg,
+            backgroundColor: colors.primarybg,
             elevation: 10,
           }}>
           <Ionicons
             name="heart-outline"
             size={24}
-            color={themeBasedStyles.primaryText}
+            color={colors.primaryText}
             style={{ marginRight: 10 }}
           />
           {/* <Ionicons name='heart' size={24} /> */}
           <Entypo
             name="dots-three-vertical"
             size={22}
-            color={themeBasedStyles.primaryText}
+            color={colors.primaryText}
           />
         </View>
       </View>
@@ -234,7 +232,7 @@ keyExtractor={item => `${item.id}detail`}
 renderItem={({ item }) => <CardSmall song={item} />}
 contentContainerStyle={{
   marginTop: constants.fullWidth - 30,
-  backgroundColor: themeBasedStyles.primarybg,
+  backgroundColor: colors.primarybg,
   paddingHorizontal: 20,
 }}
 />*/

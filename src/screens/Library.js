@@ -6,7 +6,7 @@ import useThemeProvider from '../contexts/useThemeProvider';
 
 const Library = () => {
   const { playlist, setPlaylist, decodeHtml } = useAppContext();
-  const { themeBasedStyles, constants } = useThemeProvider();
+  const { colors, constants } = useThemeProvider();
 
   return (
     <View style={{ marginTop: 15, paddingHorizontal: 15 }}>
@@ -15,7 +15,7 @@ const Library = () => {
         ListEmptyComponent={
           <Text
             style={{
-              color: themeBasedStyles.secondaryText,
+              color: colors.secondaryText,
               fontSize: 16,
               textAlign: 'center',
               justifyContent: 'center',
@@ -24,7 +24,7 @@ const Library = () => {
           </Text>
         }
         ListHeaderComponent={
-          <Text style={{ color: themeBasedStyles.primaryText , fontSize: 18}}>
+          <Text style={{ color: colors.primaryText , fontSize: 18}}>
             Now playing
           </Text>
         }
@@ -75,7 +75,7 @@ const Library = () => {
                 <Text
                   numberOfLines={2}
                   style={{
-                    color: themeBasedStyles.primaryText,
+                    color: colors.primaryText,
                     fontSize: 16,
                   }}>
                   {decodeHtml(item.title)}
@@ -83,7 +83,7 @@ const Library = () => {
                 <Text
                   numberOfLines={2}
                   style={{
-                    color: themeBasedStyles.secondaryText,
+                    color: colors.secondaryText,
                   }}>
                   {item.artist}
                 </Text>
@@ -100,7 +100,7 @@ const Library = () => {
                 <MaterialCommunityIcons
                   name="playlist-plus"
                   size={24}
-                  color={themeBasedStyles.icon}
+                  color={colors.icon}
                 />
               )}
             </Pressable> */}

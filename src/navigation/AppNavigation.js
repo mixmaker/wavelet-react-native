@@ -7,13 +7,20 @@ import Library from '../screens/Library';
 import About from '../screens/About';
 import Settings from '../screens/Settings';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import CustomDrawer from '../components/CustomDrawer';
+
 const Drawer = createDrawerNavigator();
 
 const AppDrawer = () => {
   return (
     <Drawer.Navigator
       id="LeftDrawer"
-      screenOptions={{ headerShown: false, drawerType: 'slide' }}>
+      drawerContent={props => <CustomDrawer {...props} />}
+      screenOptions={{
+        sceneContainerStyle: { backgroundColor: 'transparent' },
+        headerShown: false,
+        drawerType: 'slide',
+      }}>
       <Drawer.Screen name="HomeStack" component={TabNavigation} />
       <Drawer.Screen name="About" component={About} />
       <Drawer.Screen name="Settings" component={Settings} />

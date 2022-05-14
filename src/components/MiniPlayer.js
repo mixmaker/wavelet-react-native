@@ -18,8 +18,9 @@ import useThemeProvider from '../contexts/useThemeProvider';
 
 const MiniPlayer = () => {
   const navigate2player = useNavigation();
-  const { isPlaying, currentSong, decodeHtml } = useAppContext();
-  const { themeBasedStyles, constants } = useThemeProvider();
+  const { isPlaying, playlist, currentTrackIndex, decodeHtml } =
+    useAppContext();
+  const { colors, constants } = useThemeProvider();
 
   // const getCurrentSong = () => {
   //   try {
@@ -36,14 +37,14 @@ const MiniPlayer = () => {
     <Pressable onPress={() => navigate2player.navigate('Player')}>
       {({ pressed }) => (
         <View style={{ paddingHorizontal: 5, opacity: pressed ? 0.7 : 1 }}>
-          {currentSong && (
+          {playlist.length > 0 && (
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               {/* <View style={{position:'absolute', top:-10, width:'100%'}}>
                 <Scrubber
                   totalDuration={progress.duration}
                   value={progress.position}
                   bufferedValue={progress.buffered}
-                  trackColor={themeBasedStyles.primaryText}
+                  trackColor={colors.primaryText}
                   scrubbedColor="#dfdfdf"
                   displayValues={false}
                   // trackBackgroundColor={isDarkMode ? '#4e4e4e' : '#fff'}
@@ -63,7 +64,10 @@ const MiniPlayer = () => {
                 }}>
                 <Image
                   source={{
-                    uri: currentSong.artwork.replace('150x150', '500x500'),
+                    uri: playlist[currentTrackIndex].artwork.replace(
+                      '150x150',
+                      '500x500',
+                    ),
                   }}
                   style={{
                     height: 50,
@@ -80,15 +84,15 @@ const MiniPlayer = () => {
                       // marginTop: 30,
                       // fontSize: 24,
                       fontWeight: '700',
-                      color: themeBasedStyles.primaryText,
+                      color: colors.primaryText,
                     }}>
-                    {decodeHtml(currentSong.title)}
+                    {decodeHtml(playlist[currentTrackIndex].title)}
                   </Text>
                   <Text
                     style={{
-                      color: themeBasedStyles.secondaryText,
+                      color: colors.secondaryText,
                     }}>
-                    {currentSong.artist.replace(', ', ' • ')}
+                    {playlist[currentTrackIndex].artist.replace(', ', ' • ')}
                   </Text>
                 </View>
               </View>
@@ -116,7 +120,7 @@ const MiniPlayer = () => {
                         : 'play'
                     }
                     size={18}
-                    color={themeBasedStyles.icon}
+                    color={colors.icon}
                   />
                 </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback
@@ -125,7 +129,7 @@ const MiniPlayer = () => {
                   <Ionicons
                     name="play-skip-forward"
                     size={24}
-                    color={themeBasedStyles.icon}
+                    color={colors.icon}
                   />
                 </TouchableWithoutFeedback>
               </View>

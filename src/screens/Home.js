@@ -7,6 +7,7 @@ import ListHorizontal from '../components/ListHorizontal';
 import useThemeProvider from '../contexts/useThemeProvider';
 import axios from 'axios';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
+import Entypo from 'react-native-vector-icons/Entypo';
 
 const ListSkeletonStack = ({ isDarkMode }) => {
   return (
@@ -45,7 +46,7 @@ const ListSkeletonStack = ({ isDarkMode }) => {
 
 const Home = ({ navigation }) => {
   const { homeData, setHomeData, isDarkMode } = useAppContext();
-  const { themeBasedStyles } = useThemeProvider();
+  const { colors, constants } = useThemeProvider();
   const cancelTokenSource = axios.CancelToken.source();
 
   const fetchHomeData = async uri => {
@@ -63,9 +64,17 @@ const Home = ({ navigation }) => {
   const drawerNavigation = navigation.getParent('LeftDrawer');
 
   return (
-    <ScrollView style={{ flexGrow: 1 }}>
-      <View style={{ marginTop: StatusBar.currentHeight + 10 }}>
-        
+    <ScrollView style={{ flexGrow: 1, backgroundColor: colors.primarybg }}>
+      <View style={{ marginTop: constants.statusbarHeight + 10 }}>
+        <Entypo
+          name="menu"
+          size={24}
+          color={colors.primaryText}
+          style={{ marginLeft: 15 }}
+          onPress={() => {
+            drawerNavigation?.openDrawer();
+          }}
+        />
         {homeData?.greeting && (
           <Text
             style={{
@@ -73,7 +82,7 @@ const Home = ({ navigation }) => {
               marginBottom: 20,
               marginLeft: 10,
               marginTop: 15,
-              color: themeBasedStyles.secondaryText,
+              color: colors.secondaryText,
             }}>
             {homeData.greeting + '!'}
           </Text>
@@ -160,7 +169,7 @@ const Home = ({ navigation }) => {
 };
 
 const ListStack = ({ title, data, navigation }) => {
-  const { themeBasedStyles } = useThemeProvider();
+  const { colors } = useThemeProvider();
   // const isArtist =  data.more_info
   return (
     <View style={{ marginBottom: 15 }}>
@@ -169,7 +178,7 @@ const ListStack = ({ title, data, navigation }) => {
           <Text
             style={{
               fontSize: 19,
-              color: themeBasedStyles.primaryText,
+              color: colors.primaryText,
               marginLeft: 15,
             }}>
             {title}

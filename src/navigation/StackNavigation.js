@@ -1,28 +1,27 @@
-import React from 'react';
-import Home from '../screens/Home';
+import React, { useLayoutEffect } from 'react';
 import {
   CardStyleInterpolators,
   createStackNavigator,
 } from '@react-navigation/stack';
+import Home from '../screens/Home';
 import DetailScreen from '../screens/DetailScreen';
 import Player from '../screens/Player';
+import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 
 const Stack = createStackNavigator();
 
-const StackNavigation = () => {
-  // const { themeBasedStyles } = useThemeProvider();
-
+const StackNavigation = ({ navigation, route }) => {
+  // const { colors } = useThemeProvider();
+  useLayoutEffect(() => {
+    const routeName = getFocusedRouteNameFromRoute(route);
+    if (routeName === 'DetailScreen' || routeName === 'Player') {
+      navigation.getParent('BottomTab').setOptions({tabBarStyle: {display: 'none'}});
+    } else {
+      navigation.getParent('BottomTab').setOptions({tabBarStyle: {display: 'flex'}});
+    }
+  }, [navigation, route]);
   return (
     // // <View style={{marginTop: StatusBar.currentHeight + 10, flex:1}}>
-    //   {/* <Entypo
-    //         name="menu"
-    //         size={24}
-    //         color="#fff"
-    //         style={{ marginLeft: 15 }}
-    //         onPress={() => {
-    //           navigation?.openDrawer();
-    //         }}
-    //         /> */}
     <Stack.Navigator initialRouteName="HomeTab" id="Stack">
       <Stack.Screen
         name="HomeTab"
@@ -40,7 +39,7 @@ const StackNavigation = () => {
         // }}
         options={{
           headerShown: false,
-          // cardStyleInterpolator: CardStyleInterpolators.forRevealFromBottomAndroid,
+          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
           gestureEnabled: true,
         }}
       />

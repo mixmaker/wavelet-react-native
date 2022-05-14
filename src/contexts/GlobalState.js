@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Appearance } from 'react-native';
 import { decode } from 'html-entities';
 import TrackPlayer, { Capability } from 'react-native-track-player';
+import { fetchSongDataFromId } from '../api';
 
 const GlobalState = ({ children }) => {
   const colorscheme = Appearance.getColorScheme() === 'dark' ? true : false;
@@ -11,7 +12,7 @@ const GlobalState = ({ children }) => {
   const [searchData, setSearchData] = useState();
   const [albumData, setAlbumData] = useState();
   const [currentSong, setCurrentSong] = useState();
-  const [currentSongId, setCurrentSongId] = useState();
+  const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
   const [lyrics, setLyrics] = useState();
   const [isPlaying, setIsPlaying] = useState('paused');
   const [playlist, setPlaylist] = useState([]);
@@ -46,6 +47,17 @@ const GlobalState = ({ children }) => {
     });
     await TrackPlayer.add(playlist);
   };
+
+  const playSongHandler = async (songId, createPlaylist) => {
+    const track = await fetchSongDataFromId(songId);
+    if (createPlaylist) {
+      setPlaylist(prevPlaylist => [...prevPlaylist, track]);
+    } else {
+      TrackPlayer.reset();
+      setPlaylist([track]);
+    }
+  };
+
   return (
     <GlobalContext.Provider
       value={{
@@ -64,13 +76,14 @@ const GlobalState = ({ children }) => {
         setIsPlaying,
         playlist,
         setPlaylist,
-        currentSongId,
-        setCurrentSongId,
+        currentTrackIndex,
+        setCurrentTrackIndex,
         setupPlayer,
         colorPalette,
         setColorPalette,
         lyrics,
         setLyrics,
+        playSongHandler,
       }}>
       {children}
     </GlobalContext.Provider>

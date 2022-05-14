@@ -5,7 +5,7 @@ export const getResponse = async (url, cancelTokenSource) => {
     const { data } = await axios.get(
       url,
       // `https://wavelet-backend.vercel.app/api?q=${encodeURIComponent(url)}`,
-      { cancelToken: cancelTokenSource.token },
+      { cancelToken: cancelTokenSource?.token },
     );
     return data;
   } catch (err) {

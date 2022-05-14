@@ -15,7 +15,7 @@ import useThemeProvider from '../contexts/useThemeProvider';
 
 const Search = () => {
   const { searchData, setSearchData } = useAppContext();
-  const { themeBasedStyles } = useThemeProvider();
+  const { colors } = useThemeProvider();
   const [searchStr, setSearchStr] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -34,8 +34,10 @@ const Search = () => {
   };
   useEffect(() => {
     if (searchStr !== '') {
-      setLoading(true);
-      fetchSearchResults();
+      setTimeout(() => {
+        setLoading(true);
+        fetchSearchResults();
+      }, 300);
     }
     if (searchStr === '') {
       setLoading(false);
@@ -56,12 +58,12 @@ const Search = () => {
             marginBottom: 15,
             marginTop: 25,
             borderWidth: 1,
-            borderColor: themeBasedStyles.secondaryText,
+            borderColor: colors.secondaryText,
             borderRadius: 8,
           }}>
           <ActivityIndicator
             size="small"
-            color={themeBasedStyles.primaryText}
+            color={colors.primaryText}
             style={{
               position: 'absolute',
               right: 10,
@@ -75,15 +77,17 @@ const Search = () => {
               paddingVertical: 5,
               paddingHorizontal: 10,
               fontSize: 18,
+              color: colors.primaryText
             }}
             placeholder="Search"
+            placeholderTextColor={colors.secondaryText}
           />
         </View>
         <View style={{ marginTop: 10 }}>
           {searchStr !== '' && (
-            <Text style={{ color: themeBasedStyles.secondaryText }}>
+            <Text style={{ color: colors.secondaryText }}>
               Search results for:{' '}
-              <Text style={{ color: themeBasedStyles.primaryText }}>
+              <Text style={{ color: colors.primaryText }}>
                 {searchStr}
               </Text>
             </Text>
@@ -92,7 +96,7 @@ const Search = () => {
             <Text
               style={{
                 fontSize: 15,
-                color: themeBasedStyles.secondaryText,
+                color: colors.secondaryText,
                 textAlign: 'center',
               }}>
               Search for something cool!

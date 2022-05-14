@@ -6,7 +6,7 @@ import { SharedElement } from 'react-native-shared-element';
 
 const ListHorizontal = ({ itemArray, navigation }) => {
   const { albumData, setAlbumData, decodeHtml } = useAppContext();
-  const { themeBasedStyles } = useThemeProvider();
+  const { colors } = useThemeProvider();
   return (
     <FlatList
       horizontal
@@ -55,7 +55,7 @@ const ListHorizontal = ({ itemArray, navigation }) => {
                     style={{
                       marginTop: 4,
                       textAlign: 'center',
-                      color: themeBasedStyles.secondaryText,
+                      color: colors.secondaryText,
                     }}>
                     {decodeHtml(item.title)}
                   </Text>

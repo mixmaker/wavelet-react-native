@@ -7,18 +7,16 @@ import { fetchSongDataFromId } from '../api';
 import axios from 'axios';
 
 const CardSmall = ({ song }) => {
-  const { setCurrentSongId, decodeHtml, playlist, setPlaylist } =
-    useAppContext();
-  const { themeBasedStyles } = useThemeProvider();
+  const {
+    setCurrentSongId,
+    decodeHtml,
+    playlist,
+    setPlaylist,
+    playSongHandler,
+  } = useAppContext();
+  const { colors } = useThemeProvider();
   const cancelTokenSource = axios.CancelToken.source();
 
-  const addToPlaylist = async songId => {
-    if (playlist.length < 1) {
-      return setCurrentSongId(songId);
-    }
-    const track = await fetchSongDataFromId(songId, cancelTokenSource);
-    setPlaylist(prevPlaylist => [...prevPlaylist, track]);
-  };
   return (
     <Pressable
       activeOpacity={0.5}
@@ -28,7 +26,7 @@ const CardSmall = ({ song }) => {
         alignItems: 'center',
       }}
       onPress={() => {
-        setCurrentSongId(song?.id);
+        playSongHandler(song.id);
       }}>
       {({ pressed }) => (
         <View
@@ -75,7 +73,7 @@ const CardSmall = ({ song }) => {
               <Text
                 numberOfLines={2}
                 style={{
-                  color: themeBasedStyles.primaryText,
+                  color: colors.primaryText,
                   fontSize: 16,
                 }}>
                 {decodeHtml(song?.title)}
@@ -83,7 +81,7 @@ const CardSmall = ({ song }) => {
               <Text
                 numberOfLines={2}
                 style={{
-                  color: themeBasedStyles.secondaryText,
+                  color: colors.secondaryText,
                 }}>
                 {song?.more_info.artistMap.primary_artists.length > 2
                   ? song?.more_info.artistMap.primary_artists
@@ -101,13 +99,13 @@ const CardSmall = ({ song }) => {
               backgroundColor: pressed ? '#444' : 'transparent',
             })}
             onPress={() => {
-              addToPlaylist(song?.id);
+              playSongHandler(song?.id, true);
             }}>
             {({ pressed }) => (
               <MaterialCommunityIcons
                 name="playlist-plus"
                 size={24}
-                color={themeBasedStyles.icon}
+                color={colors.icon}
                 style={{ transform: [{ scale: pressed ? 0.9 : 1 }] }}
               />
             )}
