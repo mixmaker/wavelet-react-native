@@ -1,5 +1,5 @@
 import { StatusBar, Appearance } from 'react-native';
-import React, { useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   NavigationContainer,
   DarkTheme,
@@ -12,12 +12,12 @@ import TrackPlayer, {
 } from 'react-native-track-player';
 import useAppContext from './src/contexts/useAppContext';
 import ImageColors from 'react-native-image-colors';
-import RNBootSplash from 'react-native-bootsplash';
 import { LogBox } from 'react-native';
 import AppDrawer from './src/navigation/AppNavigation';
 import { fetchLyricsfromId } from './src/api';
 import changeNavigationBarColor from 'react-native-navigation-bar-color';
 import useThemeProvider from './src/contexts/useThemeProvider';
+import AnimatedSplash from 'react-native-animated-splash-screen';
 
 LogBox.ignoreLogs([
   "[react-native-gesture-handler] Seems like you're using an old API with gesture components, check out new Gestures system!",
@@ -38,6 +38,7 @@ const App = () => {
     setLyrics,
   } = useAppContext();
   const { colors } = useThemeProvider();
+  const [isloaded, setIsloaded] = useState(false);
   const navigationRef = useRef(null);
   Appearance.addChangeListener(({ colorScheme }) => {
     colorScheme === 'dark' ? setIsDarkMode(true) : setIsDarkMode(false);
@@ -82,8 +83,7 @@ const App = () => {
   };
 
   useEffect(() => {
-    changeNavigationBarColor('transparent')
-    // changeNavigationBarColor('transparent')
+    changeNavigationBarColor('translucent'); //? transparent stopped working after splash screnn change
     setupPlayer();
     StatusBar.setTranslucent(true);
   }, []);
@@ -102,18 +102,30 @@ const App = () => {
   //     TrackPlayer.play();
   //   }
   // }, [playlist]);
-
   return (
-    <NavigationContainer
-      ref={navigationRef}
-      theme={isDarkMode ? DarkTheme : DefaultTheme}
-      onReady={() => RNBootSplash.hide({ fade: true })}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'} // !for some strange reason this didn't work on my physical device running api32
-        backgroundColor="transparent"
-      />
-      <AppDrawer />
-    </NavigationContainer>
+    <AnimatedSplash
+      showStatusBar={false}
+      translucent={true}
+      isLoaded={isloaded}
+      logoImage={require('./src/assets/logo.png')}
+      backgroundColor={colors.primarybg}
+      logoHeight={150}
+      logoWidth={150}>
+      <NavigationContainer
+        ref={navigationRef}
+        onReady={() =>
+          setTimeout(() => {
+            setIsloaded(true);
+          }, 500)
+        }
+        theme={isDarkMode ? DarkTheme : DefaultTheme}>
+        <StatusBar
+          barStyle={isDarkMode ? 'light-content' : 'dark-content'} // !for some strange reason this didn't work on my physical device running api32
+          backgroundColor="transparent"
+        />
+        <AppDrawer />
+      </NavigationContainer>
+    </AnimatedSplash>
   );
 };
 

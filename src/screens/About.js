@@ -39,7 +39,7 @@ const About = ({ navigation }) => {
         }}>
         <View>
           <Image
-            source={require('../assets/icon.png')}
+            source={require('../assets/logo.png')}
             style={{
               height: 100,
               width: 100,
@@ -134,7 +134,7 @@ const About = ({ navigation }) => {
       <Text
         style={{
           color: colors.secondaryText,
-          marginBottom: 20,
+          marginBottom: 30,
           textAlign: 'center',
           fontSize: 15,
         }}>
