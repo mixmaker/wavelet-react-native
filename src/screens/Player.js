@@ -5,7 +5,6 @@ import {
   ScrollView,
   StyleSheet,
   Pressable,
-  StatusBar,
   Platform,
   ActivityIndicator,
 } from 'react-native';
@@ -65,7 +64,7 @@ const Player = ({ route, navigation }) => {
       )}
       <View
         style={{
-          marginTop: StatusBar.currentHeight + 20,
+          marginTop: constants.statusbarHeight + 20,
           marginBottom: 30,
           marginHorizontal: 20,
         }}>

@@ -1,4 +1,4 @@
-import { View, Text, StatusBar, ScrollView } from 'react-native';
+import { View, Text, ScrollView } from 'react-native';
 import React, { useEffect } from 'react';
 import { homeDataURL } from '../api/base';
 import { getResponse } from '../api';
@@ -65,7 +65,7 @@ const Home = ({ navigation }) => {
 
   return (
     <ScrollView style={{ flexGrow: 1, backgroundColor: colors.primarybg }}>
-      <View style={{ marginTop: constants.statusbarHeight + 10 }}>
+      <View style={{ marginTop: constants.statusbarHeight + 20 }}>
         <Entypo
           name="menu"
           size={24}

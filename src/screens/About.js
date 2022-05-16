@@ -19,7 +19,7 @@ const About = ({ navigation }) => {
     <ScrollView
       contentContainerStyle={{ flexGrow: 1 }}
       style={{
-        paddingTop: constants.statusbarHeight + 10,
+        paddingTop: constants.statusbarHeight + 20,
         backgroundColor: colors.primarybg,
       }}>
       <Entypo

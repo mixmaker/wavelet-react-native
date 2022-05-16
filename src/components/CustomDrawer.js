@@ -11,7 +11,7 @@ const CustomDrawer = props => {
     <View
       style={{
         flex: 1,
-        backgroundColor: colors.primarybg,
+        backgroundColor: colors.drawer,
         paddingHorizontal: 10,
         paddingTop: constants.statusbarHeight + 30,
       }}>
@@ -31,7 +31,7 @@ const CustomDrawer = props => {
                 marginVertical: 5,
                 borderRadius: 8,
                 backgroundColor:
-                  state.index === i ? colors.secondarybg : colors.primarybg,
+                  state.index === i ? colors.slider : 'transparent',
               }}
               onPress={() => navigation.navigate(route.name)}
               key={route.key}>
@@ -65,10 +65,11 @@ const CustomDrawer = props => {
       </DrawerContentScrollView>
       <Text
         style={{
-          marginBottom: 20,
+          marginBottom: 30,
           textAlign: 'center',
           color: colors.secondaryText,
           fontSize: 15,
+          marginHorizontal: 15,
         }}>
         Made with ♥ by Shoumik Kumbhakar
       </Text>

@@ -64,7 +64,7 @@ const MiniPlayer = () => {
                 }}>
                 <Image
                   source={{
-                    uri: playlist[currentTrackIndex].artwork.replace(
+                    uri: playlist[currentTrackIndex]?.artwork?.replace(
                       '150x150',
                       '500x500',
                     ),
@@ -86,13 +86,13 @@ const MiniPlayer = () => {
                       fontWeight: '700',
                       color: colors.primaryText,
                     }}>
-                    {decodeHtml(playlist[currentTrackIndex].title)}
+                    {decodeHtml(playlist[currentTrackIndex]?.title)}
                   </Text>
                   <Text
                     style={{
                       color: colors.secondaryText,
                     }}>
-                    {playlist[currentTrackIndex].artist.replace(', ', ' • ')}
+                    {playlist[currentTrackIndex]?.artist?.replace(', ', ' • ')}
                   </Text>
                 </View>
               </View>

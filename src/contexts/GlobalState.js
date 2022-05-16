@@ -48,13 +48,17 @@ const GlobalState = ({ children }) => {
     await TrackPlayer.add(playlist);
   };
 
-  const playSongHandler = async (songId, createPlaylist) => {
+  const playSongHandler = async (songId, addtoPlaylist) => {
     const track = await fetchSongDataFromId(songId);
-    if (createPlaylist) {
+    console.log(track)
+    if (addtoPlaylist) {
       setPlaylist(prevPlaylist => [...prevPlaylist, track]);
+      TrackPlayer.play()
     } else {
+      setPlaylist([]);
       TrackPlayer.reset();
       setPlaylist([track]);
+      TrackPlayer.play()
     }
   };
 

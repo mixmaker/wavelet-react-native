@@ -23,7 +23,8 @@ import TrackPlayer from 'react-native-track-player';
 
 const DetailScreen = ({ route, navigation }) => {
   const { albumId, type, sharedId } = route.params;
-  const { albumData, setAlbumData, isDarkMode, setPlaylist } = useAppContext();
+  const { albumData, setAlbumData, isDarkMode, setPlaylist, playSongHandler } =
+    useAppContext();
   const { colors, constants } = useThemeProvider();
 
   const cancelTokenSource = axios.CancelToken.source();
@@ -137,10 +138,10 @@ const DetailScreen = ({ route, navigation }) => {
               borderRadius: 30,
             }}
             onPress={() => {
-              setPlaylist(albumData.list.map(item => trackHelper(item)));
-              TrackPlayer.play();
-            }} //! app crash
-          >
+              // setPlaylist(albumData.list.map(item => trackHelper(item)));
+              // TrackPlayer.play();
+              playSongHandler(albumData?.list);
+            }}>
             <Ionicons name="play" size={28} />
           </Pressable>
           {albumData?.list?.map(item => (

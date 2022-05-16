@@ -24,7 +24,8 @@ const Theme = ({ children }) => {
         primaryText: '#f0f0f0',
         secondaryText: '#8b8b8b',
         icon: '#e0e0e0',
-        slider: 'rgba(255,255,255,0.15)',
+        drawer: '#141414',
+        slider: '#9c97ff54',
       }
     : {
         primarybg: '#fff',
@@ -32,7 +33,8 @@ const Theme = ({ children }) => {
         primaryText: '#000',
         secondaryText: '#696969',
         icon: '#000',
-        slider: '#bebebe',
+        drawer: '#E1E9EE',
+        slider: '#c6c4fc',
       };
 
   return (
