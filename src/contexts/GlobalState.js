@@ -17,7 +17,7 @@ const GlobalState = ({ children }) => {
   const [isPlaying, setIsPlaying] = useState('paused');
   const [playlist, setPlaylist] = useState([]);
   const [colorPalette, setColorPalette] = useState();
-
+  const [audioQuality, setAudioQuality] = useState(160);
   //decode html texts
   function decodeHtml(string) {
     return decode(string);
@@ -50,15 +50,16 @@ const GlobalState = ({ children }) => {
 
   const playSongHandler = async (songId, addtoPlaylist) => {
     const track = await fetchSongDataFromId(songId);
-    console.log(track)
+    track.url = track.url.replace('_96.mp4',`_${audioQuality}.mp4`)
+    // console.log(track)
     if (addtoPlaylist) {
       setPlaylist(prevPlaylist => [...prevPlaylist, track]);
-      TrackPlayer.play()
+      TrackPlayer.play();
     } else {
       setPlaylist([]);
       TrackPlayer.reset();
       setPlaylist([track]);
-      TrackPlayer.play()
+      TrackPlayer.play();
     }
   };
 
@@ -88,6 +89,8 @@ const GlobalState = ({ children }) => {
         lyrics,
         setLyrics,
         playSongHandler,
+        audioQuality,
+        setAudioQuality,
       }}>
       {children}
     </GlobalContext.Provider>

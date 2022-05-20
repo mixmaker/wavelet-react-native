@@ -32,17 +32,12 @@ const Tab = createBottomTabNavigator();
 
 const TabNavigation = () => {
   return (
-    <Tab.Navigator tabBar={props => <CustomTabBar {...props} />} id="BottomTab">
-      <Tab.Screen
-        name="Home"
-        component={StackNavigation}
-        options={{ headerShown: false }}
-      />
-      <Tab.Screen
-        name="Search"
-        component={Search}
-        options={{ headerShown: false }}
-      />
+    <Tab.Navigator
+      screenOptions={{ headerShown: false }}
+      tabBar={props => <CustomTabBar {...props} />}
+      id="BottomTab">
+      <Tab.Screen name="Home" component={StackNavigation} />
+      <Tab.Screen name="Search" component={Search} />
       <Tab.Screen name="Library" component={Library} />
     </Tab.Navigator>
   );

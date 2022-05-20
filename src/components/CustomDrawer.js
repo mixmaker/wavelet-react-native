@@ -1,4 +1,4 @@
-import { View, Text, Pressable } from 'react-native';
+import { View, Text, Pressable, Image } from 'react-native';
 import React from 'react';
 import { DrawerContentScrollView } from '@react-navigation/drawer';
 import useThemeProvider from '../contexts/useThemeProvider';
@@ -11,12 +11,36 @@ const CustomDrawer = props => {
     <View
       style={{
         flex: 1,
+        position: 'relative',
         backgroundColor: colors.drawer,
         paddingHorizontal: 10,
         paddingTop: constants.statusbarHeight + 30,
       }}>
-      <Text
-        style={{ fontSize: 42, marginLeft: 12, color: colors.secondaryText }}>
+      <Image
+        source={{
+          uri: 'https://images.pexels.com/photos/131683/pexels-photo-131683.jpeg?auto=compress&cs=tinysrgb&w=280&h=165&dpr=2',
+        }}
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          height: 165,
+          resizeMode: 'cover',
+        }}
+      />
+      <View
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          height: 165,
+          opacity: 0.5,
+          backgroundColor: colors.primarybg,
+        }}
+      />
+      <Text style={{ fontSize: 42, marginLeft: 12, color: colors.primaryText }}>
         Wavelet
       </Text>
       <DrawerContentScrollView

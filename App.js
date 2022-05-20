@@ -96,12 +96,12 @@ const App = () => {
       getColorPalette(playlist[currentTrackIndex]?.artwork);
   }, [currentTrackIndex, playlist]);
 
-  // useEffect(() => {
-  //   TrackPlayer.add([...playlist]);
-  //   if (isPlaying === 'paused') {
-  //     TrackPlayer.play();
-  //   }
-  // }, [playlist]);
+  useEffect(() => {
+    TrackPlayer.add([...playlist]);
+    if (isPlaying === 'paused') {
+      TrackPlayer.play();
+    }
+  }, [playlist]);
   return (
     <AnimatedSplash
       showStatusBar={false}

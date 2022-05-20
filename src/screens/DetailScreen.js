@@ -5,9 +5,11 @@ import {
   ActivityIndicator,
   ScrollView,
   Pressable,
+  Image,
   StatusBar,
+  Animated,
 } from 'react-native';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import useAppContext from '../contexts/useAppContext';
 import CardSmall from '../components/CardSmall';
@@ -20,9 +22,10 @@ import useThemeProvider from '../contexts/useThemeProvider';
 import { SharedElement } from 'react-native-shared-element';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import TrackPlayer from 'react-native-track-player';
+import ImageColors from 'react-native-image-colors';
 
 const DetailScreen = ({ route, navigation }) => {
-  const { albumId, type, sharedId } = route.params;
+  const { albumId, type, name, sharedId } = route.params;
   const { albumData, setAlbumData, isDarkMode, setPlaylist, playSongHandler } =
     useAppContext();
   const { colors, constants } = useThemeProvider();
@@ -54,28 +57,69 @@ const DetailScreen = ({ route, navigation }) => {
       image: albumData.image.replace('150x150', '500x500'),
     });
   };
-
+  const getAlbumColors = async () => {
+    const palette = await ImageColors.getColors(albumData.image);
+    setAlbumColorPalette(palette);
+  };
   useEffect(() => {
     fetchAlbumData();
+    albumData?.image && getAlbumColors();
     return () => {
       cancelTokenSource.cancel();
       setAlbumData(undefined);
+      setAlbumColorPalette(undefined);
     };
   }, [albumId]);
+  const [albumColorPalette, setAlbumColorPalette] = useState();
+  const HEADER_MAX_HEIGHT = constants.fullWidth;
+  const HEADER_MIN_HEIGHT = 80;
+  const HEADER_SCROLL_DISTANCE = HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT;
+  const scrollY= useState(new Animated.Value(0))[0];
 
+  const headerHeight = scrollY.interpolate({
+    inputRange: [0, HEADER_SCROLL_DISTANCE],
+    outputRange: [HEADER_MAX_HEIGHT, HEADER_MIN_HEIGHT],
+    extrapolate: 'clamp',
+  });
+  const imageOpacity = scrollY.interpolate({
+    inputRange: [0, HEADER_SCROLL_DISTANCE / 2, HEADER_SCROLL_DISTANCE],
+    outputRange: [1, 1, 0],
+    extrapolate: 'clamp',
+  });
+  const imageTranslate = scrollY.interpolate({
+    inputRange: [0, HEADER_SCROLL_DISTANCE],
+    outputRange: [0, -50],
+    extrapolate: 'clamp',
+  });
+  const textTranslate = scrollY.interpolate({
+    inputRange: [0, HEADER_SCROLL_DISTANCE],
+    outputRange: [0, -15],
+    extrapolate: 'clamp',
+  });
+  const bgColor = scrollY.interpolate({
+    inputRange: [0, HEADER_SCROLL_DISTANCE],
+    outputRange: ['transparent', albumColorPalette?.darkVibrant || '#ce6c6c'],
+    extrapolate: 'clamp',
+  });
   return (
     <View>
       <ScrollView
+        scrollEventThrottle={16}
+        onScroll={Animated.event(
+          [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+          { useNativeDriver: false },
+        )}
         style={{
           flexGrow: 1,
           position: 'relative',
         }}>
-        <LinearGradient
+        {/* <LinearGradient
           start={{ x: 0, y: 0 }}
-          end={{ x: 0, y: 0.8 }}
+          end={{ x: 0, y: 0.99 }}
           colors={[
             'transparent',
-            isDarkMode ? 'rgba(0,0,0,0.7)' : 'rgba(255,255,255,0.7)',
+            // isDarkMode ? 'rgba(0,0,0,0.7)' : 'rgba(255,255,255,0.7)',
+            albumColorPalette?.darkVibrant || colors.primarybg,
             colors.primarybg,
           ]}
           style={{
@@ -86,10 +130,11 @@ const DetailScreen = ({ route, navigation }) => {
             width: constants.fullWidth,
             zIndex: -1,
           }}
-        />
+        /> */}
         <View
           style={{
             marginTop: constants.fullWidth,
+            paddingVertical: 20,
             backgroundColor: colors.primarybg,
             paddingHorizontal: 15,
           }}>
@@ -132,17 +177,19 @@ const DetailScreen = ({ route, navigation }) => {
             style={{
               position: 'absolute',
               right: 30,
-              top: -50,
+              top: -30,
               backgroundColor: colors.secondarybg,
               padding: 10,
               borderRadius: 30,
+              zIndex:15
             }}
             onPress={() => {
               // setPlaylist(albumData.list.map(item => trackHelper(item)));
               // TrackPlayer.play();
-              playSongHandler(albumData?.list);
+              // console.log('first')
+              // playSongHandler(albumData?.list, true);
             }}>
-            <Ionicons name="play" size={28} />
+            <Ionicons name="play" size={28} color={colors.primaryText} />
           </Pressable>
           {albumData?.list?.map(item => (
             <CardSmall song={item} key={item.id} />
@@ -150,66 +197,69 @@ const DetailScreen = ({ route, navigation }) => {
         </View>
       </ScrollView>
       {/* <SharedElement id={sharedId}> */}
-      <ImageBackground
+      <Animated.Image
         source={{ uri: albumData?.image }}
-        style={{
-          position: 'absolute',
-          top: -10,
-          left: 0,
-          height: constants.fullWidth,
-          width: constants.fullWidth,
-          zIndex: -1,
-          borderRadius: 20,
-        }}
-        blurRadius={!albumData?.list ? 3 : 0}
+        transition
+        style={[
+          {
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            height: HEADER_MAX_HEIGHT,
+            width: constants.fullWidth,
+            zIndex: -1,
+            borderBottomRightRadius: 20,
+            borderBottomLeftRadius: 20,
+          },
+          {
+            opacity: imageOpacity,
+            transform: [{ translateY: imageTranslate }],
+          },
+        ]}
+        blurRadius={albumData?.list? 0: 10}
       />
-      <View
-        style={{
-          position: 'absolute',
-          top: StatusBar.currentHeight + 10,
-          left: 15,
-          right: 15,
-          zIndex: 10,
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        }}>
-        <Ionicons
-          name="arrow-back"
-          size={24}
-          color={colors.primaryText}
-          style={{
-            padding: 4,
-            backgroundColor: colors.primarybg,
-            borderRadius: 16,
-            elevation: 10,
-          }}
-          onPress={() => navigation.goBack()}
-        />
+      <Animated.View
+        style={[
+          {
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            overflow: 'hidden',
+            paddingTop: constants.statusbarHeight,
+          },
+          { height: headerHeight, backgroundColor: bgColor },
+        ]}>
         <View
           style={{
+            height: HEADER_MIN_HEIGHT,
             flexDirection: 'row',
             alignItems: 'center',
-            paddingVertical: 4,
-            paddingHorizontal: 8,
-            borderRadius: 16,
-            backgroundColor: colors.primarybg,
-            elevation: 10,
+            justifyContent: 'center',
+            paddingBottom: 35,
           }}>
-          <Ionicons
-            name="heart-outline"
+          <Animated.Text
+            style={{
+              color: '#fff',
+              fontSize: 18,
+              transform: [{ translateY: textTranslate }],
+            }}>
+            {name}
+          </Animated.Text>
+          {/* <Ionicons
+            name="arrow-back"
             size={24}
             color={colors.primaryText}
-            style={{ marginRight: 10 }}
-          />
-          {/* <Ionicons name='heart' size={24} /> */}
-          <Entypo
-            name="dots-three-vertical"
-            size={22}
-            color={colors.primaryText}
-          />
+            style={{
+              padding: 4,
+              backgroundColor: colors.primarybg,
+              borderRadius: 16,
+              elevation: 10,
+            }}
+            onPress={() => navigation.goBack()}
+          /> */}
         </View>
-      </View>
+      </Animated.View>
       {/* </SharedElement> */}
     </View>
   );
@@ -237,4 +287,29 @@ contentContainerStyle={{
   paddingHorizontal: 20,
 }}
 />*/
+{
+  /* <View
+style={{
+  flexDirection: 'row',
+  alignItems: 'center',
+  paddingVertical: 4,
+  paddingHorizontal: 8,
+  borderRadius: 16,
+  backgroundColor: colors.primarybg,
+  elevation: 10,
+}}>
+<Ionicons
+  name="heart-outline"
+  size={24}
+  color={colors.primaryText}
+  style={{ marginRight: 10 }}
+/>
+{/* <Ionicons name='heart' size={24} /> 
+<Entypo
+  name="dots-three-vertical"
+  size={22}
+  color={colors.primaryText}
+/> 
+</View> */
+}
 export default DetailScreen;

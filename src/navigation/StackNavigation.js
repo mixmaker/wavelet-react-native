@@ -39,7 +39,7 @@ const StackNavigation = ({ navigation, route }) => {
         // }}
         options={{
           headerShown: false,
-          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+          // cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
           gestureEnabled: true,
         }}
       />
@@ -48,7 +48,7 @@ const StackNavigation = ({ navigation, route }) => {
         component={Player}
         options={{
           headerShown: false,
-          cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
+          cardStyleInterpolator: CardStyleInterpolators.forRevealFromBottomAndroid,
           gestureEnabled: true,
           gestureDirection: 'vertical',
         }}

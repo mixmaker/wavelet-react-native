@@ -9,7 +9,7 @@ const Library = () => {
   const { colors, constants } = useThemeProvider();
 
   return (
-    <View style={{ marginTop: 15, paddingHorizontal: 15 }}>
+    <View style={{ marginTop: constants.statusbarHeight + 25 , paddingHorizontal: 15 }}>
       <FlatList
         data={playlist}
         ListEmptyComponent={

@@ -1579,15 +1579,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native-community/blur@npm:^3.6.0":
-  version: 3.6.0
-  resolution: "@react-native-community/blur@npm:3.6.0"
-  dependencies:
-    prop-types: ^15.5.10
-  checksum: 2a6b3ecf08c0d1eae760a4ad69599ed34842d0dbf8fad0955a3e878844c2dc066c55045ec382d52df9b23c89e82274565ee662084039bad29f41562eab89ee38
-  languageName: node
-  linkType: hard
-
 "@react-native-community/cli-debugger-ui@npm:^7.0.3":
   version: 7.0.3
   resolution: "@react-native-community/cli-debugger-ui@npm:7.0.3"
@@ -8181,7 +8172,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prop-types@npm:*, prop-types@npm:^15.5.10, prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
+"prop-types@npm:*, prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
   version: 15.8.1
   resolution: "prop-types@npm:15.8.1"
   dependencies:
@@ -10234,7 +10225,6 @@ __metadata:
   dependencies:
     "@babel/core": ^7.12.9
     "@babel/runtime": ^7.12.5
-    "@react-native-community/blur": ^3.6.0
     "@react-native-community/eslint-config": ^2.0.0
     "@react-native-masked-view/masked-view": ^0.2.6
     "@react-navigation/bottom-tabs": ^6.3.1

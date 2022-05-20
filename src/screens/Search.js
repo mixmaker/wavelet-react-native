@@ -1,10 +1,4 @@
-import {
-  View,
-  Text,
-  TextInput,
-  ActivityIndicator,
-  StatusBar,
-} from 'react-native';
+import { View, Text, TextInput, ActivityIndicator } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { getResponse, searchResultsURL } from '../api';
 import useAppContext from '../contexts/useAppContext';
@@ -15,7 +9,7 @@ import useThemeProvider from '../contexts/useThemeProvider';
 
 const Search = () => {
   const { searchData, setSearchData } = useAppContext();
-  const { colors } = useThemeProvider();
+  const { colors, constants } = useThemeProvider();
   const [searchStr, setSearchStr] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -49,7 +43,7 @@ const Search = () => {
   }, [searchStr]);
 
   return (
-    <ScrollView style={{ flex: 1, marginTop: StatusBar.currentHeight + 10 }}>
+    <ScrollView style={{ flex: 1, marginTop: constants.statusbarHeight + 10 }}>
       <View style={{ flex: 1, paddingHorizontal: 15 }}>
         <View
           style={{
@@ -77,7 +71,7 @@ const Search = () => {
               paddingVertical: 5,
               paddingHorizontal: 10,
               fontSize: 18,
-              color: colors.primaryText
+              color: colors.primaryText,
             }}
             placeholder="Search"
             placeholderTextColor={colors.secondaryText}
@@ -87,9 +81,7 @@ const Search = () => {
           {searchStr !== '' && (
             <Text style={{ color: colors.secondaryText }}>
               Search results for:{' '}
-              <Text style={{ color: colors.primaryText }}>
-                {searchStr}
-              </Text>
+              <Text style={{ color: colors.primaryText }}>{searchStr}</Text>
             </Text>
           )}
           {searchStr === '' && (

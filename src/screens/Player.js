@@ -282,27 +282,22 @@ const Player = ({ route, navigation }) => {
         </Text>
         {lyrics && (
           <HTMLView
-            // value={
-            //   lyrics.lyrics
-            //     ? lyrics.lyrics
-            //     : lyrics.error
-            //     ? lyrics.error.msg
-            //     : '<p>Lyrics not available</p>'
-            // }
-            value="<p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum nec maximus nulla. Suspendisse potenti. Integer sed enim placerat, fermentum neque sed, euismod augue. Vestibulum sto. Nam auctor justo mi, quis auctor mi molestie eu.Donec laoreet massa ac orci rutrum, in maximus arcu scelerisque. Donec dui  blandit. Morbi orci mauris, accumsan et venenatis at, suscipit sed orci.<br>Suspendisse potenti. Aenean vitae lobortis lectus. Proin non arcu quis metus tempor laoreet. Sed sed leo laoreet, tristique justo sit amet, convallis est. Ut viverra metus non efficitur condimentum. Cras id r volutpat. Vestibulum efficitur iaculis euismod.
-            </p>"
-            stylesheet={styles}
+            addLineBreaks={false}
+            style={{ height: 400 }}
+            value={
+              lyrics.lyrics
+                ? lyrics.lyrics
+                : lyrics.error
+                ? lyrics.error.msg
+                : '<p>Lyrics not available</p>'
+            }
+            // value="<p>
+            // Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum nec maximus nulla. Suspendisse potenti. Integer sed enim placerat, fermentum neque sed, euismod augue. Vestibulum sto. Nam auctor justo mi, quis auctor mi molestie eu.Donec laoreet massa ac orci rutrum, in maximus arcu scelerisque. Donec dui  blandit. Morbi orci mauris, accumsan et venenatis at, suscipit sed orci.<br>Suspendisse potenti. Aenean vitae lobortis lectus. Proin non arcu quis metus tempor laoreet. Sed sed leo laoreet, tristique justo sit amet, convallis est. Ut viverra metus non efficitur condimentum. Cras id r volutpat. Vestibulum efficitur iaculis euismod.
+            // </p>"
           />
         )}
       </View>
     </ScrollView>
   );
 };
-const styles = StyleSheet.create({
-  a: {
-    fontWeight: '300',
-    color: '#FF3366', // make links coloured pink
-  },
-});
 export default Player;
