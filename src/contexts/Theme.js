@@ -10,6 +10,10 @@ const Theme = ({ children }) => {
     fullWidth: Dimensions.get('window').width,
     fullHeight: Dimensions.get('window').height,
     statusbarHeight: StatusBar.currentHeight,
+    navbarHeight:
+      Dimensions.get('screen').height -
+      Dimensions.get('window').height -
+      StatusBar.currentHeight,
   };
 
   const androidSafeArea = {
@@ -38,8 +42,7 @@ const Theme = ({ children }) => {
       };
 
   return (
-    <ThemeProvider.Provider
-      value={{ colors, constants, androidSafeArea }}>
+    <ThemeProvider.Provider value={{ colors, constants, androidSafeArea }}>
       {children}
     </ThemeProvider.Provider>
   );

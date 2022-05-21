@@ -21,7 +21,6 @@ const StackNavigation = ({ navigation, route }) => {
     }
   }, [navigation, route]);
   return (
-    // // <View style={{marginTop: StatusBar.currentHeight + 10, flex:1}}>
     <Stack.Navigator initialRouteName="HomeTab" id="Stack">
       <Stack.Screen
         name="HomeTab"
@@ -54,7 +53,6 @@ const StackNavigation = ({ navigation, route }) => {
         }}
       />
     </Stack.Navigator>
-    // </View>
   );
 };
 

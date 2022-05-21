@@ -29,14 +29,14 @@ const CustomTabBar = props => {
   return (
     <View
       style={[
-        { backgroundColor: colors.secondarybg, paddingBottom:15 },
+        { backgroundColor: colors.secondarybg, paddingBottom: constants.navbarHeight },
         focusedOptions.tabBarStyle,
       ]}>
       <View
         style={{
           position: 'absolute',
           // left: 0,
-          bottom: 22.5,
+          bottom: constants.navbarHeight +8,
           marginHorizontal: PADDING,
         }}>
         <Animated.View

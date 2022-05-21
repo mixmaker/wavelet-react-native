@@ -6,7 +6,6 @@ import {
   ScrollView,
   Pressable,
   Image,
-  StatusBar,
   Animated,
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
@@ -74,7 +73,7 @@ const DetailScreen = ({ route, navigation }) => {
   const HEADER_MAX_HEIGHT = constants.fullWidth;
   const HEADER_MIN_HEIGHT = 80;
   const HEADER_SCROLL_DISTANCE = HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT;
-  const scrollY= useState(new Animated.Value(0))[0];
+  const scrollY = useState(new Animated.Value(0))[0];
 
   const headerHeight = scrollY.interpolate({
     inputRange: [0, HEADER_SCROLL_DISTANCE],
@@ -112,6 +111,7 @@ const DetailScreen = ({ route, navigation }) => {
         style={{
           flexGrow: 1,
           position: 'relative',
+          // paddingBottom: constants.navbarHeight
         }}>
         {/* <LinearGradient
           start={{ x: 0, y: 0 }}
@@ -181,7 +181,7 @@ const DetailScreen = ({ route, navigation }) => {
               backgroundColor: colors.secondarybg,
               padding: 10,
               borderRadius: 30,
-              zIndex:15
+              zIndex: 15,
             }}
             onPress={() => {
               // setPlaylist(albumData.list.map(item => trackHelper(item)));
@@ -216,7 +216,7 @@ const DetailScreen = ({ route, navigation }) => {
             transform: [{ translateY: imageTranslate }],
           },
         ]}
-        blurRadius={albumData?.list? 0: 10}
+        blurRadius={albumData?.list ? 0 : 10}
       />
       <Animated.View
         style={[
@@ -265,51 +265,4 @@ const DetailScreen = ({ route, navigation }) => {
   );
 };
 
-// DetailScreen.sharedElements = ({route}) => {
-//   const {sharedId} = route.params;
-//   return [
-//     {
-//       id: sharedId,
-//       animation: 'move',
-//       resize: 'clip',
-//     },
-//   ];
-// };
-
-/*<FlatList
-style={{ zIndex: 10, paddingBottom:30 }}
-data={albumData?.list}
-keyExtractor={item => `${item.id}detail`}
-renderItem={({ item }) => <CardSmall song={item} />}
-contentContainerStyle={{
-  marginTop: constants.fullWidth - 30,
-  backgroundColor: colors.primarybg,
-  paddingHorizontal: 20,
-}}
-/>*/
-{
-  /* <View
-style={{
-  flexDirection: 'row',
-  alignItems: 'center',
-  paddingVertical: 4,
-  paddingHorizontal: 8,
-  borderRadius: 16,
-  backgroundColor: colors.primarybg,
-  elevation: 10,
-}}>
-<Ionicons
-  name="heart-outline"
-  size={24}
-  color={colors.primaryText}
-  style={{ marginRight: 10 }}
-/>
-{/* <Ionicons name='heart' size={24} /> 
-<Entypo
-  name="dots-three-vertical"
-  size={22}
-  color={colors.primaryText}
-/> 
-</View> */
-}
 export default DetailScreen;

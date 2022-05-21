@@ -1,4 +1,4 @@
-import { StatusBar, Appearance } from 'react-native';
+import { View, Appearance, Dimensions } from 'react-native';
 import React, { useState, useEffect, useRef } from 'react';
 import {
   NavigationContainer,
@@ -15,9 +15,9 @@ import ImageColors from 'react-native-image-colors';
 import { LogBox } from 'react-native';
 import AppDrawer from './src/navigation/AppNavigation';
 import { fetchLyricsfromId } from './src/api';
-import changeNavigationBarColor from 'react-native-navigation-bar-color';
 import useThemeProvider from './src/contexts/useThemeProvider';
 import AnimatedSplash from 'react-native-animated-splash-screen';
+import { SystemBars } from 'react-native-bars';
 
 LogBox.ignoreLogs([
   "[react-native-gesture-handler] Seems like you're using an old API with gesture components, check out new Gestures system!",
@@ -37,7 +37,7 @@ const App = () => {
     setColorPalette,
     setLyrics,
   } = useAppContext();
-  const { colors } = useThemeProvider();
+  const { colors, constants } = useThemeProvider();
   const [isloaded, setIsloaded] = useState(false);
   const navigationRef = useRef(null);
   Appearance.addChangeListener(({ colorScheme }) => {
@@ -83,9 +83,10 @@ const App = () => {
   };
 
   useEffect(() => {
-    changeNavigationBarColor('translucent'); //? transparent stopped working after splash screnn change
     setupPlayer();
-    StatusBar.setTranslucent(true);
+    console.log(
+      Dimensions.get('screen').height - Dimensions.get('window').height,
+    );
   }, []);
   useEffect(() => {
     fetchLyrics();
@@ -119,9 +120,9 @@ const App = () => {
           }, 500)
         }
         theme={isDarkMode ? DarkTheme : DefaultTheme}>
-        <StatusBar
-          barStyle={isDarkMode ? 'light-content' : 'dark-content'} // !for some strange reason this didn't work on my physical device running api32
-          backgroundColor="transparent"
+        <SystemBars
+          animated={true}
+          barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         />
         <AppDrawer />
       </NavigationContainer>

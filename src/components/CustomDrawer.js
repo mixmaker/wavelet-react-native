@@ -3,6 +3,8 @@ import React from 'react';
 import { DrawerContentScrollView } from '@react-navigation/drawer';
 import useThemeProvider from '../contexts/useThemeProvider';
 import Feather from 'react-native-vector-icons/Feather';
+import {version} from '../../package.json'
+
 const CustomDrawer = props => {
   const { state, navigation } = props;
   const { colors, constants } = useThemeProvider();
@@ -25,7 +27,7 @@ const CustomDrawer = props => {
           top: 0,
           left: 0,
           right: 0,
-          height: 165,
+          height: 175,
           resizeMode: 'cover',
         }}
       />
@@ -35,7 +37,7 @@ const CustomDrawer = props => {
           top: 0,
           left: 0,
           right: 0,
-          height: 165,
+          height: 175,
           opacity: 0.5,
           backgroundColor: colors.primarybg,
         }}
@@ -43,8 +45,14 @@ const CustomDrawer = props => {
       <Text style={{ fontSize: 42, marginLeft: 12, color: colors.primaryText }}>
         Wavelet
       </Text>
+      <Text style={{ fontSize: 14, marginLeft: 15, color: colors.secondaryText }}>
+        {version}
+      </Text>
       <DrawerContentScrollView
-        contentContainerStyle={{ justifyContent: 'space-between' }}>
+        contentContainerStyle={{
+          marginTop: 10,
+          justifyContent: 'space-between',
+        }}>
         <View style={{}}>
           {state.routes?.map((route, i) => (
             <Pressable
