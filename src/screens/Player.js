@@ -3,12 +3,11 @@ import {
   Text,
   Image,
   ScrollView,
-  StyleSheet,
   Pressable,
   Platform,
   ActivityIndicator,
 } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import useAppContext from '../contexts/useAppContext';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';

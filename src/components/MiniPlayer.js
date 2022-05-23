@@ -7,13 +7,11 @@ import {
 } from 'react-native';
 import React, { useEffect } from 'react';
 import TrackPlayer, { useProgress } from 'react-native-track-player';
-import LinearGradient from 'react-native-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import useAppContext from '../contexts/useAppContext';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Scrubber from 'react-native-scrubber';
-import { BlurView } from '@react-native-community/blur';
 import useThemeProvider from '../contexts/useThemeProvider';
 
 const MiniPlayer = () => {
@@ -33,7 +31,6 @@ const MiniPlayer = () => {
   const progress = useProgress();
 
   return (
-    // <BlurView tint='dark' overlayColor=''>
     <Pressable onPress={() => navigate2player.navigate('Player')}>
       {({ pressed }) => (
         <View style={{ paddingHorizontal: 5, opacity: pressed ? 0.7 : 1 }}>
@@ -138,7 +135,6 @@ const MiniPlayer = () => {
         </View>
       )}
     </Pressable>
-    // </BlurView>
   );
 };
 

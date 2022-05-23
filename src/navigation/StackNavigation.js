@@ -2,6 +2,7 @@ import React, { useLayoutEffect } from 'react';
 import {
   CardStyleInterpolators,
   createStackNavigator,
+  TransitionSpecs,
 } from '@react-navigation/stack';
 import Home from '../screens/Home';
 import DetailScreen from '../screens/DetailScreen';
@@ -11,13 +12,16 @@ import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 const Stack = createStackNavigator();
 
 const StackNavigation = ({ navigation, route }) => {
-  // const { colors } = useThemeProvider();
   useLayoutEffect(() => {
     const routeName = getFocusedRouteNameFromRoute(route);
     if (routeName === 'DetailScreen' || routeName === 'Player') {
-      navigation.getParent('BottomTab').setOptions({tabBarStyle: {display: 'none'}});
+      navigation
+        .getParent('BottomTab')
+        .setOptions({ tabBarStyle: { display: 'none' } });
     } else {
-      navigation.getParent('BottomTab').setOptions({tabBarStyle: {display: 'flex'}});
+      navigation
+        .getParent('BottomTab')
+        .setOptions({ tabBarStyle: { display: 'flex' } });
     }
   }, [navigation, route]);
   return (
@@ -32,10 +36,6 @@ const StackNavigation = ({ navigation, route }) => {
       <Stack.Screen
         name="DetailScreen"
         component={DetailScreen}
-        // sharedElements={route => {
-        //   const {sharedId} = route.params;
-        //   return sharedId;
-        // }}
         options={{
           headerShown: false,
           // cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,

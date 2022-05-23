@@ -1,4 +1,4 @@
-import { View, Appearance, Dimensions } from 'react-native';
+import { Appearance } from 'react-native';
 import React, { useState, useEffect, useRef } from 'react';
 import {
   NavigationContainer,
@@ -49,7 +49,7 @@ const App = () => {
     async event => {
       if (event.type === Event.PlaybackState) {
         if (event.state === State.Playing) {
-          setIsPlaying('playing');
+          return setIsPlaying('playing');
         }
         if (
           event.state === State.Buffering ||
@@ -84,9 +84,6 @@ const App = () => {
 
   useEffect(() => {
     setupPlayer();
-    console.log(
-      Dimensions.get('screen').height - Dimensions.get('window').height,
-    );
   }, []);
   useEffect(() => {
     fetchLyrics();

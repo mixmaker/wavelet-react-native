@@ -2,7 +2,6 @@ import { View, Text, Image, Pressable, FlatList } from 'react-native';
 import React from 'react';
 import useAppContext from '../contexts/useAppContext';
 import useThemeProvider from '../contexts/useThemeProvider';
-import { SharedElement } from 'react-native-shared-element';
 
 const ListHorizontal = ({ itemArray, navigation }) => {
   const { albumData, setAlbumData, decodeHtml } = useAppContext();
@@ -15,8 +14,7 @@ const ListHorizontal = ({ itemArray, navigation }) => {
       showsHorizontalScrollIndicator={false}
       keyExtractor={item => `${item.title}${item.id}`}
       renderItem={({ item }) => {
-        const isArtist =
-          item.more_info?.featured_station_type === 'artist' ? true : false;
+        const isArtist = item.more_info?.featured_station_type === 'artist';
         return (
           <Pressable
             onPress={() => {
@@ -28,7 +26,6 @@ const ListHorizontal = ({ itemArray, navigation }) => {
                     ? item.more_info.query
                     : item.id,
                 type: item.type,
-                // sharedId: `${row}.${item.id}.image`,
               });
             }}>
             {({ pressed }) => (
@@ -39,7 +36,6 @@ const ListHorizontal = ({ itemArray, navigation }) => {
                   opacity: pressed ? 0.5 : 1,
                   transform: [{ scale: pressed ? 0.99 : 1 }],
                 }}>
-                {/* <SharedElement id={`${row}.${item.id}.image`}> */}
                 <Image
                   source={{ uri: item.image }}
                   style={{
@@ -48,7 +44,6 @@ const ListHorizontal = ({ itemArray, navigation }) => {
                     borderRadius: isArtist ? 75 : 10,
                   }}
                 />
-                {/* </SharedElement> */}
                 <View>
                   <Text
                     numberOfLines={2}

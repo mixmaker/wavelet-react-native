@@ -1,39 +1,22 @@
-import {
-  View,
-  Text,
-  ImageBackground,
-  ActivityIndicator,
-  ScrollView,
-  Pressable,
-  Image,
-  Animated,
-} from 'react-native';
+import { View, ScrollView, Pressable, Animated } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import LinearGradient from 'react-native-linear-gradient';
 import useAppContext from '../contexts/useAppContext';
 import CardSmall from '../components/CardSmall';
-import { fetchAlbumDetails, trackHelper } from '../api';
+import { fetchAlbumDetails } from '../api';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import Entypo from 'react-native-vector-icons/Entypo';
-// import {constants} from '../components/GlobalStyles';
 import axios from 'axios';
 import useThemeProvider from '../contexts/useThemeProvider';
-import { SharedElement } from 'react-native-shared-element';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
-import TrackPlayer from 'react-native-track-player';
 import ImageColors from 'react-native-image-colors';
 
 const DetailScreen = ({ route, navigation }) => {
-  const { albumId, type, name, sharedId } = route.params;
-  const { albumData, setAlbumData, isDarkMode, setPlaylist, playSongHandler } =
-    useAppContext();
+  const { albumId, type, name } = route.params;
+  const { albumData, setAlbumData, isDarkMode } = useAppContext();
   const { colors, constants } = useThemeProvider();
 
   const cancelTokenSource = axios.CancelToken.source();
   const fetchAlbumData = async () => {
     const data = await fetchAlbumDetails(type, albumId, cancelTokenSource);
-    // const albumuri = albumURL(type, albumId, cancelTokenSource);
-    // const data = await getResponse(albumuri, cancelTokenSource);
     if (type === 'radio_station') {
       const array = Object.keys(data).map(key => data[key].song);
       array.splice(-1, 1); // weird api, gives last element undefined ;-;
@@ -50,7 +33,6 @@ const DetailScreen = ({ route, navigation }) => {
         image: albumData.image.replace('150x150', '500x500'),
       });
     }
-    // console.log(JSON.stringify(data,null,4))
     setAlbumData({
       ...data,
       image: albumData.image.replace('150x150', '500x500'),
@@ -113,24 +95,6 @@ const DetailScreen = ({ route, navigation }) => {
           position: 'relative',
           // paddingBottom: constants.navbarHeight
         }}>
-        {/* <LinearGradient
-          start={{ x: 0, y: 0 }}
-          end={{ x: 0, y: 0.99 }}
-          colors={[
-            'transparent',
-            // isDarkMode ? 'rgba(0,0,0,0.7)' : 'rgba(255,255,255,0.7)',
-            albumColorPalette?.darkVibrant || colors.primarybg,
-            colors.primarybg,
-          ]}
-          style={{
-            position: 'absolute',
-            top: constants.fullWidth - 190,
-            left: 0,
-            height: 190,
-            width: constants.fullWidth,
-            zIndex: -1,
-          }}
-        /> */}
         <View
           style={{
             marginTop: constants.fullWidth,
@@ -196,7 +160,6 @@ const DetailScreen = ({ route, navigation }) => {
           ))}
         </View>
       </ScrollView>
-      {/* <SharedElement id={sharedId}> */}
       <Animated.Image
         source={{ uri: albumData?.image }}
         transition
@@ -260,7 +223,6 @@ const DetailScreen = ({ route, navigation }) => {
           /> */}
         </View>
       </Animated.View>
-      {/* </SharedElement> */}
     </View>
   );
 };
