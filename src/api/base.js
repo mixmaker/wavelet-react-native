@@ -113,8 +113,8 @@ export const fetchLyricsfromId = async (songId, cancelTokenSource) => {
   }
 };
 //? convert each song into a track object
-export const trackHelper = (song, id) => ({
-  id,
+export const trackHelper = (song) => ({
+  id: song.id,
   url: decryptByDES(song.more_info.encrypted_media_url), // Load media from the network
   title: song.title,
   album: song.more_info.album,

@@ -11,7 +11,7 @@ import ImageColors from 'react-native-image-colors';
 
 const DetailScreen = ({ route, navigation }) => {
   const { albumId, type, name } = route.params;
-  const { albumData, setAlbumData, isDarkMode } = useAppContext();
+  const { albumData, setAlbumData, isDarkMode,playlistHandler } = useAppContext();
   const { colors, constants } = useThemeProvider();
 
   const cancelTokenSource = axios.CancelToken.source();
@@ -148,6 +148,8 @@ const DetailScreen = ({ route, navigation }) => {
               zIndex: 15,
             }}
             onPress={() => {
+              console.log('first')
+              playlistHandler(albumData?.list, true);
               // setPlaylist(albumData.list.map(item => trackHelper(item)));
               // TrackPlayer.play();
               // console.log('first')

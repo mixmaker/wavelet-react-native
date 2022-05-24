@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Appearance } from 'react-native';
 import { decode } from 'html-entities';
 import TrackPlayer, { Capability } from 'react-native-track-player';
-import { fetchSongDataFromId } from '../api';
+import { fetchSongDataFromId, trackHelper } from '../api';
 
 const GlobalState = ({ children }) => {
   const colorscheme = Appearance.getColorScheme() === 'dark' ? true : false;
@@ -48,19 +48,15 @@ const GlobalState = ({ children }) => {
     await TrackPlayer.add(playlist);
   };
 
-  const playSongHandler = async (songId, addtoPlaylist) => {
-    const track = await fetchSongDataFromId(songId);
-    track.url = track.url.replace('_96.mp4',`_${audioQuality}.mp4`)
-    // console.log(track)
-    if (addtoPlaylist) {
-      setPlaylist(prevPlaylist => [...prevPlaylist, track]);
-      TrackPlayer.play();
-    } else {
-      setPlaylist([]);
-      TrackPlayer.reset();
-      setPlaylist([track]);
-      TrackPlayer.play();
+  const playlistHandler = (songArr, createNew) => {
+    const newPlaylist = [];
+    for (let i = 0; i < songArr.length; i++) {
+      const track = trackHelper(songArr[i]);
+      newPlaylist.push(track);
     }
+    createNew
+      ? setPlaylist(newPlaylist)
+      : setPlaylist([...playlist, ...newPlaylist]);
   };
 
   return (
@@ -88,9 +84,9 @@ const GlobalState = ({ children }) => {
         setColorPalette,
         lyrics,
         setLyrics,
-        playSongHandler,
         audioQuality,
         setAudioQuality,
+        playlistHandler,
       }}>
       {children}
     </GlobalContext.Provider>

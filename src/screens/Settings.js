@@ -38,7 +38,7 @@ const Settings = ({ navigation }) => {
           marginTop: 15,
           borderBottomColor: colors.secondaryText,
           borderBottomWidth: 0.5,
-          paddingBottom: 10,
+          paddingBottom: 5,
         }}>
         <Text
           style={{
@@ -86,9 +86,10 @@ const Settings = ({ navigation }) => {
             )}
           </Pressable>
         ))}
-        <Text style={{ color: colors.secondaryText, marginVertical: 10 }}>
+        <Text style={{ color: colors.secondaryText, marginVertical: 7 }}>
           Higher audio quality will consume more data. It may also take longer
-          to load on slow networks.
+          to load on slow networks. {'\n'}Changing this setting will apply to
+          the songs you play next.
         </Text>
         {/* <View>
 

@@ -9,6 +9,7 @@ import TrackPlayer, {
   Event,
   State,
   useTrackPlayerEvents,
+  usePlaybackState,
 } from 'react-native-track-player';
 import useAppContext from './src/contexts/useAppContext';
 import ImageColors from 'react-native-image-colors';
@@ -44,33 +45,30 @@ const App = () => {
     colorScheme === 'dark' ? setIsDarkMode(true) : setIsDarkMode(false);
   });
 
-  useTrackPlayerEvents(
-    [Event.PlaybackState, Event.PlaybackTrackChanged],
-    async event => {
-      if (event.type === Event.PlaybackState) {
-        if (event.state === State.Playing) {
-          return setIsPlaying('playing');
-        }
-        if (
-          event.state === State.Buffering ||
-          event.state === State.Connecting
-        ) {
-          setIsPlaying('buffering');
-        }
-        if (
-          event.state === State.Paused ||
-          event.state === State.Ready ||
-          event.state === State.None ||
-          event.state === State.Stopped
-        ) {
-          setIsPlaying('paused');
-        }
-      }
-      if (event.type === Event.PlaybackTrackChanged) {
-        setCurrentTrackIndex(event.track + 1 || 0);
-      }
-    },
-  );
+  useTrackPlayerEvents([Event.PlaybackTrackChanged], async event => {
+    if (event.type === Event.PlaybackTrackChanged) {
+      setCurrentTrackIndex(event.track + 1 || 0); // skip back doesn't decrease track index
+    }
+  });
+
+  const playbackState = usePlaybackState();
+  useEffect(() => {
+    if (
+      playbackState === State.Buffering ||
+      playbackState === State.Connecting
+    ) {
+      setIsPlaying('buffering');
+    } else if (playbackState === State.Playing) {
+      setIsPlaying('playing');
+    } else if (
+      playbackState === State.Paused ||
+      playbackState === State.Ready ||
+      playbackState === State.None ||
+      playbackState === State.Stopped
+    ) {
+      setIsPlaying('paused');
+    }
+  }, [playbackState]);
 
   const fetchLyrics = async () => {
     const lyr = await fetchLyricsfromId(playlist[currentTrackIndex]?.id);
