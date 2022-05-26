@@ -28,10 +28,9 @@ const Player = ({ route, navigation }) => {
     isDarkMode,
     colorPalette,
     lyrics,
-    decodeHtml,
+    progress,
   } = useAppContext();
   const { colors, constants } = useThemeProvider();
-  const progress = useProgress();
 
   return (
     <ScrollView
@@ -115,7 +114,7 @@ const Player = ({ route, navigation }) => {
                 fontSize: 24,
                 fontWeight: '700',
               }}>
-              {decodeHtml(playlist[currentTrackIndex]?.title)}
+              {playlist[currentTrackIndex]?.title}
             </Text>
             <Text
               style={{ textAlign: 'center', fontSize: 16, marginBottom: 10 }}>
@@ -282,7 +281,7 @@ const Player = ({ route, navigation }) => {
         {lyrics && (
           <HTMLView
             addLineBreaks={false}
-            style={{ height: 400 }}
+            // style={{ height: 400 }}
             value={
               lyrics.lyrics
                 ? lyrics.lyrics

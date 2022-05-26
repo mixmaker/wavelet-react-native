@@ -16,8 +16,7 @@ import useThemeProvider from '../contexts/useThemeProvider';
 
 const MiniPlayer = () => {
   const navigate2player = useNavigation();
-  const { isPlaying, playlist, currentTrackIndex, decodeHtml } =
-    useAppContext();
+  const { isPlaying, playlist, currentTrackIndex } = useAppContext();
   const { colors, constants } = useThemeProvider();
 
   // const getCurrentSong = () => {
@@ -83,7 +82,7 @@ const MiniPlayer = () => {
                       fontWeight: '700',
                       color: colors.primaryText,
                     }}>
-                    {decodeHtml(playlist[currentTrackIndex]?.title)}
+                    {playlist[currentTrackIndex]?.title}
                   </Text>
                   <Text
                     style={{

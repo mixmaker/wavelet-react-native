@@ -1,34 +1,28 @@
-import React, { useLayoutEffect } from 'react';
+import React from 'react';
 import {
   CardStyleInterpolators,
   createStackNavigator,
-  TransitionSpecs,
 } from '@react-navigation/stack';
-import Home from '../screens/Home';
 import DetailScreen from '../screens/DetailScreen';
 import Player from '../screens/Player';
-import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
+import TabNavigation from './TabNavigation';
+import useAppContext from '../contexts/useAppContext';
 
 const Stack = createStackNavigator();
 
-const StackNavigation = ({ navigation, route }) => {
-  useLayoutEffect(() => {
-    const routeName = getFocusedRouteNameFromRoute(route);
-    if (routeName === 'DetailScreen' || routeName === 'Player') {
-      navigation
-        .getParent('BottomTab')
-        .setOptions({ tabBarStyle: { display: 'none' } });
-    } else {
-      navigation
-        .getParent('BottomTab')
-        .setOptions({ tabBarStyle: { display: 'flex' } });
-    }
-  }, [navigation, route]);
+const StackNavigation = () => {
+  const { playerAnimationType } = useAppContext();
+  const animationType =
+    playerAnimationType === 'Classic'
+      ? CardStyleInterpolators.forVerticalIOS
+      : playerAnimationType === 'iOS Modal Type'
+      ? CardStyleInterpolators.forModalPresentationIOS
+      : CardStyleInterpolators.forRevealFromBottomAndroid;
   return (
     <Stack.Navigator initialRouteName="HomeTab" id="Stack">
       <Stack.Screen
         name="HomeTab"
-        component={Home}
+        component={TabNavigation}
         options={{
           headerShown: false,
         }}
@@ -38,7 +32,7 @@ const StackNavigation = ({ navigation, route }) => {
         component={DetailScreen}
         options={{
           headerShown: false,
-          // cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
           gestureEnabled: true,
         }}
       />
@@ -47,7 +41,7 @@ const StackNavigation = ({ navigation, route }) => {
         component={Player}
         options={{
           headerShown: false,
-          cardStyleInterpolator: CardStyleInterpolators.forRevealFromBottomAndroid,
+          cardStyleInterpolator: animationType,
           gestureEnabled: true,
           gestureDirection: 'vertical',
         }}

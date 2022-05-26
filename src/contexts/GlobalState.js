@@ -3,25 +3,31 @@ import React, { useState } from 'react';
 import { Appearance } from 'react-native';
 import { decode } from 'html-entities';
 import TrackPlayer, { Capability } from 'react-native-track-player';
-import { fetchSongDataFromId, trackHelper } from '../api';
+import { trackHelper } from '../api';
 
+export function decodeHtml(string) {
+  return decode(string);
+}
 const GlobalState = ({ children }) => {
-  const colorscheme = Appearance.getColorScheme() === 'dark' ? true : false;
+  const colorscheme = Appearance.getColorScheme() === 'dark';
   const [isDarkMode, setIsDarkMode] = useState(colorscheme);
   const [homeData, setHomeData] = useState();
   const [searchData, setSearchData] = useState();
   const [albumData, setAlbumData] = useState();
   const [currentSong, setCurrentSong] = useState();
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
+  const [progress, setProgress] = useState({
+    buffered: 0,
+    duration: 0,
+    position: 0,
+  });
   const [lyrics, setLyrics] = useState();
   const [isPlaying, setIsPlaying] = useState('paused');
   const [playlist, setPlaylist] = useState([]);
   const [colorPalette, setColorPalette] = useState();
   const [audioQuality, setAudioQuality] = useState(160);
+  const [playerAnimationType, setPlayerAnimationType] = useState('Classic');
   //decode html texts
-  function decodeHtml(string) {
-    return decode(string);
-  }
 
   const setupPlayer = async () => {
     await TrackPlayer.setupPlayer();
@@ -54,9 +60,11 @@ const GlobalState = ({ children }) => {
       const track = trackHelper(songArr[i]);
       newPlaylist.push(track);
     }
-    createNew
-      ? setPlaylist(newPlaylist)
-      : setPlaylist([...playlist, ...newPlaylist]);
+    if (createNew) {
+      TrackPlayer.reset();
+      console.log('first');
+      setPlaylist(newPlaylist);
+    } else setPlaylist([...playlist, ...newPlaylist]);
   };
 
   return (
@@ -87,6 +95,10 @@ const GlobalState = ({ children }) => {
         audioQuality,
         setAudioQuality,
         playlistHandler,
+        progress,
+        setProgress,
+        playerAnimationType,
+        setPlayerAnimationType,
       }}>
       {children}
     </GlobalContext.Provider>
