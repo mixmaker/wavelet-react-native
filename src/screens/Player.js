@@ -18,7 +18,6 @@ import TrackPlayer, { useProgress } from 'react-native-track-player';
 import Scrubber from 'react-native-scrubber';
 import useThemeProvider from '../contexts/useThemeProvider';
 import LinearGradient from 'react-native-linear-gradient';
-import HTMLView from 'react-native-htmlview';
 
 const Player = ({ route, navigation }) => {
   const {
@@ -279,20 +278,7 @@ const Player = ({ route, navigation }) => {
           Lyrics:
         </Text>
         {lyrics && (
-          <HTMLView
-            addLineBreaks={false}
-            // style={{ height: 400 }}
-            value={
-              lyrics.lyrics
-                ? lyrics.lyrics
-                : lyrics.error
-                ? lyrics.error.msg
-                : '<p>Lyrics not available</p>'
-            }
-            // value="<p>
-            // Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum nec maximus nulla. Suspendisse potenti. Integer sed enim placerat, fermentum neque sed, euismod augue. Vestibulum sto. Nam auctor justo mi, quis auctor mi molestie eu.Donec laoreet massa ac orci rutrum, in maximus arcu scelerisque. Donec dui  blandit. Morbi orci mauris, accumsan et venenatis at, suscipit sed orci.<br>Suspendisse potenti. Aenean vitae lobortis lectus. Proin non arcu quis metus tempor laoreet. Sed sed leo laoreet, tristique justo sit amet, convallis est. Ut viverra metus non efficitur condimentum. Cras id r volutpat. Vestibulum efficitur iaculis euismod.
-            // </p>"
-          />
+          <Text>coming soon!</Text>
         )}
       </View>
     </ScrollView>
