@@ -1,16 +1,20 @@
 import { View, Text, FlatList, Pressable, Image } from 'react-native';
 import React from 'react';
 import useAppContext from '../contexts/useAppContext';
-import CardSmall from '../components/CardSmall';
 import useThemeProvider from '../contexts/useThemeProvider';
 
 const Library = () => {
-  const { playlist, setPlaylist, decodeHtml } = useAppContext();
+  const { playlist } = useAppContext();
   const { colors, constants } = useThemeProvider();
 
   return (
-    <View style={{ marginTop: constants.statusbarHeight + 25 , paddingHorizontal: 15 }}>
+    <View
+      style={{
+        marginTop: constants.statusbarHeight + 25,
+        paddingHorizontal: 15,
+      }}>
       <FlatList
+        showsVerticalScrollIndicator={false}
         data={playlist}
         ListEmptyComponent={
           <Text
@@ -24,7 +28,7 @@ const Library = () => {
           </Text>
         }
         ListHeaderComponent={
-          <Text style={{ color: colors.primaryText , fontSize: 18}}>
+          <Text style={{ color: colors.primaryText, fontSize: 18 }}>
             Now playing
           </Text>
         }
@@ -78,7 +82,7 @@ const Library = () => {
                     color: colors.primaryText,
                     fontSize: 16,
                   }}>
-                  {decodeHtml(item.title)}
+                  {item.title}
                 </Text>
                 <Text
                   numberOfLines={2}

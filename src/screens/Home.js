@@ -64,7 +64,7 @@ const Home = ({ navigation }) => {
   const drawerNavigation = navigation.getParent('LeftDrawer');
 
   return (
-    <ScrollView style={{ flexGrow: 1, backgroundColor: colors.primarybg }}>
+    <ScrollView showsVerticalScrollIndicator={false} style={{ flexGrow: 1, backgroundColor: colors.primarybg }}>
       <View style={{ marginTop: constants.statusbarHeight + 20 }}>
         <Entypo
           name="menu"

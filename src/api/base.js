@@ -1,6 +1,7 @@
 import { getResponse } from './';
 
 import CryptoJS from 'crypto-js';
+import { decodeHtml } from '../contexts/GlobalState';
 
 const baseURL = 'https://www.jiosaavn.com';
 const URLstr = '/api.php?_format=json&_marker=0&api_version=4&ctx=web6dot0';
@@ -113,11 +114,11 @@ export const fetchLyricsfromId = async (songId, cancelTokenSource) => {
   }
 };
 //? convert each song into a track object
-export const trackHelper = (song, id) => ({
-  id,
+export const trackHelper = (song) => ({
+  id: song.id,
   url: decryptByDES(song.more_info.encrypted_media_url), // Load media from the network
-  title: song.title,
-  album: song.more_info.album,
+  title: decodeHtml(song.title),
+  album: decodeHtml(song.more_info.album),
   artist: song.more_info.artistMap.primary_artists
     .slice(0, 2)
     .map(artist => artist.name)

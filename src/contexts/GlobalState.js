@@ -3,25 +3,31 @@ import React, { useState } from 'react';
 import { Appearance } from 'react-native';
 import { decode } from 'html-entities';
 import TrackPlayer, { Capability } from 'react-native-track-player';
-import { fetchSongDataFromId } from '../api';
+import { trackHelper } from '../api';
 
+export function decodeHtml(string) {
+  return decode(string);
+}
 const GlobalState = ({ children }) => {
-  const colorscheme = Appearance.getColorScheme() === 'dark' ? true : false;
+  const colorscheme = Appearance.getColorScheme() === 'dark';
   const [isDarkMode, setIsDarkMode] = useState(colorscheme);
   const [homeData, setHomeData] = useState();
   const [searchData, setSearchData] = useState();
   const [albumData, setAlbumData] = useState();
   const [currentSong, setCurrentSong] = useState();
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
+  const [progress, setProgress] = useState({
+    buffered: 0,
+    duration: 0,
+    position: 0,
+  });
   const [lyrics, setLyrics] = useState();
   const [isPlaying, setIsPlaying] = useState('paused');
   const [playlist, setPlaylist] = useState([]);
   const [colorPalette, setColorPalette] = useState();
   const [audioQuality, setAudioQuality] = useState(160);
+  const [playerAnimationType, setPlayerAnimationType] = useState('Classic');
   //decode html texts
-  function decodeHtml(string) {
-    return decode(string);
-  }
 
   const setupPlayer = async () => {
     await TrackPlayer.setupPlayer();
@@ -48,19 +54,17 @@ const GlobalState = ({ children }) => {
     await TrackPlayer.add(playlist);
   };
 
-  const playSongHandler = async (songId, addtoPlaylist) => {
-    const track = await fetchSongDataFromId(songId);
-    track.url = track.url.replace('_96.mp4',`_${audioQuality}.mp4`)
-    // console.log(track)
-    if (addtoPlaylist) {
-      setPlaylist(prevPlaylist => [...prevPlaylist, track]);
-      TrackPlayer.play();
-    } else {
-      setPlaylist([]);
-      TrackPlayer.reset();
-      setPlaylist([track]);
-      TrackPlayer.play();
+  const playlistHandler = (songArr, createNew) => {
+    const newPlaylist = [];
+    for (let i = 0; i < songArr.length; i++) {
+      const track = trackHelper(songArr[i]);
+      newPlaylist.push(track);
     }
+    if (createNew) {
+      TrackPlayer.reset();
+      console.log('first');
+      setPlaylist(newPlaylist);
+    } else setPlaylist([...playlist, ...newPlaylist]);
   };
 
   return (
@@ -88,9 +92,13 @@ const GlobalState = ({ children }) => {
         setColorPalette,
         lyrics,
         setLyrics,
-        playSongHandler,
         audioQuality,
         setAudioQuality,
+        playlistHandler,
+        progress,
+        setProgress,
+        playerAnimationType,
+        setPlayerAnimationType,
       }}>
       {children}
     </GlobalContext.Provider>

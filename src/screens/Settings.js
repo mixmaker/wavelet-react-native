@@ -1,17 +1,26 @@
-import { ScrollView, View, Text, Pressable } from 'react-native';
-import React from 'react';
+import { ScrollView, View, Text, Pressable, Appearance } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import useThemeProvider from '../contexts/useThemeProvider';
 import Entypo from 'react-native-vector-icons/Entypo';
 import useAppContext from '../contexts/useAppContext';
 
 const Settings = ({ navigation }) => {
   const { colors, constants } = useThemeProvider();
-  const { audioQuality, setAudioQuality } = useAppContext();
+  const {
+    audioQuality,
+    setAudioQuality,
+    setIsDarkMode,
+    playerAnimationType,
+    setPlayerAnimationType,
+  } = useAppContext();
+  const [themePref, setThemePref] = useState('Auto');
+
   return (
     <ScrollView
+      showsVerticalScrollIndicator={false}
       contentContainerStyle={{ flexGrow: 1 }}
       style={{
-        paddingTop: constants.statusbarHeight + 20,
+        paddingVertical: constants.statusbarHeight + 20,
         backgroundColor: colors.primarybg,
       }}>
       <Entypo
@@ -34,17 +43,80 @@ const Settings = ({ navigation }) => {
       </Text>
       <View
         style={{
-          marginHorizontal: 15,
+          marginHorizontal: 20,
           marginTop: 15,
           borderBottomColor: colors.secondaryText,
           borderBottomWidth: 0.5,
-          paddingBottom: 10,
+          paddingBottom: 5,
         }}>
         <Text
           style={{
             fontWeight: '700',
             fontSize: 18,
             color: colors.primaryText,
+            left: -8,
+          }}>
+          Theme Preferance
+        </Text>
+        {[
+          { name: 'Auto' },
+          { name: 'Light Theme' },
+          { name: 'Dark Theme' },
+        ].map((item, i) => (
+          <Pressable
+            key={i.toString()}
+            style={({ pressed }) => ({
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              transform: [{ scale: pressed ? 0.99 : 1 }],
+              marginTop: 14,
+            })}
+            onPress={() => {
+              const colorscheme = Appearance.getColorScheme() === 'dark';
+              item.name === 'Auto'
+                ? setIsDarkMode(colorscheme)
+                : item.name === 'Light Theme'
+                ? setIsDarkMode(false)
+                : setIsDarkMode(true);
+              setThemePref(item.name);
+            }}>
+            <View>
+              <Text style={{ color: colors.primaryText, fontSize: 16 }}>
+                {item.name}
+              </Text>
+            </View>
+            {themePref === item.name && (
+              <Entypo
+                name="check"
+                size={24}
+                color="#48c58b"
+                style={{ marginLeft: 15 }}
+                onPress={() => {
+                  navigation?.openDrawer();
+                }}
+              />
+            )}
+          </Pressable>
+        ))}
+        <Text style={{ color: colors.secondaryText, marginVertical: 7 }}>
+          Selecting auto will adjust the theme according to your system.
+        </Text>
+      </View>
+      <View
+        style={{
+          marginHorizontal: 20,
+          marginTop: 20,
+          borderBottomColor: colors.secondaryText,
+          borderBottomWidth: 0.5,
+          paddingBottom: 5,
+        }}>
+        <Text
+          style={{
+            fontWeight: '700',
+            fontSize: 18,
+            color: colors.primaryText,
+            left: -8,
           }}>
           Audio Quality
         </Text>
@@ -55,7 +127,7 @@ const Settings = ({ navigation }) => {
           { name: 'High', quality: 320 },
         ].map((item, i) => (
           <Pressable
-            key={i}
+            key={i.toString()}
             style={({ pressed }) => ({
               flexDirection: 'row',
               alignItems: 'center',
@@ -86,13 +158,62 @@ const Settings = ({ navigation }) => {
             )}
           </Pressable>
         ))}
-        <Text style={{ color: colors.secondaryText, marginVertical: 10 }}>
+        <Text style={{ color: colors.secondaryText, marginVertical: 7 }}>
           Higher audio quality will consume more data. It may also take longer
-          to load on slow networks.
+          to load on slow networks. {'\n'}Changing this setting will apply to
+          the songs you play next.
         </Text>
-        {/* <View>
-
-        </View> */}
+      </View>
+      <View
+        style={{
+          marginHorizontal: 20,
+          marginTop: 15,
+          borderBottomColor: colors.secondaryText,
+          borderBottomWidth: 0.5,
+          paddingBottom: 5,
+        }}>
+        <Text
+          style={{
+            fontWeight: '700',
+            fontSize: 18,
+            color: colors.primaryText,
+            left: -8,
+          }}>
+          Player Screen Animation
+        </Text>
+        {[
+          { name: 'Classic' },
+          { name: 'iOS Modal Type' },
+          { name: 'Reveal from Bottom' },
+        ].map((item, i) => (
+          <Pressable
+            key={i.toString()}
+            style={({ pressed }) => ({
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              transform: [{ scale: pressed ? 0.99 : 1 }],
+              marginTop: 14,
+            })}
+            onPress={() => setPlayerAnimationType(item.name)}>
+            <View>
+              <Text style={{ color: colors.primaryText, fontSize: 16 }}>
+                {item.name}
+              </Text>
+            </View>
+            {playerAnimationType === item.name && (
+              <Entypo
+                name="check"
+                size={24}
+                color="#48c58b"
+                style={{ marginLeft: 15 }}
+                onPress={() => {
+                  navigation?.openDrawer();
+                }}
+              />
+            )}
+          </Pressable>
+        ))}
       </View>
     </ScrollView>
   );

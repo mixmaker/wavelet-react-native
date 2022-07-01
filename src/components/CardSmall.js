@@ -12,7 +12,7 @@ const CardSmall = ({ song }) => {
     decodeHtml,
     playlist,
     setPlaylist,
-    playSongHandler,
+    playlistHandler,
   } = useAppContext();
   const { colors } = useThemeProvider();
   const cancelTokenSource = axios.CancelToken.source();
@@ -26,7 +26,7 @@ const CardSmall = ({ song }) => {
         alignItems: 'center',
       }}
       onPress={() => {
-        playSongHandler(song.id);
+        playlistHandler([song], true);
       }}>
       {({ pressed }) => (
         <View

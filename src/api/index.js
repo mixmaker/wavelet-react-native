@@ -14,12 +14,6 @@ export const getResponse = async (url, cancelTokenSource) => {
   }
 };
 
-export const makeMediaurl = url => {
-  return url
-    .replace('preview.saavncdn.com', 'aac.saavncdn.com')
-    .replace('_96_p', '_320');
-};
-
 export {
   fetchSongDataFromId,
   searchResultsURL,
