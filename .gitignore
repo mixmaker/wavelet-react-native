@@ -63,3 +63,4 @@ buck-out/
 .yarn
 .bundle
 __tests__
+.env

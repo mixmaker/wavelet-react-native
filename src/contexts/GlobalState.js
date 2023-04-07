@@ -2,7 +2,10 @@ import { GlobalContext } from './useAppContext';
 import React, { useState } from 'react';
 import { Appearance } from 'react-native';
 import { decode } from 'html-entities';
-import TrackPlayer, { Capability } from 'react-native-track-player';
+import TrackPlayer, {
+  AppKilledPlaybackBehavior,
+  Capability,
+} from 'react-native-track-player';
 import { trackHelper } from '../api';
 
 export function decodeHtml(string) {
@@ -11,9 +14,10 @@ export function decodeHtml(string) {
 const GlobalState = ({ children }) => {
   const colorscheme = Appearance.getColorScheme() === 'dark';
   const [isDarkMode, setIsDarkMode] = useState(colorscheme);
+  const [themePref, setThemePref] = useState('Auto');
   const [homeData, setHomeData] = useState();
   const [searchData, setSearchData] = useState();
-  const [albumData, setAlbumData] = useState();
+  const [likedSongList, setLikedSongList] = useState([]);
   const [currentSong, setCurrentSong] = useState();
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
   const [progress, setProgress] = useState({
@@ -30,28 +34,32 @@ const GlobalState = ({ children }) => {
   //decode html texts
 
   const setupPlayer = async () => {
-    await TrackPlayer.setupPlayer();
-    TrackPlayer.updateOptions({
-      stopWithApp: false,
-      icon: require('../assets/not_icon.webp'),
-      capabilities: [
-        Capability.Play,
-        Capability.Pause,
-        Capability.SkipToNext,
-        Capability.SkipToPrevious,
-        Capability.Stop,
-        Capability.SeekTo,
-        // Capability.Like, //! crashes in android 10
-        // Capability.Dislike
-      ],
-      compactCapabilities: [
-        Capability.Play,
-        Capability.Pause,
-        Capability.SkipToNext,
-        Capability.SkipToPrevious,
-      ],
-    });
-    await TrackPlayer.add(playlist);
+    try {
+      await TrackPlayer.setupPlayer();
+      TrackPlayer.updateOptions({
+        appKilledPlaybackBehavior: AppKilledPlaybackBehavior.ContinuePlayback,
+        icon: require('../assets/not_icon.webp'),
+        capabilities: [
+          Capability.Play,
+          Capability.Pause,
+          Capability.SkipToNext,
+          Capability.SkipToPrevious,
+          Capability.Stop,
+          Capability.SeekTo,
+          // Capability.Like, //! crashes in android 10, 13
+          // Capability.Dislike
+        ],
+        compactCapabilities: [
+          Capability.Play,
+          Capability.Pause,
+          Capability.SkipToNext,
+          Capability.SkipToPrevious,
+        ],
+      });
+      await TrackPlayer.add(playlist);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const playlistHandler = (songArr, createNew) => {
@@ -62,7 +70,6 @@ const GlobalState = ({ children }) => {
     }
     if (createNew) {
       TrackPlayer.reset();
-      console.log('first');
       setPlaylist(newPlaylist);
     } else setPlaylist([...playlist, ...newPlaylist]);
   };
@@ -76,8 +83,6 @@ const GlobalState = ({ children }) => {
         setHomeData,
         searchData,
         setSearchData,
-        albumData,
-        setAlbumData,
         currentSong,
         setCurrentSong,
         decodeHtml,
@@ -99,6 +104,10 @@ const GlobalState = ({ children }) => {
         setProgress,
         playerAnimationType,
         setPlayerAnimationType,
+        themePref,
+        setThemePref,
+        likedSongList,
+        setLikedSongList,
       }}>
       {children}
     </GlobalContext.Provider>

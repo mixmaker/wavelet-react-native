@@ -23,7 +23,7 @@ const getURL = params => {
 };
 
 //decrypt encrypted media url
-function decryptByDES(ciphertext) {
+export function decryptByDES(ciphertext) {
   var keyHex = CryptoJS.enc.Utf8.parse('38346591');
 
   // direct decrypt ciphertext
@@ -114,7 +114,7 @@ export const fetchLyricsfromId = async (songId, cancelTokenSource) => {
   }
 };
 //? convert each song into a track object
-export const trackHelper = (song) => ({
+export const trackHelper = song => ({
   id: song.id,
   url: decryptByDES(song.more_info.encrypted_media_url), // Load media from the network
   title: decodeHtml(song.title),
@@ -128,3 +128,13 @@ export const trackHelper = (song) => ({
   artwork: song.image, // Load artwork from the network
   duration: Number(song.more_info.duration), // Duration in seconds
 });
+
+export const fetchTopSearches = async (cancelTokenSource) => {
+  try {
+    const uri = topSearchesURL();
+    const data = await getResponse(uri, cancelTokenSource);
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};

@@ -2,117 +2,92 @@ import { View, Text, FlatList, Pressable, Image } from 'react-native';
 import React from 'react';
 import useAppContext from '../contexts/useAppContext';
 import useThemeProvider from '../contexts/useThemeProvider';
+import Feather from 'react-native-vector-icons/Feather';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { observeLikedSongs, observeRecentlyPlayed } from '../data/helpers';
+import withObservables from '@nozbe/with-observables';
 
-const Library = () => {
+const Library = ({ recentlyPlayed, likedSongs, navigation }) => {
   const { playlist } = useAppContext();
   const { colors, constants } = useThemeProvider();
-
   return (
     <View
       style={{
-        marginTop: constants.statusbarHeight + 25,
-        paddingHorizontal: 15,
+        paddingVertical: constants.statusbarHeight + 20,
+        backgroundColor: colors.primarybg,
+        marginLeft: 20,
       }}>
-      <FlatList
-        showsVerticalScrollIndicator={false}
-        data={playlist}
-        ListEmptyComponent={
-          <Text
-            style={{
-              color: colors.secondaryText,
-              fontSize: 16,
-              textAlign: 'center',
-              justifyContent: 'center',
-            }}>
-            Nothing here :(
-          </Text>
+      <Text
+        style={{
+          fontSize: 32,
+          marginBottom: 50,
+          // marginTop: 15,
+          color: colors.secondaryText,
+        }}>
+        Library
+      </Text>
+      <Pressable
+        onPress={() =>
+          navigation.navigate('LikedSongs', {
+            dataArr: likedSongs.forEach(s => s.song_id),
+          })
         }
-        ListHeaderComponent={
-          <Text style={{ color: colors.primaryText, fontSize: 18 }}>
-            Now playing
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          marginVertical: 10,
+        }}>
+        <Feather
+          name="heart"
+          size={24}
+          color={'#fcfcfc'}
+          style={{
+            marginRight: 20,
+            backgroundColor: '#8a7dff',
+            padding: 7,
+            borderRadius: 8,
+          }}
+        />
+        <View style={{ justifyContent: 'center' }}>
+          <Text style={{ color: colors.primaryText }}>Liked Songs</Text>
+          <Text style={{ color: colors.secondaryText }}>
+            {likedSongs.length} song(s)
           </Text>
-        }
-        renderItem={({ item }) => (
-          <Pressable
-            activeOpacity={0.5}
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}
-            onPress={() => {
-              // setCurrentSongId(item?.id);
-            }}>
-            <View
-              style={{
-                flex: 0.8,
-                flexDirection: 'row',
-                marginVertical: 10,
-                alignItems: 'center',
-              }}>
-              <View
-                style={{
-                  backgroundColor: '#f2f2f2',
-                  marginRight: 15,
-                  shadowColor: '#000',
-                  borderRadius: 10,
-                  overflow: 'hidden',
-                  shadowOffset: {
-                    width: 0,
-                    height: 2,
-                  },
-                  shadowOpacity: 0.25,
-                  shadowRadius: 3.84,
-                  elevation: 8,
-                  height: 50,
-                  width: 50,
-                }}>
-                <Image
-                  source={{ uri: item.artwork }}
-                  style={{
-                    height: '100%',
-                    width: '100%',
-                  }}
-                />
-              </View>
-              <View>
-                <Text
-                  numberOfLines={2}
-                  style={{
-                    color: colors.primaryText,
-                    fontSize: 16,
-                  }}>
-                  {item.title}
-                </Text>
-                <Text
-                  numberOfLines={2}
-                  style={{
-                    color: colors.secondaryText,
-                  }}>
-                  {item.artist}
-                </Text>
-              </View>
-            </View>
-            {/* <Pressable
-              style={({ pressed }) => ({
-                backgroundColor: pressed ? '#444' : 'transparent',
-              })}
-              onPress={() => {
-                addToPlaylist(item?.id);
-              }}>
-              {({ pressed }) => (
-                <MaterialCommunityIcons
-                  name="playlist-plus"
-                  size={24}
-                  color={colors.icon}
-                />
-              )}
-            </Pressable> */}
-          </Pressable>
-        )}
-      />
+        </View>
+      </Pressable>
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          marginVertical: 10,
+        }}>
+        <MaterialCommunityIcons
+          name="history"
+          size={24}
+          color={'#fcfcfc'}
+          style={{
+            marginRight: 20,
+            backgroundColor: '#ff7dd6',
+            padding: 7,
+            borderRadius: 8,
+          }}
+        />
+        <View style={{ justifyContent: 'center' }}>
+          <Text style={{ color: colors.primaryText }}>Recently Played</Text>
+          <Text style={{ color: colors.secondaryText }}>
+            {recentlyPlayed.length} song(s)
+          </Text>
+        </View>
+      </View>
+      <Text>Add playlist</Text>
     </View>
   );
 };
-
-export default Library;
+const EnhanceWithRPLS = withObservables(
+  ['recentlyPlayed', 'likedSongs'],
+  () => ({
+    recentlyPlayed: observeRecentlyPlayed(),
+    likedSongs: observeLikedSongs(),
+  }),
+);
+export default EnhanceWithRPLS(Library);

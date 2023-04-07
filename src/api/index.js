@@ -15,6 +15,8 @@ export const getResponse = async (url, cancelTokenSource) => {
 };
 
 export {
+  decryptByDES,
+  fetchTopSearches,
   fetchSongDataFromId,
   searchResultsURL,
   songDetailsfromIdURL,

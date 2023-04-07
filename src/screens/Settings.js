@@ -2,9 +2,12 @@ import { ScrollView, View, Text, Pressable, Appearance } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import useThemeProvider from '../contexts/useThemeProvider';
 import Entypo from 'react-native-vector-icons/Entypo';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import useAppContext from '../contexts/useAppContext';
+import { createStackNavigator } from '@react-navigation/stack';
 
-const Settings = ({ navigation }) => {
+const Settingss = ({ navigation }) => {
   const { colors, constants } = useThemeProvider();
   const {
     audioQuality,
@@ -23,7 +26,7 @@ const Settings = ({ navigation }) => {
         paddingVertical: constants.statusbarHeight + 20,
         backgroundColor: colors.primarybg,
       }}>
-      <Entypo
+      {/* <Entypo
         name="menu"
         size={24}
         color={colors.primaryText}
@@ -31,13 +34,13 @@ const Settings = ({ navigation }) => {
         onPress={() => {
           navigation?.openDrawer();
         }}
-      />
+      /> */}
       <Text
         style={{
           fontSize: 32,
           marginLeft: 20,
           color: colors.secondaryText,
-          marginTop: 15,
+          // marginTop: 15,
         }}>
         Settings
       </Text>
@@ -56,7 +59,7 @@ const Settings = ({ navigation }) => {
             color: colors.primaryText,
             left: -8,
           }}>
-          Theme Preferance
+          Theme Preference
         </Text>
         {[
           { name: 'Auto' },
@@ -164,7 +167,7 @@ const Settings = ({ navigation }) => {
           the songs you play next.
         </Text>
       </View>
-      <View
+      {/*<View
         style={{
           marginHorizontal: 20,
           marginTop: 15,
@@ -214,6 +217,106 @@ const Settings = ({ navigation }) => {
             )}
           </Pressable>
         ))}
+      </View>*/}
+    </ScrollView>
+  );
+};
+
+const Settings = ({ navigation }) => {
+  const { colors, constants } = useThemeProvider();
+  const {
+    audioQuality,
+    setAudioQuality,
+    setIsDarkMode,
+    playerAnimationType,
+    setPlayerAnimationType,
+  } = useAppContext();
+  const [themePref, setThemePref] = useState('Auto');
+  return (
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      contentContainerStyle={{ flexGrow: 1 }}
+      style={{
+        paddingVertical: constants.statusbarHeight + 20,
+        backgroundColor: colors.primarybg,
+      }}>
+      <Text
+        style={{
+          fontSize: 32,
+          marginLeft: 20,
+          color: colors.secondaryText,
+          // marginTop: 15,
+        }}>
+        Settings
+      </Text>
+      <View style={{ margin: 20 }}>
+        <Pressable
+          style={{ marginVertical: 10, flexDirection: 'row' }}
+          onPress={() => navigation.navigate('AppearanceSettings')}>
+          <Ionicons
+            name="color-palette"
+            size={24}
+            color={colors.secondaryText}
+            style={{ marginRight: 8 }}
+          />
+          <Text
+            style={{
+              color: colors.primaryText,
+              fontSize: 18,
+              alignItems: 'center',
+            }}>
+            Appearance
+          </Text>
+        </Pressable>
+        <Pressable
+          style={{
+            marginVertical: 10,
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}
+          onPress={() => navigation.navigate('GeneralSettings')}>
+          <MaterialCommunityIcons
+            name="shape"
+            size={24}
+            color={colors.secondaryText}
+            style={{ marginRight: 8 }}
+          />
+          <Text style={{ color: colors.primaryText, fontSize: 18 }}>
+            General
+          </Text>
+        </Pressable>
+        <Pressable
+          style={{
+            marginVertical: 10,
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}
+          onPress={() => navigation.navigate('AudioPlayerSettings')}>
+          <Ionicons
+            name="play"
+            size={24}
+            color={colors.secondaryText}
+            style={{ marginRight: 8 }}
+          />
+          <Text style={{ color: colors.primaryText, fontSize: 18 }}>
+          Audio & Player
+          </Text>
+        </Pressable>
+        <Pressable
+          style={{
+            marginVertical: 10,
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}
+          onPress={() => navigation.navigate('About')}>
+          <Entypo
+            name="info-with-circle"
+            size={24}
+            color={colors.secondaryText}
+            style={{ marginRight: 8 }}
+          />
+          <Text style={{ color: colors.primaryText, fontSize: 18 }}>About</Text>
+        </Pressable>
       </View>
     </ScrollView>
   );

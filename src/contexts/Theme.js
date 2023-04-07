@@ -28,8 +28,8 @@ const Theme = ({ children }) => {
         primaryText: '#f0f0f0',
         secondaryText: '#8b8b8b',
         icon: '#e0e0e0',
-        drawer: '#141414',
-        slider: '#9c97ff54',
+        bgGradient: '#9554e971',
+        tabBar: '#30FF6A',
       }
     : {
         primarybg: '#fff',
@@ -37,8 +37,8 @@ const Theme = ({ children }) => {
         primaryText: '#000',
         secondaryText: '#696969',
         icon: '#000',
-        drawer: '#E1E9EE',
-        slider: '#c6c4fc',
+        bgGradient: '#9554e971',
+        tabBar: '#37e067',
       };
 
   return (

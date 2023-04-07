@@ -8,7 +8,6 @@ import {
 } from 'react-native';
 import React from 'react';
 import useThemeProvider from '../contexts/useThemeProvider';
-import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Feather from 'react-native-vector-icons/Feather';
 import { version } from '../../package.json';
@@ -20,17 +19,9 @@ const About = ({ navigation }) => {
       contentContainerStyle={{ flexGrow: 1 }}
       style={{
         paddingTop: constants.statusbarHeight + 20,
+        paddingBottom: constants.navbarHeight,
         backgroundColor: colors.primarybg,
       }}>
-      <Entypo
-        name="menu"
-        size={24}
-        color={colors.primaryText}
-        style={{ marginLeft: 15 }}
-        onPress={() => {
-          navigation?.openDrawer();
-        }}
-      />
       <View
         style={{
           flex: 1,
@@ -101,33 +92,37 @@ const About = ({ navigation }) => {
             If you liked my work, show some love and ⭐ the repo
           </Text>
           <Pressable
+            onPress={() =>
+              Linking.openURL('https://www.buymeacoffee.com/shoumik').catch(
+                err => console.error('An error occurred', err),
+              )
+            }
             style={({ pressed }) => ({
               marginTop: 15,
               flexDirection: 'row',
               alignItems: 'center',
-              backgroundColor: pressed ? '#FFDD00' : colors.secondarybg,
+              backgroundColor: '#FFDD00',
               alignSelf: 'center',
               paddingHorizontal: 15,
               paddingVertical: 10,
               borderRadius: 6,
+              transform: [{ scale: pressed ? 0.98 : 1 }],
             })}>
-            {({ pressed }) => (
-              <>
-                <Feather
-                  name="coffee"
-                  size={20}
-                  color={pressed ? '#111' : colors.primaryText}
-                  style={{ marginRight: 8 }}
-                />
-                <Text
-                  style={{
-                    fontSize: 18,
-                    color: pressed ? '#111' : colors.primaryText,
-                  }}>
-                  Buy me a coffee
-                </Text>
-              </>
-            )}
+            <>
+              <Feather
+                name="coffee"
+                size={20}
+                color={'#111'}
+                style={{ marginRight: 8 }}
+              />
+              <Text
+                style={{
+                  fontSize: 18,
+                  color: '#111',
+                }}>
+                Buy me a coffee
+              </Text>
+            </>
           </Pressable>
         </View>
       </View>

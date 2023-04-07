@@ -20,18 +20,20 @@ import TrackPlayer, {
 } from 'react-native-track-player';
 import useAppContext from './src/contexts/useAppContext';
 import ImageColors from 'react-native-image-colors';
-import { LogBox } from 'react-native';
-import DrawerNavigation from './src/navigation/DrawerNavigation';
 import { fetchLyricsfromId } from './src/api';
 import useThemeProvider from './src/contexts/useThemeProvider';
 import { SystemBars } from 'react-native-bars';
 import * as BootSplash from 'react-native-bootsplash';
+import StackNavigation from './src/navigation/StackNavigation';
+import CodePush from 'react-native-code-push';
+import CodePushManager from './src/components/CodePushManager';
+import { SheetProvider } from 'react-native-actions-sheet';
+import './sheets';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { observeLikedSongs } from './src/data/helpers';
+import withObservables from '@nozbe/with-observables';
 
-LogBox.ignoreLogs([
-  "[react-native-gesture-handler] Seems like you're using an old API with gesture components, check out new Gestures system!",
-  "ViewPropTypes will be removed from React Native. Migrate to ViewPropTypes exported from 'deprecated-react-native-prop-types'.",
-]);
-const App = () => {
+const App = ({ likedSongs }) => {
   const {
     playlist,
     setupPlayer,
@@ -45,6 +47,8 @@ const App = () => {
     setColorPalette,
     setLyrics,
     setProgress,
+    likedSongList,
+    setLikedSongList,
   } = useAppContext();
   const { colors, constants } = useThemeProvider();
   const navigationRef = useRef(null);
@@ -56,6 +60,21 @@ const App = () => {
   // Appearance.addChangeListener(({ colorScheme }) => {
   //   colorScheme === 'dark' ? setIsDarkMode(true) : setIsDarkMode(false);
   // });
+
+  //?open player when clicking notif
+  // useEffect(() => {
+  //   const handleUrl = data => {
+  //     if (data.url === 'trackplayer://notification.click') {
+  //       navigationRef.current.navigate('Player');
+  //     }
+  //   };
+  //   Linking.getInitialURL().then(url => handleUrl({ url: url }));
+  //   Linking.addEventListener('url', handleUrl);
+
+  //   return () => {
+  //     Linking.removeEventListener('url', handleUrl);
+  //   };
+  // }, []);
 
   useTrackPlayerEvents([Event.PlaybackTrackChanged], async event => {
     if (event.type === Event.PlaybackTrackChanged) {
@@ -98,6 +117,14 @@ const App = () => {
   useEffect(() => {
     fetchLyrics();
   }, [currentTrackIndex]);
+
+  useEffect(() => {
+    var data = [];
+    likedSongs?.forEach(s => {
+      data = [...data, { id: s.id, songId: s.song_id }].filter(item => item);
+    });
+    setLikedSongList(data);
+  }, [likedSongs]);
 
   useEffect(() => {
     playlist.length > 0 &&
@@ -165,41 +192,46 @@ const App = () => {
     },
   };
   return (
-    <View style={{ flex: 1 }}>
-      <NavigationContainer
-        ref={navigationRef}
-        theme={isDarkMode ? CustomDarkTheme : CustomTheme}>
-        <SystemBars
-          animated={true}
-          barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        />
-        <DrawerNavigation />
-      </NavigationContainer>
-      {bootSplashIsVisible && (
-        <Animated.View
-          style={[
-            StyleSheet.absoluteFill,
-            {
-              flex: 1,
-              justifyContent: 'center',
-              alignItems: 'center',
-              backgroundColor: colors.primarybg,
-            },
-            { opacity: opacity.current },
-          ]}>
-          <Animated.Image
-            source={bootSplashLogo}
-            fadeDuration={0}
-            resizeMode="contain"
-            onLoadEnd={() => setBootSplashLogoIsLoaded(true)}
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <View style={{ flex: 1 }}>
+        <NavigationContainer
+          ref={navigationRef}
+          theme={isDarkMode ? CustomDarkTheme : CustomTheme}>
+          <SheetProvider>
+            <SystemBars
+              animated={true}
+              barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+            />
+            <StackNavigation />
+          </SheetProvider>
+        </NavigationContainer>
+        {/* <CodePushManager /> */}
+        {bootSplashIsVisible && (
+          <Animated.View
             style={[
-              styles.logo,
-              { transform: [{ translateY: translateY.current }] },
-            ]}
-          />
-        </Animated.View>
-      )}
-    </View>
+              StyleSheet.absoluteFill,
+              {
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: colors.primarybg,
+              },
+              { opacity: opacity.current },
+            ]}>
+            <Animated.Image
+              source={bootSplashLogo}
+              fadeDuration={0}
+              resizeMode="contain"
+              onLoadEnd={() => setBootSplashLogoIsLoaded(true)}
+              style={[
+                styles.logo,
+                { transform: [{ translateY: translateY.current }] },
+              ]}
+            />
+          </Animated.View>
+        )}
+      </View>
+    </GestureHandlerRootView>
   );
 };
 const styles = StyleSheet.create({
@@ -223,4 +255,8 @@ const styles = StyleSheet.create({
     width: 120,
   },
 });
-export default App;
+
+const EnhanceWithLS = withObservables(['likedSongs'], () => ({
+  likedSongs: observeLikedSongs(),
+}));
+export default EnhanceWithLS(App);

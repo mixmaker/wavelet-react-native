@@ -1,18 +1,21 @@
-import { View, ScrollView, Pressable, Animated } from 'react-native';
+import { View, ScrollView, Pressable, Animated, Text } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import useAppContext from '../contexts/useAppContext';
-import CardSmall from '../components/CardSmall';
+import CardType1 from '../components/CardType1';
 import { fetchAlbumDetails } from '../api';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import axios from 'axios';
 import useThemeProvider from '../contexts/useThemeProvider';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import ImageColors from 'react-native-image-colors';
+import PlayAllButton from '../components/PlayAllButton';
 
 const DetailScreen = ({ route, navigation }) => {
-  const { albumId, type, name } = route.params;
-  const { albumData, setAlbumData, isDarkMode,playlistHandler } = useAppContext();
+  const { albumId, type, name, image } = route.params;
+  const { isDarkMode, decodeHtml } = useAppContext();
   const { colors, constants } = useThemeProvider();
+  const [albumData, setAlbumData] = useState();
+  const [albumColorPalette, setAlbumColorPalette] = useState();
 
   const cancelTokenSource = axios.CancelToken.source();
   const fetchAlbumData = async () => {
@@ -23,19 +26,19 @@ const DetailScreen = ({ route, navigation }) => {
       return setAlbumData({
         ...albumData,
         list: array,
-        image: albumData.image.replace('150x150', '500x500'),
+        image: image.replace('150x150', '500x500'),
       });
     }
     if (type === 'song') {
       return setAlbumData({
         ...albumData,
         list: data.songs,
-        image: albumData.image.replace('150x150', '500x500'),
+        image: image.replace('150x150', '500x500'),
       });
     }
     setAlbumData({
       ...data,
-      image: albumData.image.replace('150x150', '500x500'),
+      image: image.replace('150x150', '500x500'),
     });
   };
   const getAlbumColors = async () => {
@@ -51,7 +54,6 @@ const DetailScreen = ({ route, navigation }) => {
       setAlbumColorPalette(undefined);
     };
   }, [albumId]);
-  const [albumColorPalette, setAlbumColorPalette] = useState();
   const HEADER_MAX_HEIGHT = constants.fullWidth;
   const HEADER_MIN_HEIGHT = 80;
   const HEADER_SCROLL_DISTANCE = HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT;
@@ -102,42 +104,8 @@ const DetailScreen = ({ route, navigation }) => {
             backgroundColor: colors.primarybg,
             paddingHorizontal: 15,
           }}>
-          {!albumData?.list &&
-            [1, 2, 3, 4, 5, 6, 7, 8].map(item => (
-              <SkeletonPlaceholder
-                key={item}
-                backgroundColor={isDarkMode ? '#444' : '#E1E9EE'}
-                highlightColor={isDarkMode ? '#5a5a5a' : '#F2F8FC'}
-                speed={1200}>
-                <SkeletonPlaceholder.Item
-                  width={'100%'}
-                  flexDirection={'row'}
-                  alignItems={'center'}
-                  justifyContent="space-between"
-                  marginVertical={10}>
-                  <SkeletonPlaceholder.Item
-                    width={50}
-                    height={50}
-                    borderRadius={10}
-                  />
-                  <SkeletonPlaceholder.Item>
-                    <SkeletonPlaceholder.Item width={270} height={6} />
-                    <SkeletonPlaceholder.Item
-                      width={150}
-                      height={6}
-                      marginTop={10}
-                    />
-                  </SkeletonPlaceholder.Item>
-                  <SkeletonPlaceholder.Item
-                    width={24}
-                    height={24}
-                    borderRadius={6}
-                    marginRight={3}
-                  />
-                </SkeletonPlaceholder.Item>
-              </SkeletonPlaceholder>
-            ))}
-          <Pressable
+          {!albumData?.list && <SkeletonDetailScreen isDarkMode={isDarkMode} />}
+          {/* <Pressable
             style={{
               position: 'absolute',
               right: 30,
@@ -156,14 +124,15 @@ const DetailScreen = ({ route, navigation }) => {
               // playSongHandler(albumData?.list, true);
             }}>
             <Ionicons name="play" size={28} color={colors.primaryText} />
-          </Pressable>
+          </Pressable> */}
+          <PlayAllButton list={albumData?.list} createNewPlaylist={true} />
           {albumData?.list?.map(item => (
-            <CardSmall song={item} key={item.id} />
+            <CardType1 song={item} key={item.id} id={item.id} />
           ))}
         </View>
       </ScrollView>
       <Animated.Image
-        source={{ uri: albumData?.image }}
+        source={{ uri: albumData ? albumData.image : image }}
         transition
         style={[
           {
@@ -181,7 +150,7 @@ const DetailScreen = ({ route, navigation }) => {
             transform: [{ translateY: imageTranslate }],
           },
         ]}
-        blurRadius={albumData?.list ? 0 : 10}
+        blurRadius={albumData?.list ? 0 : 7}
       />
       <Animated.View
         style={[
@@ -191,7 +160,7 @@ const DetailScreen = ({ route, navigation }) => {
             left: 0,
             right: 0,
             overflow: 'hidden',
-            paddingTop: constants.statusbarHeight,
+            paddingTop: constants.statusbarHeight + 20,
           },
           { height: headerHeight, backgroundColor: bgColor },
         ]}>
@@ -209,7 +178,7 @@ const DetailScreen = ({ route, navigation }) => {
               fontSize: 18,
               transform: [{ translateY: textTranslate }],
             }}>
-            {name}
+            {decodeHtml(name)}
           </Animated.Text>
           {/* <Ionicons
             name="arrow-back"
@@ -229,4 +198,45 @@ const DetailScreen = ({ route, navigation }) => {
   );
 };
 
+const SkeletonDetailScreen = ({ isDarkMode }) => (
+  <>
+    <SkeletonPlaceholder
+      backgroundColor={isDarkMode ? '#444' : '#E1E9EE'}
+      highlightColor={isDarkMode ? '#5a5a5a' : '#F2F8FC'}
+      speed={1200}>
+      <SkeletonPlaceholder.Item
+        width={80}
+        height={35}
+        borderRadius={8}
+        style={{ marginBottom: 15 }}
+      />
+    </SkeletonPlaceholder>
+    {[1, 2, 3, 4, 5, 6, 7, 8].map(item => (
+      <SkeletonPlaceholder
+        key={item}
+        backgroundColor={isDarkMode ? '#444' : '#E1E9EE'}
+        highlightColor={isDarkMode ? '#5a5a5a' : '#F2F8FC'}
+        speed={1200}>
+        <SkeletonPlaceholder.Item
+          width={'100%'}
+          flexDirection={'row'}
+          alignItems={'center'}
+          justifyContent="space-between"
+          marginVertical={10}>
+          <SkeletonPlaceholder.Item width={50} height={50} borderRadius={10} />
+          <SkeletonPlaceholder.Item>
+            <SkeletonPlaceholder.Item width={270} height={6} />
+            <SkeletonPlaceholder.Item width={150} height={6} marginTop={10} />
+          </SkeletonPlaceholder.Item>
+          <SkeletonPlaceholder.Item
+            width={24}
+            height={24}
+            borderRadius={6}
+            marginRight={3}
+          />
+        </SkeletonPlaceholder.Item>
+      </SkeletonPlaceholder>
+    ))}
+  </>
+);
 export default DetailScreen;

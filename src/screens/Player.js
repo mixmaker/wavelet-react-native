@@ -6,18 +6,19 @@ import {
   Pressable,
   Platform,
   ActivityIndicator,
+  Button,
 } from 'react-native';
 import React, { useEffect } from 'react';
 import useAppContext from '../contexts/useAppContext';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import TrackPlayer, { useProgress } from 'react-native-track-player';
+import TrackPlayer from 'react-native-track-player';
 import Scrubber from 'react-native-scrubber';
 import useThemeProvider from '../contexts/useThemeProvider';
 import LinearGradient from 'react-native-linear-gradient';
+import { SheetManager } from 'react-native-actions-sheet';
 
 const Player = ({ route, navigation }) => {
   const {
@@ -28,6 +29,7 @@ const Player = ({ route, navigation }) => {
     colorPalette,
     lyrics,
     progress,
+    audioQuality,
   } = useAppContext();
   const { colors, constants } = useThemeProvider();
 
@@ -41,7 +43,7 @@ const Player = ({ route, navigation }) => {
       {colorPalette && (
         <LinearGradient
           start={{ x: 0, y: 0 }}
-          end={{ x: 0, y: 0.75 }}
+          end={{ x: 0.5, y: 0.35 }}
           colors={[
             Platform.OS === 'android'
               ? colorPalette.average
@@ -56,10 +58,11 @@ const Player = ({ route, navigation }) => {
             height: constants.fullHeight,
             width: constants.fullWidth,
             zIndex: -1,
+            opacity: 0.8,
           }}
         />
       )}
-      <View
+      {/* <View
         style={{
           marginTop: constants.statusbarHeight + 20,
           marginBottom: 30,
@@ -71,23 +74,28 @@ const Player = ({ route, navigation }) => {
           color={colors.icon}
           onPress={() => navigation.goBack()}
         />
-      </View>
+      </View> */}
       {playlist.length > 0 && (
-        <View style={{ marginHorizontal: 20 }}>
+        <View
+          style={{
+            marginHorizontal: 20,
+            marginTop: constants.statusbarHeight + constants.fullHeight / 10,
+            // backgroundColor:'red'
+          }}>
           <View>
             <View
               style={{
                 borderRadius: 10,
                 marginHorizontal: 5,
-                overflow: 'hidden',
-                shadowColor: '#000',
+                // overflow: 'hidden',
+                shadowColor: colorPalette.vibrant,
                 shadowOffset: {
                   width: 0,
                   height: 2,
                 },
                 shadowOpacity: 0.25,
                 shadowRadius: 3.84,
-                elevation: 8,
+                elevation: 330,
                 marginTop: 5,
                 height: constants.fullWidth - 50,
                 backgroundColor: colors.secondarybg,
@@ -100,23 +108,35 @@ const Player = ({ route, navigation }) => {
                   ),
                 }}
                 style={{
+                  borderRadius: 10,
+
                   height: constants.fullWidth - 50,
                 }}
               />
             </View>
 
             <Text
+              numberOfLines={1}
               style={{
                 color: colors.primaryText,
-                textAlign: 'center',
-                marginTop: 20,
-                fontSize: 24,
+                // textAlign: 'center',
+                marginTop: 30,
+                marginBottom: 7,
+                fontSize: 29,
                 fontWeight: '700',
+                paddingRight: 40,
               }}>
               {playlist[currentTrackIndex]?.title}
             </Text>
             <Text
-              style={{ textAlign: 'center', fontSize: 16, marginBottom: 10 }}>
+              numberOfLines={1}
+              style={{
+                // textAlign: 'center',
+                color: colors.secondaryText,
+                fontSize: 15,
+                marginBottom: 20,
+                paddingRight: 60,
+              }}>
               {playlist[currentTrackIndex]?.artist}
               {/* {songDetails.more_info.artistMap.primary_artists.length > 2
                       ? songDetails.more_info.artistMap.primary_artists
@@ -130,7 +150,8 @@ const Player = ({ route, navigation }) => {
           </View>
           <View
             style={{
-              width: constants.fullWidth - 60,
+              marginTop: 10,
+              width: constants.fullWidth - 40,
               height: 40,
               alignSelf: 'center',
             }}>
@@ -138,7 +159,7 @@ const Player = ({ route, navigation }) => {
               totalDuration={progress.duration}
               value={progress.position}
               bufferedValue={progress.buffered}
-              trackColor={colors.primaryText}
+              trackColor={colorPalette.lightVibrant}
               scrubbedColor="#dfdfdf"
               trackBackgroundColor={isDarkMode ? '#4e4e4e' : '#fff'}
               onSlidingComplete={s => {
@@ -148,19 +169,31 @@ const Player = ({ route, navigation }) => {
           </View>
           <View
             style={{
-              marginTop: 10,
+              marginTop: 20,
               flexDirection: 'row',
               justifyContent: 'space-evenly',
               alignItems: 'center',
             }}>
             <Ionicons
-              name="play-skip-back"
-              size={24}
+              name="play-back"
+              size={26}
               color={colors.icon}
               onPress={() => TrackPlayer.skipToPrevious()}
             />
 
             <Pressable
+              style={({ pressed }) => ({
+                zIndex: 0.5,
+                padding: 5,
+                backgroundColor: colors.secondarybg,
+                height: 65,
+                width: 65,
+                // elevation: 5,
+                borderRadius: 65 / 2,
+                alignItems: 'center',
+                justifyContent: 'center',
+                transform: [{ scale: pressed ? 0.94 : 1 }],
+              })}
               onPress={() => {
                 if (isPlaying === 'playing' || isPlaying === 'buffering') {
                   TrackPlayer.pause();
@@ -169,81 +202,49 @@ const Player = ({ route, navigation }) => {
                   TrackPlayer.play();
                 }
               }}>
-              {({ pressed }) => (
-                <View
-                  style={{
-                    height: 50,
-                    width: 50,
-                    backgroundColor: colors.secondarybg,
-                    elevation: 5,
-                    padding: 5,
-                    borderRadius: 50 / 2,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    transform: [{ scale: pressed ? 0.94 : 1 }],
+              <View
+                style={
+                  {
                     // paddingRight: isPlaying? 0 : 0.5
-                  }}>
-                  {isPlaying === 'buffering' && (
-                    <ActivityIndicator
-                      size="large"
-                      color={colors.primaryText}
-                      style={{
-                        position: 'absolute',
-                        transform: [{ scale: 1.6 }],
-                      }}
-                    />
-                  )}
-                  <FontAwesome5
-                    name={
-                      isPlaying === 'playing' || isPlaying === 'buffering'
-                        ? 'pause'
-                        : 'play'
+                  }
+                }>
+                {isPlaying === 'buffering' && (
+                  <ActivityIndicator
+                    size="large"
+                    color={
+                      colorPalette.lightVibrant === '#000000'
+                        ? '#fff'
+                        : colorPalette.lightVibrant
                     }
-                    size={24}
+                    style={{
+                      position: 'absolute',
+                      transform: [{ scale: 2 }],
+                    }}
+                  />
+                )}
+                {isPlaying === 'playing' || isPlaying === 'buffering' ? (
+                  <AntDesign size={30} name="pause" color={colors.icon} />
+                ) : (
+                  <Entypo
+                    size={30}
+                    name="controller-play"
                     color={colors.icon}
                   />
-                </View>
-              )}
+                )}
+              </View>
             </Pressable>
             <Ionicons
-              name="play-skip-forward"
-              size={24}
+              name="play-forward"
+              size={26}
               color={colors.icon}
               onPress={() => TrackPlayer.skipToNext()}
             />
           </View>
           <View
             style={{
-              marginTop: 25,
-              flexDirection: 'row',
-              justifyContent: 'space-around',
-            }}>
-            <MaterialCommunityIcons
-              name="heart-outline"
-              size={24}
-              color={colors.icon}
-            />
-            <Ionicons name="md-shuffle" size={24} color={colors.icon} />
-            {/* <MaterialCommunityIcons name="heart" size={24} color={colors.icon} /> */}
-            <MaterialCommunityIcons
-              name="repeat-off"
-              size={24}
-              color={colors.icon}
-            />
-            <MaterialCommunityIcons
-              name="download"
-              size={24}
-              color={colors.icon}
-            />
-            {/* <MaterialCommunityIcons name="repeat" size={24} color={colors.icon} />
-        <MaterialCommunityIcons name="repeat-once" size={24} color={colors.icon} /> */}
-          </View>
-          <View
-            style={{
-              marginTop: 40,
+              marginTop: 20,
               flexDirection: 'row',
               justifyContent: 'center',
-              alignItems: 'center',
             }}>
             <MaterialIcons
               name="multitrack-audio"
@@ -254,33 +255,39 @@ const Player = ({ route, navigation }) => {
               style={{
                 color: colors.secondaryText,
               }}>
-              Audio Quality: {'High'}
+              Audio Quality:{' '}
+              {audioQuality === 320
+                ? 'High'
+                : audioQuality === 160
+                ? 'Normal'
+                : audioQuality === 96
+                ? 'Basic'
+                : 'Low'}
             </Text>
+          </View>
+          <View
+            style={{
+              alignItems: 'center',
+              marginTop: 20,
+            }}>
+            <Pressable
+              style={{ alignItems: 'center' }}
+              onPress={() => {
+                SheetManager.show('now-playing-sheet');
+              }}>
+              <Text
+                style={{
+                  textAlign: 'center',
+                  fontSize: 18,
+                  fontWeight: 'bold',
+                }}>
+                Up Next
+              </Text>
+              <Entypo name="chevron-down" size={20} />
+            </Pressable>
           </View>
         </View>
       )}
-      <View
-        style={{
-          flex: 1,
-          marginTop: 20,
-          marginHorizontal: 20,
-          padding: 10,
-          borderRadius: 12,
-          backgroundColor: '#191919',
-          // height: 600, //! why flex 1 isn't working, why i need a fixed height
-        }}>
-        <Text
-          style={{
-            color: colors.primaryText,
-            fontSize: 18,
-            fontWeight: '700',
-          }}>
-          Lyrics:
-        </Text>
-        {lyrics && (
-          <Text>coming soon!</Text>
-        )}
-      </View>
     </ScrollView>
   );
 };
