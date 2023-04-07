@@ -64,3 +64,4 @@ buck-out/
 .bundle
 __tests__
 .env
+gradle.properties
