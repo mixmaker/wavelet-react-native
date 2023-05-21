@@ -1,7 +1,8 @@
-import { Pressable, Text } from 'react-native';
+import { Pressable } from 'react-native';
 import React from 'react';
 import useAppContext from '../contexts/useAppContext';
 import useThemeProvider from '../contexts/useThemeProvider';
+import CustomText from './CustomText';
 
 const PlayAllButton = ({ list, createNewPlaylist }) => {
   const { playlistHandler } = useAppContext();
@@ -23,7 +24,7 @@ const PlayAllButton = ({ list, createNewPlaylist }) => {
       onPress={() => {
         playlistHandler(list, createNewPlaylist);
       }}>
-      <Text style={{ fontSize: 16, color: colors.primaryText }}>Play all</Text>
+      <CustomText style={{ fontSize: 16, color: colors.primaryText }}>Play all</CustomText>
     </Pressable>
   );
 };

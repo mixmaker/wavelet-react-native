@@ -1,7 +1,8 @@
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import React from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import useThemeProvider from '../contexts/useThemeProvider';
+import CustomText from '../fragments/CustomText';
 
 const NoNetworkComponent = () => {
   const { constants, colors } = useThemeProvider();
@@ -19,14 +20,14 @@ const NoNetworkComponent = () => {
         size={40}
         color={colors.secondaryText}
       />
-      <Text
+      <CustomText semiBold
         style={{
           color: colors.primaryText,
           fontSize: 21,
           textAlign: 'center',
         }}>
         No network available
-      </Text>
+      </CustomText>
     </View>
   );
 };

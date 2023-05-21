@@ -1,4 +1,4 @@
-import { View, Text, ScrollView } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import React, { useEffect } from 'react';
 import { homeDataURL } from '../api/base';
 import { getResponse } from '../api';
@@ -14,6 +14,7 @@ import TrackPlayer from 'react-native-track-player';
 import { saveResumePlayback } from '../data/helpers';
 import { useNetInfo } from '@react-native-community/netinfo';
 import NoNetworkComponent from '../components/NoNetworkComponent';
+import CustomText from '../fragments/CustomText';
 
 const ListSkeletonStack = ({ isDarkMode }) => {
   return (
@@ -101,7 +102,7 @@ const Home = ({ navigation }) => {
           <View style={{ marginTop: constants.statusbarHeight + 20 }}>
             {homeData?.greeting && (
               <>
-                <Text
+                <CustomText
                   style={{
                     fontSize: 32,
                     marginBottom: 50,
@@ -111,7 +112,7 @@ const Home = ({ navigation }) => {
                   }}>
                   {' '}
                   {homeData.greeting + '!'}
-                </Text>
+                </CustomText>
                 <RecentlyPlayed />
                 <View>
                   <ListStack
@@ -119,6 +120,7 @@ const Home = ({ navigation }) => {
                     data={homeData.artist_recos}
                     navigation={navigation}
                     showTitle={true}
+                    artistRow={true}
                   />
                   <ListStack
                     title={homeData.modules.city_mod?.title}
@@ -158,14 +160,21 @@ const Home = ({ navigation }) => {
   );
 };
 
-export const ListStack = ({ title, data, navigation, showTitle }) => {
+export const ListStack = ({
+  title,
+  data,
+  navigation,
+  showTitle,
+  artistRow,
+}) => {
   const { colors } = useThemeProvider();
   // const isArtist =  data.more_info
   return (
     <View style={{ marginBottom: 30 }}>
       {data && (
         <>
-          <Text
+          <CustomText
+            semiBold
             style={{
               fontSize: 19,
               color: colors.primaryText,
@@ -173,8 +182,9 @@ export const ListStack = ({ title, data, navigation, showTitle }) => {
               marginBottom: 8,
             }}>
             {title}
-          </Text>
+          </CustomText>
           <ListHorizontal
+            artistRow={artistRow}
             navigation={navigation}
             itemArray={data}
             showTitle={showTitle}

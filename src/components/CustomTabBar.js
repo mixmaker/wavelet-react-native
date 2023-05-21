@@ -1,4 +1,4 @@
-import { View, Text, Pressable } from 'react-native';
+import { View, Pressable } from 'react-native';
 import React, { useEffect, useMemo, useRef } from 'react';
 import useThemeProvider from '../contexts/useThemeProvider';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -8,7 +8,7 @@ const CustomTabBar = props => {
   const { constants, colors } = useThemeProvider();
   const { navigation, descriptors, state } = props;
   // const focusedOptions = descriptors[state.routes[state.index].key].options;
-  const tabWidth = useMemo(() => constants.fullWidth / 4, []);
+  // const tabWidth = useMemo(() => constants.fullWidth / 4, []);
   return (
     <View
       style={[
@@ -23,9 +23,11 @@ const CustomTabBar = props => {
         },
         // focusedOptions.tabBarStyle,
       ]}>
-      <MiniPlayer />
+        <MiniPlayer />
       <View
         style={{
+          borderTopLeftRadius: 10,
+          borderTopRightRadius: 10,
           paddingBottom: constants.navbarHeight + 10,
           flexDirection: 'row',
           width: '100%',

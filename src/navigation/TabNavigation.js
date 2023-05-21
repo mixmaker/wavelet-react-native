@@ -2,7 +2,7 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Home from '../screens/Home';
 import Library from '../screens/Library';
-import CustomTabBar from '../components/CustomTabbar';
+import CustomTabBar from '../components/CustomTabBar';
 import Settings from '../screens/Settings';
 import Discover from '../screens/Discover';
 import Ionicons from 'react-native-vector-icons/Ionicons';

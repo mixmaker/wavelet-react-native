@@ -1,7 +1,8 @@
-import { View, Text, ScrollView } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import React from 'react';
 import Feather from 'react-native-vector-icons/Feather';
 import useThemeProvider from '../../contexts/useThemeProvider';
+import CustomText from '../../fragments/CustomText';
 
 const GeneralSettings = ({ navigation }) => {
   const { colors, constants } = useThemeProvider();
@@ -27,13 +28,13 @@ const GeneralSettings = ({ navigation }) => {
           style={{ marginRight: 20, paddingTop: 5 }}
           onPress={() => navigation.goBack()}
         />
-        <Text
+        <CustomText
           style={{
             fontSize: 32,
             color: colors.secondaryText,
           }}>
           General
-        </Text>
+        </CustomText>
       </View>
     </ScrollView>
   );

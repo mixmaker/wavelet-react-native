@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, Pressable } from 'react-native';
+import { View, ScrollView, Pressable } from 'react-native';
 import React from 'react';
 import useThemeProvider from '../contexts/useThemeProvider';
 import useAppContext from '../contexts/useAppContext';
@@ -8,6 +8,7 @@ import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import LinearGradient from 'react-native-linear-gradient';
 import NoNetworkComponent from '../components/NoNetworkComponent';
 import { useNetInfo } from '@react-native-community/netinfo';
+import CustomText from '../fragments/CustomText';
 
 const Discover = ({ navigation }) => {
   const { homeData, setHomeData, isDarkMode } = useAppContext();
@@ -32,7 +33,7 @@ const Discover = ({ navigation }) => {
             backgroundColor: colors.primarybg,
             marginBottom: bottomTabHeight+20,
           }}>
-          <LinearGradient
+          {/* <LinearGradient
             colors={[colors.bgGradient, colors.primarybg]} //DDE5B5 3a4211
             style={{
               flex: 1,
@@ -44,7 +45,7 @@ const Discover = ({ navigation }) => {
             }}
             start={{ x: 0, y: 0 }}
             end={{ x: 0.5, y: 0.3 }}
-          />
+          /> */}
           {homeData && (
             <View style={{ marginTop: constants.statusbarHeight + 20 }}>
               <View
@@ -55,7 +56,7 @@ const Discover = ({ navigation }) => {
                   flexDirection: 'row',
                   marginHorizontal: 10,
                 }}>
-                <Text
+                <CustomText
                   style={{
                     fontSize: 32,
                     marginLeft: 10,
@@ -63,7 +64,7 @@ const Discover = ({ navigation }) => {
                     color: colors.secondaryText,
                   }}>
                   Discover
-                </Text>
+                </CustomText>
                 <Ionicons
                   name="search"
                   size={20}

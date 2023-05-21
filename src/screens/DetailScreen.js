@@ -8,7 +8,7 @@ import axios from 'axios';
 import useThemeProvider from '../contexts/useThemeProvider';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import ImageColors from 'react-native-image-colors';
-import PlayAllButton from '../components/PlayAllButton';
+import PlayAllButton from '../fragments/PlayAllButton';
 
 const DetailScreen = ({ route, navigation }) => {
   const { albumId, type, name, image } = route.params;
@@ -177,6 +177,7 @@ const DetailScreen = ({ route, navigation }) => {
               color: '#fff',
               fontSize: 18,
               transform: [{ translateY: textTranslate }],
+              fontFamily:'Nunito-Regular'
             }}>
             {decodeHtml(name)}
           </Animated.Text>

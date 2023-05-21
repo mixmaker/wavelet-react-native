@@ -1,11 +1,12 @@
 import ActionSheet, { SheetProps } from 'react-native-actions-sheet';
-import { View, Text, Image, Pressable, ToastAndroid } from 'react-native';
+import { View, Image, Pressable, ToastAndroid } from 'react-native';
 import React, { useRef } from 'react';
 import useThemeProvider from '../../contexts/useThemeProvider';
 import useAppContext from '../../contexts/useAppContext';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native';
 import { saveLikedSongs, unLikeSong } from '../../data/helpers';
+import CustomText from '../../fragments/CustomText';
 
 const SongInfoSheet = ({ payload, sheetId }) => {
   const { colors } = useThemeProvider();
@@ -61,12 +62,12 @@ const SongInfoSheet = ({ payload, sheetId }) => {
           source={{ uri: payload?.image }}
           style={{ height: 140, width: 140 }}
         />
-        <Text
+        <CustomText
           numberOfLines={1}
           style={{ color: colors.primaryText, marginTop: 10, fontSize: 16 }}>
           {decodeHtml(payload?.title)}
-        </Text>
-        <Text
+        </CustomText>
+        <CustomText
           numberOfLines={1}
           style={{
             color: colors.secondaryText,
@@ -80,7 +81,7 @@ const SongInfoSheet = ({ payload, sheetId }) => {
             : payload?.more_info.artistMap.primary_artists
                 .map(artist => decodeHtml(artist.name))
                 .join(', ')}
-        </Text>
+        </CustomText>
       </View>
       <View style={{ paddingHorizontal: 10 }}>
         {buttons.map(button => (
@@ -98,14 +99,14 @@ const SongInfoSheet = ({ payload, sheetId }) => {
               color={colors.secondaryText}
               size={20}
             />
-            <Text
+            <CustomText
               style={{
                 marginLeft: 10,
                 color: colors.primaryText,
                 fontSize: 16,
               }}>
               {button.name}
-            </Text>
+            </CustomText>
           </Pressable>
         ))}
       </View>

@@ -1,7 +1,6 @@
 import {
   ScrollView,
   View,
-  Text,
   Image,
   Pressable,
   Linking,
@@ -11,6 +10,7 @@ import useThemeProvider from '../contexts/useThemeProvider';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Feather from 'react-native-vector-icons/Feather';
 import { version } from '../../package.json';
+import CustomText from '../fragments/CustomText';
 
 const About = ({ navigation }) => {
   const { colors, constants } = useThemeProvider();
@@ -39,22 +39,21 @@ const About = ({ navigation }) => {
             }}
             resizeMode="cover"
           />
-          <Text
+          <CustomText bold
             style={{
               fontSize: 42,
               marginLeft: 12,
               color: colors.primaryText,
-              fontWeight: '600',
               textAlign: 'center',
             }}>
             Wavelet
-          </Text>
-          <Text style={{ textAlign: 'center', fontSize: 16 }}>{version}</Text>
+          </CustomText>
+          <CustomText style={{ textAlign: 'center', fontSize: 16 }}>{version}</CustomText>
         </View>
         <View style={{ alignItems: 'center' }}>
-          <Text style={{ textAlign: 'center', fontSize: 18 }}>
+          <CustomText style={{ textAlign: 'center', fontSize: 18 }}>
             This is an open source project and can be found on GitHub
-          </Text>
+          </CustomText>
           <Pressable
             onPress={() =>
               Linking.openURL(
@@ -77,20 +76,20 @@ const About = ({ navigation }) => {
               color={colors.primaryText}
               style={{ marginRight: 8 }}
             />
-            <Text style={{ fontSize: 18, color: colors.primaryText }}>
+            <CustomText style={{ fontSize: 18, color: colors.primaryText }}>
               GitHub repo
-            </Text>
+            </CustomText>
           </Pressable>
         </View>
         <View>
-          <Text
+          <CustomText
             style={{
               fontSize: 18,
               textAlign: 'center',
               color: colors.secondaryText,
             }}>
             If you liked my work, show some love and ⭐ the repo
-          </Text>
+          </CustomText>
           <Pressable
             onPress={() =>
               Linking.openURL('https://www.buymeacoffee.com/shoumik').catch(
@@ -115,18 +114,18 @@ const About = ({ navigation }) => {
                 color={'#111'}
                 style={{ marginRight: 8 }}
               />
-              <Text
+              <CustomText semiBold
                 style={{
                   fontSize: 18,
                   color: '#111',
                 }}>
                 Buy me a coffee
-              </Text>
+              </CustomText>
             </>
           </Pressable>
         </View>
       </View>
-      <Text
+      <CustomText
         style={{
           color: colors.secondaryText,
           marginBottom: 30,
@@ -134,7 +133,7 @@ const About = ({ navigation }) => {
           fontSize: 15,
         }}>
         Made with ♥ by Shoumik Kumbhakar
-      </Text>
+      </CustomText>
     </ScrollView>
   );
 };

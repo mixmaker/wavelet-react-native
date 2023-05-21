@@ -1,9 +1,10 @@
-import { View, Text, ScrollView, Appearance, Animated } from 'react-native';
+import { View, ScrollView, Appearance, Animated } from 'react-native';
 import React from 'react';
 import useThemeProvider from '../../contexts/useThemeProvider';
 import useAppContext from '../../contexts/useAppContext';
 import Feather from 'react-native-vector-icons/Feather';
 import { Dropdown } from 'react-native-element-dropdown';
+import CustomText from '../../fragments/CustomText';
 
 const AppearanceSettings = ({ navigation }) => {
   const { colors, constants } = useThemeProvider();
@@ -34,13 +35,13 @@ const AppearanceSettings = ({ navigation }) => {
           style={{ marginRight: 20, paddingTop: 5 }}
           onPress={() => navigation.goBack()}
         />
-        <Text
+        <CustomText
           style={{
             fontSize: 32,
             color: colors.secondaryText,
           }}>
           Appearance
-        </Text>
+        </CustomText>
       </View>
       <View
         style={{
@@ -57,9 +58,11 @@ const AppearanceSettings = ({ navigation }) => {
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          <Text style={{ color: colors.primaryText, fontSize: 16 }}>
+          <CustomText
+            semiBold
+            style={{ color: colors.primaryText, fontSize: 16 }}>
             Theme Preference
-          </Text>
+          </CustomText>
           <Animated.View style={{ flex: 1 }}>
             <Dropdown
               data={data}
@@ -72,7 +75,10 @@ const AppearanceSettings = ({ navigation }) => {
                 paddingHorizontal: 2,
                 paddingVertical: 4,
               }}
-              selectedTextStyle={{ color: colors.secondaryText }}
+              selectedTextStyle={{
+                color: colors.secondaryText,
+                fontFamily: 'Nunito-Regular',
+              }}
               onChange={item => {
                 const colorscheme = Appearance.getColorScheme() === 'dark';
                 item.label === 'Auto'
@@ -98,9 +104,9 @@ const AppearanceSettings = ({ navigation }) => {
             />
           </Animated.View>
         </View>
-        <Text style={{ color: colors.secondaryText, marginVertical: 7 }}>
+        <CustomText style={{ color: colors.secondaryText, marginVertical: 7 }}>
           Selecting auto will adjust the theme according to your system.
-        </Text>
+        </CustomText>
       </View>
     </ScrollView>
   );

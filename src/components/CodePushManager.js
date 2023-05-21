@@ -1,9 +1,9 @@
 import React, { Component, useState } from 'react';
-import { Dimensions, Modal, StyleSheet, View, Text } from 'react-native';
+import { Dimensions, Modal, StyleSheet, View } from 'react-native';
 import CodePush from 'react-native-code-push';
-// import { Icon, Text } from "react-native-elements";
 import Animated, { Layout } from 'react-native-reanimated';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import CustomText from '../fragments/CustomText';
 
 class CodePushManager extends Component {
   overlayWidth = Dimensions.get('window').width - 40;
@@ -71,7 +71,7 @@ class CodePushManager extends Component {
             ) : (
               <View style={styles.uploadedText}>
                 <AntDesign name="checkcircle" color="green" size={24} />
-                <Text style={styles.text}>{'Downloaded, restarting...'}</Text>
+                <CustomText style={styles.text}>{'Downloaded, restarting...'}</CustomText>
               </View>
             )}
           </Animated.View>

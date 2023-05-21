@@ -1,6 +1,5 @@
 import {
   View,
-  Text,
   Image,
   Pressable,
 } from 'react-native';
@@ -14,6 +13,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Scrubber from 'react-native-scrubber';
 import useThemeProvider from '../contexts/useThemeProvider';
+import CustomText from '../fragments/CustomText';
 
 const MiniPlayer = () => {
   const navigate2player = useNavigation();
@@ -85,18 +85,17 @@ const MiniPlayer = () => {
                     }}
                   />
                   <View>
-                    <Text
+                    <CustomText semiBold
                       style={{
                         // ...GlobalStyles.primaryText,
                         // textAlign: 'center',
                         // marginTop: 30,
                         // fontSize: 24,
-                        fontWeight: '700',
                         color: colors.primaryText,
                       }}>
                       {playlist[currentTrackIndex]?.title}
-                    </Text>
-                    <Text
+                    </CustomText>
+                    <CustomText
                       style={{
                         color: colors.secondaryText,
                       }}>
@@ -104,7 +103,7 @@ const MiniPlayer = () => {
                         ', ',
                         ' • ',
                       )}
-                    </Text>
+                    </CustomText>
                   </View>
                 </View>
                 <View

@@ -1,10 +1,11 @@
-import { View, Text, ScrollView } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import React from 'react';
 import useAppContext from '../contexts/useAppContext';
 import useThemeProvider from '../contexts/useThemeProvider';
 import CardType2 from '../components/CardType2';
 import Feather from 'react-native-vector-icons/Feather';
-import PlayAllButton from '../components/PlayAllButton';
+import PlayAllButton from '../fragments/PlayAllButton';
+import CustomText from '../fragments/CustomText';
 
 const LikedSongs = ({ navigation }) => {
   const { likedSongList } = useAppContext();
@@ -31,13 +32,13 @@ const LikedSongs = ({ navigation }) => {
           style={{ marginRight: 20, paddingTop: 5 }}
           onPress={() => navigation.goBack()}
         />
-        <Text
+        <CustomText
           style={{
             fontSize: 32,
             color: colors.secondaryText,
           }}>
           Liked Songs
-        </Text>
+        </CustomText>
       </View>
       <View
         style={{
@@ -53,7 +54,7 @@ const LikedSongs = ({ navigation }) => {
             ))}
           </>
         ) : (
-          <Text>Nothing to show</Text>
+          <CustomText>Nothing to show</CustomText>
         )}
       </View>
     </ScrollView>

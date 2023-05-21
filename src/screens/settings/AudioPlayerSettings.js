@@ -1,10 +1,11 @@
-import { View, Text, Pressable, ScrollView } from 'react-native';
+import { View, Pressable, ScrollView } from 'react-native';
 import React, { useState } from 'react';
 import useAppContext from '../../contexts/useAppContext';
 import useThemeProvider from '../../contexts/useThemeProvider';
 import Feather from 'react-native-vector-icons/Feather';
 import { Dropdown } from 'react-native-element-dropdown';
 import Animated from 'react-native-reanimated';
+import CustomText from '../../fragments/CustomText';
 
 const AudioPlayerSettings = ({ navigation }) => {
   const { colors, constants } = useThemeProvider();
@@ -47,13 +48,13 @@ const AudioPlayerSettings = ({ navigation }) => {
           style={{ marginRight: 20, paddingTop: 5 }}
           onPress={() => navigation.goBack()}
         />
-        <Text
+        <CustomText
           style={{
             fontSize: 32,
             color: colors.secondaryText,
           }}>
           Audio & Player
-        </Text>
+        </CustomText>
       </View>
       <View
         style={{
@@ -69,9 +70,11 @@ const AudioPlayerSettings = ({ navigation }) => {
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          <Text style={{ color: colors.primaryText, fontSize: 16 }}>
+          <CustomText
+            semiBold
+            style={{ color: colors.primaryText, fontSize: 16 }}>
             Audio Quality
-          </Text>
+          </CustomText>
           <Animated.View style={{ flex: 1 }}>
             <Dropdown
               data={audioQData}
@@ -84,7 +87,10 @@ const AudioPlayerSettings = ({ navigation }) => {
                 paddingHorizontal: 2,
                 paddingVertical: 4,
               }}
-              selectedTextStyle={{ color: colors.secondaryText }}
+              selectedTextStyle={{
+                color: colors.secondaryText,
+                fontFamily: 'Nunito-Regular',
+              }}
               onChange={item => {
                 setAudioQuality(item.quality);
               }}
@@ -104,7 +110,7 @@ const AudioPlayerSettings = ({ navigation }) => {
             />
           </Animated.View>
         </View>
-        <Text
+        <CustomText
           style={{
             color: colors.secondaryText,
             marginVertical: 7,
@@ -113,7 +119,7 @@ const AudioPlayerSettings = ({ navigation }) => {
           Higher audio quality will consume more data. It may also take longer
           to load on slow networks. {'\n'}Changing this setting will apply to
           the songs you play next.
-        </Text>
+        </CustomText>
       </View>
       <View
         style={{
@@ -129,9 +135,11 @@ const AudioPlayerSettings = ({ navigation }) => {
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          <Text style={{ color: colors.primaryText, fontSize: 16 }}>
+          <CustomText
+            semiBold
+            style={{ color: colors.primaryText, fontSize: 16 }}>
             Player Screen Animation
-          </Text>
+          </CustomText>
           <Animated.View style={{ flex: 1 }}>
             <Dropdown
               data={playerAnData}
@@ -144,7 +152,10 @@ const AudioPlayerSettings = ({ navigation }) => {
                 paddingHorizontal: 2,
                 paddingVertical: 4,
               }}
-              selectedTextStyle={{ color: colors.secondaryText }}
+              selectedTextStyle={{
+                color: colors.secondaryText,
+                fontFamily: 'Nunito-Regular',
+              }}
               onChange={item => {
                 setPlayerAnimationType(item.name);
               }}
@@ -164,14 +175,14 @@ const AudioPlayerSettings = ({ navigation }) => {
             />
           </Animated.View>
         </View>
-        <Text
+        <CustomText
           style={{
             color: colors.secondaryText,
             marginVertical: 7,
             lineHeight: 20,
           }}>
           Change how the full screen player behaves.
-        </Text>
+        </CustomText>
       </View>
     </ScrollView>
   );

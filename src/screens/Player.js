@@ -1,6 +1,5 @@
 import {
   View,
-  Text,
   Image,
   ScrollView,
   Pressable,
@@ -19,6 +18,7 @@ import Scrubber from 'react-native-scrubber';
 import useThemeProvider from '../contexts/useThemeProvider';
 import LinearGradient from 'react-native-linear-gradient';
 import { SheetManager } from 'react-native-actions-sheet';
+import CustomText from '../fragments/CustomText';
 
 const Player = ({ route, navigation }) => {
   const {
@@ -115,7 +115,7 @@ const Player = ({ route, navigation }) => {
               />
             </View>
 
-            <Text
+            <CustomText bold
               numberOfLines={1}
               style={{
                 color: colors.primaryText,
@@ -123,12 +123,11 @@ const Player = ({ route, navigation }) => {
                 marginTop: 30,
                 marginBottom: 7,
                 fontSize: 29,
-                fontWeight: '700',
                 paddingRight: 40,
               }}>
               {playlist[currentTrackIndex]?.title}
-            </Text>
-            <Text
+            </CustomText>
+            <CustomText
               numberOfLines={1}
               style={{
                 // textAlign: 'center',
@@ -146,7 +145,7 @@ const Player = ({ route, navigation }) => {
                       : songDetails.more_info.artistMap.primary_artists
                           .map(artist => artist.name)
                           .join(' • ')} */}
-            </Text>
+            </CustomText>
           </View>
           <View
             style={{
@@ -251,7 +250,7 @@ const Player = ({ route, navigation }) => {
               size={20}
               color={colors.icon}
             />
-            <Text
+            <CustomText
               style={{
                 color: colors.secondaryText,
               }}>
@@ -263,7 +262,7 @@ const Player = ({ route, navigation }) => {
                 : audioQuality === 96
                 ? 'Basic'
                 : 'Low'}
-            </Text>
+            </CustomText>
           </View>
           <View
             style={{
@@ -275,14 +274,13 @@ const Player = ({ route, navigation }) => {
               onPress={() => {
                 SheetManager.show('now-playing-sheet');
               }}>
-              <Text
+              <CustomText bold
                 style={{
                   textAlign: 'center',
                   fontSize: 18,
-                  fontWeight: 'bold',
                 }}>
                 Up Next
-              </Text>
+              </CustomText>
               <Entypo name="chevron-down" size={20} />
             </Pressable>
           </View>

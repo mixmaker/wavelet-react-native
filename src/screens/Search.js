@@ -1,4 +1,4 @@
-import { View, Text, TextInput, ActivityIndicator, Image } from 'react-native';
+import { View, KeyBoard, TextInput, ActivityIndicator, Image } from 'react-native';
 import React, { useState, useEffect, useRef } from 'react';
 import { fetchTopSearches, getResponse, searchResultsURL } from '../api';
 import useAppContext from '../contexts/useAppContext';
@@ -7,6 +7,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import axios from 'axios';
 import useThemeProvider from '../contexts/useThemeProvider';
 import Feather from 'react-native-vector-icons/Feather';
+import CustomText from '../fragments/CustomText';
 
 const Search = () => {
   const { searchData, setSearchData } = useAppContext();
@@ -82,6 +83,7 @@ const Search = () => {
               paddingHorizontal: 10,
               fontSize: 18,
               color: colors.primaryText,
+              fontFamily:'Nunito-Regular'
             }}
             placeholder="Search"
             placeholderTextColor={colors.secondaryText}
@@ -89,10 +91,10 @@ const Search = () => {
         </View>
         <View style={{ marginTop: 10 }}>
           {searchStr !== '' && (
-            <Text style={{ color: colors.secondaryText }}>
+            <CustomText style={{ color: colors.secondaryText }}>
               Search results for:{' '}
-              <Text style={{ color: colors.primaryText }}>{searchStr}</Text>
-            </Text>
+              <CustomText style={{ color: colors.primaryText }}>{searchStr}</CustomText>
+            </CustomText>
           )}
           {searchStr === '' && topSearches.length > 1 && (
             <>
@@ -103,14 +105,14 @@ const Search = () => {
                   alignItems: 'center',
                   marginBottom: 10,
                 }}>
-                <Text
+                <CustomText semiBold
                   style={{
                     fontSize: 20,
                     color: colors.primaryText,
                     marginRight: 5,
                   }}>
                   Trending now
-                </Text>
+                </CustomText>
                 <Feather
                   name="trending-up"
                   size={20}
@@ -136,17 +138,17 @@ const Search = () => {
                     }}
                   />
                   <View>
-                    <Text
+                    <CustomText
                       style={{
                         fontSize: 15,
                         marginRight: 3,
                         color: colors.primaryText,
                       }}>
                       {item.title}
-                    </Text>
-                    <Text style={{ color: colors.secondaryText }}>
+                    </CustomText>
+                    <CustomText style={{ color: colors.secondaryText }}>
                       {item.type}
-                    </Text>
+                    </CustomText>
                   </View>
                 </View>
               ))}

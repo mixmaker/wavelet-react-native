@@ -1,8 +1,9 @@
 import { saveRecentlyPlayed, observeRecentlyPlayed } from '../data/helpers';
 import withObservables from '@nozbe/with-observables';
-import { Text, View, FlatList, ScrollView } from 'react-native';
+import { View, FlatList, ScrollView } from 'react-native';
 import CardType2 from './CardType2';
 import useThemeProvider from '../contexts/useThemeProvider';
+import CustomText from '../fragments/CustomText';
 
 const RecentlyPlayed = ({ recentlyPlayed }) => {
   const { colors, constants } = useThemeProvider();
@@ -20,7 +21,7 @@ const RecentlyPlayed = ({ recentlyPlayed }) => {
     <>
       {data.length > 1 && (
         <View style={{ marginBottom: 30 }}>
-          <Text
+          <CustomText
             style={{
               fontSize: 19,
               color: colors.primaryText,
@@ -28,7 +29,7 @@ const RecentlyPlayed = ({ recentlyPlayed }) => {
               marginBottom: 8,
             }}>
             Recently played
-          </Text>
+          </CustomText>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             <FlatList
               contentContainerStyle={{

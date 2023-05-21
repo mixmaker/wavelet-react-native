@@ -1,8 +1,9 @@
-import { View, Text, Image, Pressable, ActivityIndicator } from 'react-native';
+import { View, Image, Pressable, ActivityIndicator } from 'react-native';
 import React, { useState } from 'react';
 import { fetchSongDataFromId } from '../api';
 import useThemeProvider from '../contexts/useThemeProvider';
 import useAppContext from '../contexts/useAppContext';
+import CustomText from '../fragments/CustomText';
 
 const CardType2 = ({ id, index }) => {
   const { playlistHandler } = useAppContext();
@@ -49,14 +50,14 @@ const CardType2 = ({ id, index }) => {
             }}
           />
           <View style={{ marginLeft: 3, width: 180 }}>
-            <Text style={{ fontSize: 16 }} numberOfLines={1}>
+            <CustomText style={{ fontSize: 16 }} numberOfLines={1}>
               {data.title}
-            </Text>
-            <Text
+            </CustomText>
+            <CustomText
               style={{ fontSize: 14, color: colors.secondaryText }}
               numberOfLines={1}>
               {data.artist}
-            </Text>
+            </CustomText>
           </View>
         </Pressable>
       )}

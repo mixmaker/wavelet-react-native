@@ -5,6 +5,7 @@ import ActionSheet from 'react-native-actions-sheet';
 import useAppContext from '../../contexts/useAppContext';
 import Entypo from 'react-native-vector-icons/Entypo';
 import ReorderableList from 'react-native-reorderable-list';
+import CustomText from '../../fragments/CustomText';
 
 const NowPlayingSheet = ({ sheetId }) => {
   const { playlist, setPlaylist } = useAppContext();
@@ -34,17 +35,16 @@ const NowPlayingSheet = ({ sheetId }) => {
           // alignItems:'center'
           // backgroundColor:"red"
         }}>
-        <Text
+        <CustomText bold
           style={{
             fontSize: 20,
-            fontWeight: 'bold',
             marginBottom: 20,
             marginTop: 5,
             color: colors.secondaryText,
             textAlign: 'center',
           }}>
           Up Next
-        </Text>
+        </CustomText>
         <ReorderableList
           showsVerticalScrollIndicator={false}
           data={playlist}
@@ -95,21 +95,21 @@ const NowPlayingSheet = ({ sheetId }) => {
                   />
                 </View>
                 <View>
-                  <Text
+                  <CustomText
                     numberOfLines={2}
                     style={{
                       color: colors.primaryText,
                       fontSize: 16,
                     }}>
                     {item.title}
-                  </Text>
-                  <Text
+                  </CustomText>
+                  <CustomText
                     numberOfLines={2}
                     style={{
                       color: colors.secondaryText,
                     }}>
                     {item.artist}
-                  </Text>
+                  </CustomText>
                 </View>
                 {/* <MaterialCommunityIcons name='motion-play' size={20}/> */}
               </View>

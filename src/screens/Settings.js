@@ -6,6 +6,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import useAppContext from '../contexts/useAppContext';
 import { createStackNavigator } from '@react-navigation/stack';
+import CustomText from '../fragments/CustomText';
 
 const Settingss = ({ navigation }) => {
   const { colors, constants } = useThemeProvider();
@@ -53,8 +54,8 @@ const Settingss = ({ navigation }) => {
           paddingBottom: 5,
         }}>
         <Text
+          bold
           style={{
-            fontWeight: '700',
             fontSize: 18,
             color: colors.primaryText,
             left: -8,
@@ -240,7 +241,7 @@ const Settings = ({ navigation }) => {
         paddingVertical: constants.statusbarHeight + 20,
         backgroundColor: colors.primarybg,
       }}>
-      <Text
+      <CustomText
         style={{
           fontSize: 32,
           marginLeft: 20,
@@ -248,7 +249,7 @@ const Settings = ({ navigation }) => {
           // marginTop: 15,
         }}>
         Settings
-      </Text>
+      </CustomText>
       <View style={{ margin: 20 }}>
         <Pressable
           style={{ marginVertical: 10, flexDirection: 'row' }}
@@ -259,14 +260,15 @@ const Settings = ({ navigation }) => {
             color={colors.secondaryText}
             style={{ marginRight: 8 }}
           />
-          <Text
+          <CustomText
+            semiBold
             style={{
               color: colors.primaryText,
               fontSize: 18,
               alignItems: 'center',
             }}>
             Appearance
-          </Text>
+          </CustomText>
         </Pressable>
         <Pressable
           style={{
@@ -281,9 +283,11 @@ const Settings = ({ navigation }) => {
             color={colors.secondaryText}
             style={{ marginRight: 8 }}
           />
-          <Text style={{ color: colors.primaryText, fontSize: 18 }}>
+          <CustomText
+            semiBold
+            style={{ color: colors.primaryText, fontSize: 18 }}>
             General
-          </Text>
+          </CustomText>
         </Pressable>
         <Pressable
           style={{
@@ -298,9 +302,11 @@ const Settings = ({ navigation }) => {
             color={colors.secondaryText}
             style={{ marginRight: 8 }}
           />
-          <Text style={{ color: colors.primaryText, fontSize: 18 }}>
-          Audio & Player
-          </Text>
+          <CustomText
+            semiBold
+            style={{ color: colors.primaryText, fontSize: 18 }}>
+            Audio & Player
+          </CustomText>
         </Pressable>
         <Pressable
           style={{
@@ -315,7 +321,11 @@ const Settings = ({ navigation }) => {
             color={colors.secondaryText}
             style={{ marginRight: 8 }}
           />
-          <Text style={{ color: colors.primaryText, fontSize: 18 }}>About</Text>
+          <CustomText
+            semiBold
+            style={{ color: colors.primaryText, fontSize: 18 }}>
+            About
+          </CustomText>
         </Pressable>
       </View>
     </ScrollView>

@@ -1,4 +1,4 @@
-import { View, Text, FlatList, Pressable, Image } from 'react-native';
+import { View, FlatList, Pressable, Image } from 'react-native';
 import React from 'react';
 import useAppContext from '../contexts/useAppContext';
 import useThemeProvider from '../contexts/useThemeProvider';
@@ -6,6 +6,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { observeLikedSongs, observeRecentlyPlayed } from '../data/helpers';
 import withObservables from '@nozbe/with-observables';
+import CustomText from '../fragments/CustomText';
 
 const Library = ({ recentlyPlayed, likedSongs, navigation }) => {
   const { playlist } = useAppContext();
@@ -17,7 +18,7 @@ const Library = ({ recentlyPlayed, likedSongs, navigation }) => {
         backgroundColor: colors.primarybg,
         marginLeft: 20,
       }}>
-      <Text
+      <CustomText
         style={{
           fontSize: 32,
           marginBottom: 50,
@@ -25,7 +26,7 @@ const Library = ({ recentlyPlayed, likedSongs, navigation }) => {
           color: colors.secondaryText,
         }}>
         Library
-      </Text>
+      </CustomText>
       <Pressable
         onPress={() =>
           navigation.navigate('LikedSongs', {
@@ -49,10 +50,10 @@ const Library = ({ recentlyPlayed, likedSongs, navigation }) => {
           }}
         />
         <View style={{ justifyContent: 'center' }}>
-          <Text style={{ color: colors.primaryText }}>Liked Songs</Text>
-          <Text style={{ color: colors.secondaryText }}>
+          <CustomText semiBold style={{ color: colors.primaryText }}>Liked Songs</CustomText>
+          <CustomText style={{ color: colors.secondaryText }}>
             {likedSongs.length} song(s)
-          </Text>
+          </CustomText>
         </View>
       </Pressable>
       <View
@@ -73,13 +74,13 @@ const Library = ({ recentlyPlayed, likedSongs, navigation }) => {
           }}
         />
         <View style={{ justifyContent: 'center' }}>
-          <Text style={{ color: colors.primaryText }}>Recently Played</Text>
-          <Text style={{ color: colors.secondaryText }}>
+          <CustomText semiBold style={{ color: colors.primaryText }}>Recently Played</CustomText>
+          <CustomText style={{ color: colors.secondaryText }}>
             {recentlyPlayed.length} song(s)
-          </Text>
+          </CustomText>
         </View>
       </View>
-      <Text>Add playlist</Text>
+      <CustomText>Add playlist</CustomText>
     </View>
   );
 };

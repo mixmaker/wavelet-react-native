@@ -23,8 +23,8 @@ const Theme = ({ children }) => {
   };
   const colors = isDarkMode
     ? {
-        primarybg: '#000',
-        secondarybg: '#1c1c1c',
+        primarybg: '#0f1010',
+        secondarybg: '#1b1b1b',
         primaryText: '#f0f0f0',
         secondaryText: '#8b8b8b',
         icon: '#e0e0e0',

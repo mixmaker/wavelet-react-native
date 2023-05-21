@@ -1,4 +1,4 @@
-import { View, Text, Image, Pressable } from 'react-native';
+import { View, Image, Pressable } from 'react-native';
 import React from 'react';
 import useAppContext from '../contexts/useAppContext';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -16,6 +16,7 @@ import {
   downloadFile,
   requestStoragePermission,
 } from '../helpers/downloadhelper';
+import CustomText from '../fragments/CustomText';
 
 const CardType1 = ({ song, id }) => {
   const {
@@ -84,15 +85,15 @@ const CardType1 = ({ song, id }) => {
               />
             </View>
             <View>
-              <Text
+              <CustomText
                 numberOfLines={2}
                 style={{
                   color: colors.primaryText,
                   fontSize: 16,
                 }}>
                 {decodeHtml(song?.title)}
-              </Text>
-              <Text
+              </CustomText>
+              <CustomText
                 numberOfLines={2}
                 style={{
                   color: colors.secondaryText,
@@ -105,7 +106,7 @@ const CardType1 = ({ song, id }) => {
                   : song?.more_info.artistMap.primary_artists
                       .map(artist => decodeHtml(artist.name))
                       .join(', ')}
-              </Text>
+              </CustomText>
             </View>
           </View>
           <View
