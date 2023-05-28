@@ -16,7 +16,7 @@ const GlobalState = ({ children }) => {
   const [isDarkMode, setIsDarkMode] = useState(colorscheme);
   const [themePref, setThemePref] = useState('Auto');
   const [homeData, setHomeData] = useState();
-  const [searchData, setSearchData] = useState();
+  const [searchData, setSearchData] = useState({});
   const [likedSongList, setLikedSongList] = useState([]);
   const [currentSong, setCurrentSong] = useState();
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);

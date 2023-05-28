@@ -19,13 +19,13 @@ const RecentlyPlayed = ({ recentlyPlayed }) => {
   var numOfcol = Math.ceil(data.length / 2);
   return (
     <>
-      {data.length > 1 && (
-        <View style={{ marginBottom: 30 }}>
+      {data.length > 0 && (
+        <View style={{ marginBottom: 30, marginLeft: 20 }}>
           <CustomText
             style={{
               fontSize: 19,
               color: colors.primaryText,
-              marginLeft: 20,
+              // marginLeft: 20,
               marginBottom: 8,
             }}>
             Recently played
@@ -39,7 +39,7 @@ const RecentlyPlayed = ({ recentlyPlayed }) => {
               numColumns={numOfcol}
               key={numOfcol}
               data={data}
-              keyExtractor={item => item}
+              keyExtractor={(item, index) => `${item}-${index}`}
               renderItem={({ item, index }) => (
                 <CardType2 id={item} index={index} />
               )}

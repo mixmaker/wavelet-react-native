@@ -31,7 +31,7 @@ const Discover = ({ navigation }) => {
           style={{
             flex: 1,
             backgroundColor: colors.primarybg,
-            marginBottom: bottomTabHeight+20,
+            marginBottom: bottomTabHeight + 20,
           }}>
           {/* <LinearGradient
             colors={[colors.bgGradient, colors.primarybg]} //DDE5B5 3a4211
@@ -65,14 +65,17 @@ const Discover = ({ navigation }) => {
                   }}>
                   Discover
                 </CustomText>
-                <Ionicons
-                  name="search"
-                  size={20}
-                  color={colors.secondaryText}
+                <Pressable
+                  style={{ padding: 5 }}
                   onPress={() => {
                     navigation.navigate('Search');
-                  }}
-                />
+                  }}>
+                  <Ionicons
+                    name="search"
+                    size={20}
+                    color={colors.secondaryText}
+                  />
+                </Pressable>
               </View>
 
               {/* {homeDataArray &&

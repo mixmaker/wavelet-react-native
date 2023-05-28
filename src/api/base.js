@@ -6,16 +6,23 @@ import { decodeHtml } from '../contexts/GlobalState';
 const baseURL = 'https://www.jiosaavn.com';
 const URLstr = '/api.php?_format=json&_marker=0&api_version=4&ctx=web6dot0';
 const endpoints = {
-  getResults: '__call=search.getResults',
-  songDetails: '__call=song.getDetails',
   homeData: '__call=webapi.getLaunchData',
   topSearches: '__call=content.getTopSearches',
+  fromToken: '__call=webapi.get',
+  featuredRadio: '__call=webradio.createFeaturedStation',
+  artistRadio: '__call=webradio.createArtistStation',
+  entityRadio: '__call=webradio.createEntityStation',
+  radioSongs: '__call=webradio.getSong',
+  songDetails: '__call=song.getDetails',
   playlistDetails: '__call=playlist.getDetails',
   albumDetails: '__call=content.getAlbumDetails',
+  getResults: '__call=search.getResults',
+  albumResults: '__call=search.getAlbumResults',
   artistResults: '__call=search.getArtistResults',
-  artistRadio: '__call=webradio.createArtistStation',
-  radioSongs: '__call=webradio.getSong',
-  getlyrics: '__call=lyrics.getLyrics',
+  playlistResults: '__call=search.getPlaylistResults',
+  getReco: '__call=reco.getreco',
+  getAlbumReco: '__call=reco.getAlbumReco',
+  artistOtherTopSongs: '__call=search.artistOtherTopSongs',
 };
 
 const getURL = params => {
@@ -42,6 +49,13 @@ export function decryptByDES(ciphertext) {
 
 export const searchResultsURL = query => {
   return getURL(`p=1&q=${query}&n=20&${endpoints.getResults}`);
+};
+
+export const artistResultsURL = query => {
+  return getURL(`p=1&q=${query}&n=20&${endpoints.artistResults}`);
+};
+export const albumResultsURL = query => {
+  return getURL(`p=1&q=${query}&n=20&${endpoints.albumResults}`);
 };
 
 export const songDetailsfromIdURL = id => {
@@ -77,19 +91,44 @@ export const albumURL = (type, id) => {
   return getURL(params);
 };
 
-export const fetchAlbumDetails = async (type, id, cancelTokenSource) => {
-  const url = albumURL(type, id);
-  const data = await getResponse(url, cancelTokenSource);
-  if (type === 'album' || type === 'playlist' || type === 'song') {
-    return data;
-  }
-  if (type === 'radio_station') {
-    const { stationid } = data;
-    const newurl = getURL(
-      `stationid=${stationid}&k=20&next=1&${endpoints.radioSongs}`,
+export const fetchSearchResults = async (q, cancelTokenSource) => {
+  try {
+    const songResultsUrl = searchResultsURL(q);
+    const artistResultsUrl = artistResultsURL(q);
+    const albumResultsUrl = albumResultsURL(q);
+    const songResults = await getResponse(songResultsUrl, cancelTokenSource);
+    const artistResults = await getResponse(
+      artistResultsUrl,
+      cancelTokenSource,
     );
-    const newData = await getResponse(newurl, cancelTokenSource);
-    return newData;
+    const albumResults = await getResponse(albumResultsUrl, cancelTokenSource);
+    return {
+      artistResults: artistResults?.results,
+      albumResults: albumResults?.results,
+      songResults: songResults?.results,
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const fetchAlbumDetails = async (type, id, cancelTokenSource) => {
+  try {
+    const url = albumURL(type, id);
+    const data = await getResponse(url, cancelTokenSource);
+    if (type === 'album' || type === 'playlist' || type === 'song') {
+      return data;
+    }
+    if (type === 'radio_station') {
+      const { stationid } = data;
+      const newurl = getURL(
+        `stationid=${stationid}&k=20&next=1&${endpoints.radioSongs}`,
+      );
+      const newData = await getResponse(newurl, cancelTokenSource);
+      return newData;
+    }
+  } catch (error) {
+    console.log(error);
   }
 };
 
@@ -129,7 +168,7 @@ export const trackHelper = song => ({
   duration: Number(song.more_info.duration), // Duration in seconds
 });
 
-export const fetchTopSearches = async (cancelTokenSource) => {
+export const fetchTopSearches = async cancelTokenSource => {
   try {
     const uri = topSearchesURL();
     const data = await getResponse(uri, cancelTokenSource);

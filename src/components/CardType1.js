@@ -18,7 +18,7 @@ import {
 } from '../helpers/downloadhelper';
 import CustomText from '../fragments/CustomText';
 
-const CardType1 = ({ song, id }) => {
+const CardType1 = ({ song, id, onPress }) => {
   const {
     setCurrentSongId,
     decodeHtml,
@@ -40,6 +40,10 @@ const CardType1 = ({ song, id }) => {
         alignItems: 'center',
       }}
       onPress={() => {
+        if (onPress) {
+          onPress();
+          return;
+        }
         playlistHandler([song], true);
         saveRecentlyPlayed(id);
       }}>
