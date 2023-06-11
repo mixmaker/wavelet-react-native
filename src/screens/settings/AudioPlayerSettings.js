@@ -6,16 +6,11 @@ import Feather from 'react-native-vector-icons/Feather';
 import { Dropdown } from 'react-native-element-dropdown';
 import Animated from 'react-native-reanimated';
 import CustomText from '../../fragments/CustomText';
+import storage from '../../data/storage';
 
 const AudioPlayerSettings = ({ navigation }) => {
   const { colors, constants } = useThemeProvider();
-  const {
-    audioQuality,
-    setAudioQuality,
-    playerAnimationType,
-    setPlayerAnimationType,
-  } = useAppContext();
-  const [focus, setFocus] = useState(false);
+  const { audioQuality, playerAnimationType } = useAppContext();
   const audioQData = [
     { label: 'Low', quality: 48 },
     { label: 'Basic', quality: 96 },
@@ -92,7 +87,7 @@ const AudioPlayerSettings = ({ navigation }) => {
                 fontFamily: 'Nunito-Regular',
               }}
               onChange={item => {
-                setAudioQuality(item.quality);
+                storage.set('audioQuality', item.quality.toString());
               }}
               activeColor={colors.secondarybg}
               containerStyle={{
@@ -157,7 +152,7 @@ const AudioPlayerSettings = ({ navigation }) => {
                 fontFamily: 'Nunito-Regular',
               }}
               onChange={item => {
-                setPlayerAnimationType(item.name);
+                storage.set('playerScrAnm', item.name);
               }}
               activeColor={colors.secondarybg}
               containerStyle={{

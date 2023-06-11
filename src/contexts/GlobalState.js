@@ -18,6 +18,7 @@ const GlobalState = ({ children }) => {
   const [homeData, setHomeData] = useState();
   const [searchData, setSearchData] = useState({});
   const [likedSongList, setLikedSongList] = useState([]);
+  const [recentlyPlayed, setRecentlyPlayed] = useState([]);
   const [currentSong, setCurrentSong] = useState();
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
   const [progress, setProgress] = useState({
@@ -108,6 +109,8 @@ const GlobalState = ({ children }) => {
         setThemePref,
         likedSongList,
         setLikedSongList,
+        recentlyPlayed,
+        setRecentlyPlayed,
       }}>
       {children}
     </GlobalContext.Provider>

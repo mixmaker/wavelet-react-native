@@ -50,16 +50,6 @@ const ListSkeletonStack = ({ isDarkMode }) => {
     </SkeletonPlaceholder>
   );
 };
-// const postsCollection = database.get('posts');
-// const createD = async () => {
-//   const newPost = await database.get('posts').create(post => {
-//     post.title = 'New post';
-//     post.body = 'Lorem ipsum...';
-//   });
-//   console.log(newPost);
-// };
-// console.log(postsCollection);
-// createD()
 
 const Home = ({ navigation }) => {
   const { homeData, setHomeData, isDarkMode } = useAppContext();
@@ -100,18 +90,18 @@ const Home = ({ navigation }) => {
             marginBottom: bottomTabHeight + 20,
           }}>
           <View style={{ marginTop: constants.statusbarHeight + 20 }}>
-            {homeData?.greeting && (
+            {homeData && (
               <>
                 <CustomText
                   style={{
                     fontSize: 32,
                     marginBottom: 50,
-                    marginLeft: 10,
+                    // marginLeft: 10,
                     // marginTop: 15,
                     color: colors.secondaryText,
                   }}>
-                  {' '}
-                  {homeData.greeting + '!'}
+                  {' '/*they removed the .greeting from their api -_- */}
+                  Welcome!
                 </CustomText>
                 <RecentlyPlayed />
                 <View>

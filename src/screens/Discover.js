@@ -20,7 +20,11 @@ const Discover = ({ navigation }) => {
   //   .map(key => key)
   //   .filter(item => item !== 'artist_recos' && item !== 'city_mod');
   const netInfo = useNetInfo();
-
+  // console.log(homeData.modules)
+  let listKeys;
+  if (homeData) {
+    listKeys = Object.keys(homeData.modules);
+  }
   return (
     <>
       {!netInfo.isConnected ? (
@@ -86,7 +90,7 @@ const Discover = ({ navigation }) => {
               navigation={navigation}
             />
           ))} */}
-              <ListStack
+              {/* <ListStack
                 title="New Trending"
                 data={homeData.new_trending}
                 navigation={navigation}
@@ -100,7 +104,15 @@ const Discover = ({ navigation }) => {
                 title="New Releases"
                 data={homeData.new_albums}
                 navigation={navigation}
-              />
+              /> */}
+              {listKeys.map(item => (
+                <ListStack
+                  title={homeData.modules[item].title}
+                  data={homeData[item]}
+                  navigation={navigation}
+                  showTitle
+                />
+              ))}
             </View>
           )}
         </ScrollView>

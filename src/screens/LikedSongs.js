@@ -50,7 +50,7 @@ const LikedSongs = ({ navigation }) => {
           <>
             <PlayAllButton list={{}} createNewPlaylist={true} />
             {likedSongList.map((item, i) => (
-              <CardType2 key={item.id} id={item.songId} index={i} />
+              <CardType2 key={item} id={item} index={i} />
             ))}
           </>
         ) : (

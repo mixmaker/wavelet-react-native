@@ -102,7 +102,7 @@ const DetailScreen = ({ route, navigation }) => {
             marginTop: constants.fullWidth,
             paddingVertical: 20,
             backgroundColor: colors.primarybg,
-            paddingHorizontal: 15,
+            paddingHorizontal: 25,
           }}>
           {!albumData?.list && <SkeletonDetailScreen isDarkMode={isDarkMode} />}
           {/* <Pressable

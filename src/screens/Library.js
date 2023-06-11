@@ -4,12 +4,10 @@ import useAppContext from '../contexts/useAppContext';
 import useThemeProvider from '../contexts/useThemeProvider';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { observeLikedSongs, observeRecentlyPlayed } from '../data/helpers';
-import withObservables from '@nozbe/with-observables';
 import CustomText from '../fragments/CustomText';
 
-const Library = ({ recentlyPlayed, likedSongs, navigation }) => {
-  const { playlist } = useAppContext();
+const Library = ({ navigation }) => {
+  const { playlist, recentlyPlayed, likedSongList } = useAppContext();
   const { colors, constants } = useThemeProvider();
   return (
     <View
@@ -30,7 +28,7 @@ const Library = ({ recentlyPlayed, likedSongs, navigation }) => {
       <Pressable
         onPress={() =>
           navigation.navigate('LikedSongs', {
-            dataArr: likedSongs.forEach(s => s.song_id),
+            dataArr: likedSongList,
           })
         }
         style={{
@@ -50,9 +48,11 @@ const Library = ({ recentlyPlayed, likedSongs, navigation }) => {
           }}
         />
         <View style={{ justifyContent: 'center' }}>
-          <CustomText semiBold style={{ color: colors.primaryText }}>Liked Songs</CustomText>
+          <CustomText semiBold style={{ color: colors.primaryText }}>
+            Liked Songs
+          </CustomText>
           <CustomText style={{ color: colors.secondaryText }}>
-            {likedSongs.length} song(s)
+            {likedSongList.length} song(s)
           </CustomText>
         </View>
       </Pressable>
@@ -74,7 +74,9 @@ const Library = ({ recentlyPlayed, likedSongs, navigation }) => {
           }}
         />
         <View style={{ justifyContent: 'center' }}>
-          <CustomText semiBold style={{ color: colors.primaryText }}>Recently Played</CustomText>
+          <CustomText semiBold style={{ color: colors.primaryText }}>
+            Recently Played
+          </CustomText>
           <CustomText style={{ color: colors.secondaryText }}>
             {recentlyPlayed.length} song(s)
           </CustomText>
@@ -84,11 +86,4 @@ const Library = ({ recentlyPlayed, likedSongs, navigation }) => {
     </View>
   );
 };
-const EnhanceWithRPLS = withObservables(
-  ['recentlyPlayed', 'likedSongs'],
-  () => ({
-    recentlyPlayed: observeRecentlyPlayed(),
-    likedSongs: observeLikedSongs(),
-  }),
-);
-export default EnhanceWithRPLS(Library);
+export default Library;

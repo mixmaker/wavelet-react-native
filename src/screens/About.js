@@ -132,7 +132,7 @@ const About = ({ navigation }) => {
           textAlign: 'center',
           fontSize: 15,
         }}>
-        Made with ♥ by Shoumik Kumbhakar
+        Made with &hearts; by Shoumik Kumbhakar
       </CustomText>
     </ScrollView>
   );

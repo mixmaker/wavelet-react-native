@@ -50,7 +50,7 @@ const Search = ({ navigation }) => {
       setTimeout(() => {
         setLoading(true);
         searchForResults();
-      }, 800);
+      }, 1000);
     }
     if (searchStr === '') {
       setLoading(false);

@@ -2,7 +2,7 @@ import { View, Image, Pressable } from 'react-native';
 import React from 'react';
 import useAppContext from '../contexts/useAppContext';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Octicons from 'react-native-vector-icons/Octicons';
 import useThemeProvider from '../contexts/useThemeProvider';
 import { fetchSongDataFromId } from '../api';
 import axios from 'axios';
@@ -29,7 +29,7 @@ const CardType1 = ({ song, id, onPress }) => {
   } = useAppContext();
   const { colors } = useThemeProvider();
   const cancelTokenSource = axios.CancelToken.source();
-  const isLiked = likedSongList.map(l => l?.songId).indexOf(id);
+  const isLiked = likedSongList.map(id => id).indexOf(id);
 
   return (
     <Pressable
@@ -39,6 +39,9 @@ const CardType1 = ({ song, id, onPress }) => {
         justifyContent: 'space-between',
         alignItems: 'center',
       }}
+      onLongPress={() =>
+        SheetManager.show('song-info-sheet', { payload: song })
+      }
       onPress={() => {
         if (onPress) {
           onPress();
@@ -104,7 +107,7 @@ const CardType1 = ({ song, id, onPress }) => {
                 }}>
                 {song?.more_info.artistMap.primary_artists.length > 2
                   ? song?.more_info.artistMap.primary_artists
-                      .slice(0, 2)
+                      ?.slice(0, 2)
                       .map(artist => decodeHtml(artist.name))
                       .join(', ')
                   : song?.more_info.artistMap.primary_artists
@@ -120,7 +123,7 @@ const CardType1 = ({ song, id, onPress }) => {
               justifyContent: 'center',
               alignItems: 'center',
             }}>
-            <Pressable
+            {/* <Pressable
               style={{ justifyContent: 'center', marginRight: 5 }}
               onPress={() => {
                 isLiked > -1
@@ -135,9 +138,19 @@ const CardType1 = ({ song, id, onPress }) => {
                   style={{ opacity: pressed ? 0.7 : 1 }}
                 />
               )}
-            </Pressable>
+            </Pressable> */}
             <Pressable
-              style={{ justifyContent: 'center', marginRight: 5 }}
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                width: 25,
+                height: 25,
+                borderRadius: 12.5,
+                marginRight: 15,
+                borderWidth: 1,
+                borderColor: colors.secondaryText,
+                paddingHorizontal: 3,
+              }}
               onPress={() => {
                 requestStoragePermission();
                 downloadFile({
@@ -146,15 +159,15 @@ const CardType1 = ({ song, id, onPress }) => {
                 });
               }}>
               {({ pressed }) => (
-                <MaterialIcons
-                  name="file-download"
-                  size={24}
+                <Octicons
+                  name="arrow-down"
+                  size={20}
                   color={colors.icon}
                   style={{ opacity: pressed ? 0.7 : 1 }}
                 />
               )}
             </Pressable>
-            <Pressable
+            {/* <Pressable
               style={{ justifyContent: 'center' }}
               onPress={() => {
                 SheetManager.show('song-info-sheet', { payload: song });
@@ -167,7 +180,7 @@ const CardType1 = ({ song, id, onPress }) => {
                   style={{ opacity: pressed ? 0.7 : 1 }}
                 />
               )}
-            </Pressable>
+            </Pressable> */}
           </View>
         </View>
       )}

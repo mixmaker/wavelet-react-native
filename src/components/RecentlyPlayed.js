@@ -1,31 +1,42 @@
 import { saveRecentlyPlayed, observeRecentlyPlayed } from '../data/helpers';
 import withObservables from '@nozbe/with-observables';
 import { View, FlatList, ScrollView } from 'react-native';
+import { useEffect, useState } from 'react';
 import CardType2 from './CardType2';
 import useThemeProvider from '../contexts/useThemeProvider';
 import CustomText from '../fragments/CustomText';
+import storage from '../data/storage';
+import useAppContext from '../contexts/useAppContext';
 
-const RecentlyPlayed = ({ recentlyPlayed }) => {
+const RecentlyPlayed = () => {
   const { colors, constants } = useThemeProvider();
+  const {recentlyPlayed, setRecentlyPlayed} = useAppContext()
+  // useEffect(() => {
+  //   const data = storage.getString('recentlyPlayed');
+  //   if (data) setRecentlyPlayed(JSON.parse(data));
+  // }, []);
+
   if (recentlyPlayed.length < 1) return null;
-  var data = [];
-  recentlyPlayed?.forEach(s => {
-    data = [...data, s.song_id].filter(item => item);
-    var arrLength = data.length;
-    if (arrLength > 10) {
-      data.splice(0, arrLength - 10);
-    }
-  });
-  var numOfcol = Math.ceil(data.length / 2);
+  // var data = [];
+  if (recentlyPlayed.length > 10)
+    recentlyPlayed.splice(0, recentlyPlayed.length - 10);
+  // recentlyPlayed?.forEach(s => {
+  //   data = [...data, s.song_id].filter(item => item);
+  //   var arrLength = data.length;
+  //   if (arrLength > 10) {
+  //     data.splice(0, arrLength - 10);
+  //   }
+  // });
+  var numOfcol = Math.ceil(recentlyPlayed.length / 2);
   return (
     <>
-      {data.length > 0 && (
-        <View style={{ marginBottom: 30, marginLeft: 20 }}>
+      {recentlyPlayed.length > 0 && (
+        <View style={{ marginBottom: 30, marginLeft: 0 }}>
           <CustomText
             style={{
               fontSize: 19,
               color: colors.primaryText,
-              // marginLeft: 20,
+              marginLeft: 20,
               marginBottom: 8,
             }}>
             Recently played
@@ -35,10 +46,11 @@ const RecentlyPlayed = ({ recentlyPlayed }) => {
               contentContainerStyle={{
                 alignSelf: 'flex-start',
                 paddingRight: 50,
+                paddingLeft: 25,
               }}
               numColumns={numOfcol}
               key={numOfcol}
-              data={data}
+              data={recentlyPlayed}
               keyExtractor={(item, index) => `${item}-${index}`}
               renderItem={({ item, index }) => (
                 <CardType2 id={item} index={index} />
@@ -75,7 +87,8 @@ const RecentlyPlayed = ({ recentlyPlayed }) => {
   );
 };
 
-const EnhanceWithRP = withObservables(['recentlyPlayed'], () => ({
-  recentlyPlayed: observeRecentlyPlayed(),
-}));
-export default EnhanceWithRP(RecentlyPlayed);
+// const EnhanceWithRP = withObservables(['recentlyPlayed'], () => ({
+//   recentlyPlayed: observeRecentlyPlayed(),
+// }));
+// export default EnhanceWithRP(RecentlyPlayed);
+export default RecentlyPlayed;

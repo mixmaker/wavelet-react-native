@@ -32,7 +32,7 @@ const Player = ({ route, navigation }) => {
     audioQuality,
   } = useAppContext();
   const { colors, constants } = useThemeProvider();
-
+  console.log(colorPalette)
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}

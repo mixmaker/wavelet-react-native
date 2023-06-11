@@ -32,8 +32,9 @@ import './sheets';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { observeLikedSongs } from './src/data/helpers';
 import withObservables from '@nozbe/with-observables';
+import storage, { storageKeys } from './src/data/storage';
 
-const App = ({ likedSongs }) => {
+const App = () => {
   const {
     playlist,
     setupPlayer,
@@ -49,6 +50,9 @@ const App = ({ likedSongs }) => {
     setProgress,
     likedSongList,
     setLikedSongList,
+    setRecentlyPlayed,
+    setAudioQuality,
+    setPlayerAnimationType,
   } = useAppContext();
   const { colors, constants } = useThemeProvider();
   const navigationRef = useRef(null);
@@ -76,6 +80,41 @@ const App = ({ likedSongs }) => {
   //   };
   // }, []);
 
+  //storage related
+  const setStateFromStorage = key => {
+    const stringValue = storage.getString(key);
+    if (!stringValue) return;
+    switch (key) {
+      case 'recentlyPlayed':
+        setRecentlyPlayed(JSON.parse(stringValue));
+        break;
+      case 'likedSongs':
+        setLikedSongList(JSON.parse(stringValue));
+        break;
+      case 'audioQuality':
+        setAudioQuality(Number(stringValue));
+        break;
+      case 'playerScrAnm':
+        setPlayerAnimationType(stringValue);
+        break;
+    }
+  };
+  useEffect(() => {
+    const listener = storage.addOnValueChangedListener(changedKey => {
+      setStateFromStorage(changedKey);
+    });
+    return () => listener.remove();
+  }, []);
+  const fetchFromMmkvAtStartUp = () => {
+    storageKeys.forEach(key => {
+      setStateFromStorage(key);
+    });
+  };
+  useEffect(() => {
+    fetchFromMmkvAtStartUp();
+  }, []);
+
+  //trackplayer related
   useTrackPlayerEvents([Event.PlaybackTrackChanged], async event => {
     if (event.type === Event.PlaybackTrackChanged) {
       TrackPlayer.getCurrentTrack().then(index => setCurrentTrackIndex(index));
@@ -114,17 +153,6 @@ const App = ({ likedSongs }) => {
   useEffect(() => {
     setupPlayer();
   }, []);
-  useEffect(() => {
-    fetchLyrics();
-  }, [currentTrackIndex]);
-
-  useEffect(() => {
-    var data = [];
-    likedSongs?.forEach(s => {
-      data = [...data, { id: s.id, songId: s.song_id }].filter(item => item);
-    });
-    setLikedSongList(data);
-  }, [likedSongs]);
 
   useEffect(() => {
     playlist.length > 0 &&
@@ -138,6 +166,7 @@ const App = ({ likedSongs }) => {
     }
   }, [playlist]);
 
+  //splash screen related
   const bootSplashLogo = require('./src/assets/logo.png');
   const [bootSplashIsVisible, setBootSplashIsVisible] = React.useState(true);
   const [bootSplashLogoIsLoaded, setBootSplashLogoIsLoaded] =
@@ -256,7 +285,8 @@ const styles = StyleSheet.create({
   },
 });
 
-const EnhanceWithLS = withObservables(['likedSongs'], () => ({
-  likedSongs: observeLikedSongs(),
-}));
-export default EnhanceWithLS(App);
+export default App;
+// const EnhanceWithLS = withObservables(['likedSongs'], () => ({
+//   likedSongs: observeLikedSongs(),
+// }));
+// export default EnhanceWithLS(App);

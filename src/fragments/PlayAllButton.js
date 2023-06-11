@@ -11,7 +11,7 @@ const PlayAllButton = ({ list, createNewPlaylist }) => {
   return (
     <Pressable
       style={({ pressed }) => ({
-        borderColor: colors.tabBar,
+        borderColor: colors.icon,
         borderWidth: 1,
         width: 80,
         alignItems: 'center',

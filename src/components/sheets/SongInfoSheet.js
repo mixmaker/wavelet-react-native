@@ -25,14 +25,14 @@ const SongInfoSheet = ({ payload, sheetId }) => {
       type: 'album',
     });
   };
-  const isLiked = likedSongList.map(l => l?.songId).indexOf(payload.id);
+  const isLiked = likedSongList.indexOf(payload.id);
 
   const buttons = [
     {
       name: isLiked > -1 ? 'Remove from likes' : 'Like',
       onPress: () => {
         isLiked > -1
-          ? unLikeSong(likedSongList[isLiked].id)
+          ? unLikeSong(likedSongList[isLiked])
           : saveLikedSongs(payload.id);
       },
       icon: isLiked > -1 ? 'heart-minus' : 'heart-outline',
@@ -88,12 +88,13 @@ const SongInfoSheet = ({ payload, sheetId }) => {
           <Pressable
             key={button.icon}
             onPress={() => button.onPress()}
-            style={{
+            style={({ pressed }) => ({
               flexDirection: 'row',
               alignItems: 'center',
-              marginHorizontal: 15,
-              marginVertical: 15,
-            }}>
+              paddingHorizontal: 15,
+              paddingVertical: 15,
+              opacity: pressed ? 0.6 : 1,
+            })}>
             <MaterialCommunityIcons
               name={button.icon}
               color={colors.secondaryText}
@@ -115,64 +116,3 @@ const SongInfoSheet = ({ payload, sheetId }) => {
 };
 
 export default SongInfoSheet;
-
-const d = {
-  explicit_content: '0',
-  header_desc: '',
-  id: 'EbFWakDs',
-  image:
-    'http://c.saavncdn.com/191/Kesariya-From-Brahmastra-Hindi-2022-20220717092820-150x150.jpg',
-  language: 'hindi',
-  list: '',
-  list_count: '0',
-  list_type: '',
-  more_info: {
-    '320kbps': 'true',
-    album: 'Kesariya (From &quot;Brahmastra&quot;)',
-    album_id: '36552397',
-    album_url:
-      'https://www.jiosaavn.com/album/kesariya-from-brahmastra/3RMVXHzqov8_',
-    artistMap: {
-      artists: [Array],
-      featured_artists: [Array],
-      primary_artists: [Array],
-    },
-    cache_state: '',
-    copyright_text: '(P) 2022 Sony Music Entertainment India Pvt. Ltd.',
-    duration: '268',
-    encrypted_cache_url: '',
-    encrypted_media_url:
-      'ID2ieOjCrwfgWvL5sXl4B1ImC5QfbsDynOFTlSZdUD2jEAOf0IlvwvgBDWbHt9mpvSnuzek+bNWUCv8SK258cBw7tS9a8Gtq',
-    has_lyrics: 'false',
-    is_dolby_content: false,
-    is_ringtone_available: false,
-    label: 'Sony Music Entertainment India Pvt. Ltd.',
-    label_url:
-      '/label/sony-music-entertainment-india-pvt.-ltd.-albums/LaFAA6h1q2U_',
-    lyrics_snippet: '',
-    music: 'Pritam',
-    origin: 'playlist',
-    release_date: '2022-07-17',
-    request_jiotune_flag: false,
-    rights: {
-      cacheable: 'true',
-      code: '0',
-      delete_cached_object: 'false',
-      reason: '',
-    },
-    starred: 'false',
-    triller_available: false,
-    vcode: '010910141624103',
-    vlink:
-      'https://jiotunepreview.jio.com/content/Converted/010910141580615.mp3',
-    webp: 'true',
-  },
-  perma_url:
-    'https://www.jiosaavn.com/song/kesariya-from-brahmastra/NQotZhVbc0A',
-  play_count: '135110493',
-  subtitle:
-    'Pritam, Arijit Singh, Amitabh Bhattacharya - Kesariya (From &quot;Brahmastra&quot;)',
-  title: 'Kesariya (From &quot;Brahmastra&quot;)',
-  type: 'song',
-  year: '2022',
-};
