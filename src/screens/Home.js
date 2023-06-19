@@ -92,16 +92,16 @@ const Home = ({ navigation }) => {
           <View style={{ marginTop: constants.statusbarHeight + 20 }}>
             {homeData && (
               <>
-                <CustomText
+                <CustomText semiBold
                   style={{
-                    fontSize: 32,
+                    fontSize: 38,
                     marginBottom: 50,
-                    // marginLeft: 10,
-                    // marginTop: 15,
-                    color: colors.secondaryText,
+                    marginLeft: 20,
+                    marginTop: 15,
+                    color: colors.primaryText,
                   }}>
                   {' '/*they removed the .greeting from their api -_- */}
-                  Welcome!
+                  Welcome ✨
                 </CustomText>
                 <RecentlyPlayed />
                 <View>

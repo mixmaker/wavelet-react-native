@@ -1,5 +1,3 @@
-import { saveRecentlyPlayed, observeRecentlyPlayed } from '../data/helpers';
-import withObservables from '@nozbe/with-observables';
 import { View, FlatList, ScrollView } from 'react-native';
 import { useEffect, useState } from 'react';
 import CardType2 from './CardType2';
@@ -32,9 +30,9 @@ const RecentlyPlayed = () => {
     <>
       {recentlyPlayed.length > 0 && (
         <View style={{ marginBottom: 30, marginLeft: 0 }}>
-          <CustomText
+          <CustomText semiBold
             style={{
-              fontSize: 19,
+              fontSize: 21,
               color: colors.primaryText,
               marginLeft: 20,
               marginBottom: 8,

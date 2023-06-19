@@ -1,4 +1,4 @@
-import { View, ScrollView, Pressable, Animated, Text } from 'react-native';
+import { View, ScrollView, Pressable, Animated, Image } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import useAppContext from '../contexts/useAppContext';
 import CardType1 from '../components/CardType1';
@@ -9,6 +9,8 @@ import useThemeProvider from '../contexts/useThemeProvider';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import ImageColors from 'react-native-image-colors';
 import PlayAllButton from '../fragments/PlayAllButton';
+import CustomText from '../fragments/CustomText';
+import LinearGradient from 'react-native-linear-gradient';
 
 const DetailScreen = ({ route, navigation }) => {
   const { albumId, type, name, image } = route.params;
@@ -50,48 +52,27 @@ const DetailScreen = ({ route, navigation }) => {
     albumData?.image && getAlbumColors();
     return () => {
       cancelTokenSource.cancel();
-      setAlbumData(undefined);
-      setAlbumColorPalette(undefined);
+      // setAlbumData(undefined);
+      // setAlbumColorPalette(undefined);
     };
-  }, [albumId]);
-  const HEADER_MAX_HEIGHT = constants.fullWidth;
-  const HEADER_MIN_HEIGHT = 80;
-  const HEADER_SCROLL_DISTANCE = HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT;
-  const scrollY = useState(new Animated.Value(0))[0];
+  }, [albumId, albumData?.image]);
 
-  const headerHeight = scrollY.interpolate({
-    inputRange: [0, HEADER_SCROLL_DISTANCE],
-    outputRange: [HEADER_MAX_HEIGHT, HEADER_MIN_HEIGHT],
-    extrapolate: 'clamp',
-  });
-  const imageOpacity = scrollY.interpolate({
-    inputRange: [0, HEADER_SCROLL_DISTANCE / 2, HEADER_SCROLL_DISTANCE],
-    outputRange: [1, 1, 0],
-    extrapolate: 'clamp',
-  });
-  const imageTranslate = scrollY.interpolate({
-    inputRange: [0, HEADER_SCROLL_DISTANCE],
-    outputRange: [0, -50],
-    extrapolate: 'clamp',
-  });
-  const textTranslate = scrollY.interpolate({
-    inputRange: [0, HEADER_SCROLL_DISTANCE],
-    outputRange: [0, -15],
-    extrapolate: 'clamp',
-  });
-  const bgColor = scrollY.interpolate({
-    inputRange: [0, HEADER_SCROLL_DISTANCE],
-    outputRange: ['transparent', albumColorPalette?.darkVibrant || '#ce6c6c'],
-    extrapolate: 'clamp',
-  });
+  function secondsToHms(d) {
+    d = Number(d);
+    var h = Math.floor(d / 3600);
+    var m = Math.floor((d % 3600) / 60);
+    var s = Math.floor((d % 3600) % 60);
+
+    var hDisplay = h > 0 ? h + (h == 1 ? ' hour, ' : ' h ') : '';
+    var mDisplay = m > 0 ? m + (m == 1 ? ' minute, ' : ' min ') : '';
+    var sDisplay = s > 0 ? s + (s == 1 ? ' second' : ' s') : '';
+    return hDisplay + mDisplay + sDisplay;
+  }
   return (
     <View>
       <ScrollView
         scrollEventThrottle={16}
-        onScroll={Animated.event(
-          [{ nativeEvent: { contentOffset: { y: scrollY } } }],
-          { useNativeDriver: false },
-        )}
+        showsVerticalScrollIndicator={false}
         style={{
           flexGrow: 1,
           position: 'relative',
@@ -99,11 +80,112 @@ const DetailScreen = ({ route, navigation }) => {
         }}>
         <View
           style={{
-            marginTop: constants.fullWidth,
+            marginTop: constants.statusbarHeight + 30,
             paddingVertical: 20,
             backgroundColor: colors.primarybg,
             paddingHorizontal: 25,
+            position: 'relative',
           }}>
+          {albumColorPalette && (
+            <LinearGradient
+              style={{
+                backgroundColor: '#fff',
+                position: 'absolute',
+                top: 0,
+                bottom: 0,
+                right: 5,
+                left: 5,
+                borderRadius: 10,
+                height: 200,
+              }}
+              colors={[
+                isDarkMode
+                  ? albumColorPalette.darkVibrant
+                  : albumColorPalette.lightVibrant,
+                colors.primarybg,
+              ]}
+            />
+          )}
+          <View
+            style={{
+              display: 'flex',
+              flex: 2,
+              flexDirection: 'row',
+              marginBottom: 20,
+              width: '100%',
+            }}>
+            <Image
+              source={{ uri: albumData ? albumData.image : image }}
+              style={{
+                height: 170,
+                width: 170,
+                borderRadius: 14,
+                marginRight: 20,
+                marginLeft: 10,
+              }}
+              transition
+            />
+            <View style={{ width: '50%' }}>
+              <CustomText
+                bold
+                numberOfLines={2}
+                style={{
+                  width: '100%',
+                  // flex:1,
+                  paddingRight: 10,
+                  // backgroundColor: 'red',
+                  fontSize: 24,
+                  marginTop: 5,
+                  marginBottom: 5,
+                  color: colors.primaryText,
+                }}>
+                {decodeHtml(name)}
+              </CustomText>
+              {albumData && (
+                <CustomText
+                  semiBold
+                  numberOfLines={3}
+                  style={{
+                    width: '100%',
+                    paddingRight: 10,
+                    marginBottom: 7,
+                    fontSize: 17,
+                    color: colors.secondaryText,
+                  }}>
+                  {decodeHtml(albumData?.subtitle)}
+                </CustomText>
+              )}
+              {albumData?.list && <PlayAllButton />}
+            </View>
+          </View>
+          {albumData?.list_count && (
+            <View
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'baseline',
+                marginBottom: 15,
+              }}>
+              <CustomText
+                bold
+                style={{
+                  // flex:1,
+                  paddingRight: 10,
+                  // backgroundColor: 'red',
+                  fontSize: 18,
+                  color: colors.primaryText,
+                }}>
+                {albumData?.list_count + ' songs'}
+              </CustomText>
+              <CustomText style={{ fontSize: 12 }}>
+                {secondsToHms(
+                  albumData?.list.reduce((accumulator, object) => {
+                    return accumulator + Number(object.more_info.duration);
+                  }, 0),
+                )}
+              </CustomText>
+            </View>
+          )}
           {!albumData?.list && <SkeletonDetailScreen isDarkMode={isDarkMode} />}
           {/* <Pressable
             style={{
@@ -125,13 +207,13 @@ const DetailScreen = ({ route, navigation }) => {
             }}>
             <Ionicons name="play" size={28} color={colors.primaryText} />
           </Pressable> */}
-          <PlayAllButton list={albumData?.list} createNewPlaylist={true} />
+          {/* <PlayAllButton list={albumData?.list} createNewPlaylist={true} /> */}
           {albumData?.list?.map(item => (
             <CardType1 song={item} key={item.id} id={item.id} />
           ))}
         </View>
       </ScrollView>
-      <Animated.Image
+      {/*<Animated.Image
         source={{ uri: albumData ? albumData.image : image }}
         transition
         style={[
@@ -192,26 +274,15 @@ const DetailScreen = ({ route, navigation }) => {
               elevation: 10,
             }}
             onPress={() => navigation.goBack()}
-          /> */}
+          /> 
         </View>
-      </Animated.View>
+      </Animated.View>*/}
     </View>
   );
 };
 
 const SkeletonDetailScreen = ({ isDarkMode }) => (
   <>
-    <SkeletonPlaceholder
-      backgroundColor={isDarkMode ? '#444' : '#E1E9EE'}
-      highlightColor={isDarkMode ? '#5a5a5a' : '#F2F8FC'}
-      speed={1200}>
-      <SkeletonPlaceholder.Item
-        width={80}
-        height={35}
-        borderRadius={8}
-        style={{ marginBottom: 15 }}
-      />
-    </SkeletonPlaceholder>
     {[1, 2, 3, 4, 5, 6, 7, 8].map(item => (
       <SkeletonPlaceholder
         key={item}

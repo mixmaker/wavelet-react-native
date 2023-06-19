@@ -23,7 +23,7 @@ const Discover = ({ navigation }) => {
   // console.log(homeData.modules)
   let listKeys;
   if (homeData) {
-    listKeys = Object.keys(homeData.modules);
+    listKeys = Object.keys(homeData?.modules);
   }
   return (
     <>
@@ -110,6 +110,7 @@ const Discover = ({ navigation }) => {
                   title={homeData.modules[item].title}
                   data={homeData[item]}
                   navigation={navigation}
+                  key={item}
                   showTitle
                 />
               ))}

@@ -30,8 +30,6 @@ import CodePushManager from './src/components/CodePushManager';
 import { SheetProvider } from 'react-native-actions-sheet';
 import './sheets';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { observeLikedSongs } from './src/data/helpers';
-import withObservables from '@nozbe/with-observables';
 import storage, { storageKeys } from './src/data/storage';
 
 const App = () => {

@@ -254,7 +254,7 @@ const Player = ({ route, navigation }) => {
               style={{
                 color: colors.secondaryText,
               }}>
-              Audio Quality:{' '}
+               Audio Quality:{' '}
               {audioQuality === 320
                 ? 'High'
                 : audioQuality === 160

@@ -50,7 +50,9 @@ const CardType2 = ({ id, index }) => {
             }}
           />
           <View style={{ marginLeft: 3, width: 180 }}>
-            <CustomText style={{ fontSize: 16 }} numberOfLines={1}>
+            <CustomText
+              style={{ fontSize: 16, color: colors.primaryText }}
+              numberOfLines={1}>
               {data.title}
             </CustomText>
             <CustomText
